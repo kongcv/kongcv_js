@@ -65,7 +65,6 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
         request.params,
         {
             success : function(user) {
-                console.log("*****************token", user._sessionToken);
                 var json_obj = eval("("+RESULT_MSG.RET_OK+")");
                 json_obj["sessionToken"] = user._sessionToken;
                 response.success(JSON.stringify(json_obj));
