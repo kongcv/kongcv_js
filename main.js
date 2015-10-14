@@ -79,3 +79,26 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
         }
     );
 });
+
+/**
+ * brief   : get advertise
+ * @param  : request - {}
+ *           response - return advertise recordset or error
+ * @return : RET_OK - success, sessionToken - must storge
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_get_advertise", function(request, response) {
+    var kongcv_advertise = AV.Object.extend("kongcv_advertise");
+    var query = new AV.Query(kongcv_advertise);
+    query.find({
+        success : function(results) {
+            response.success(results);
+        },
+        error : function(error) {
+            response.error(error);
+        }
+    });
+});
+ 
