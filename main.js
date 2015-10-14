@@ -13,8 +13,10 @@ var RESULT_MSG = {
  * brief   : get smscode
  * @param  : request - {"mobilePhoneNumber":"13xxxxxx"}
  *           response - RET_OK or ERROR
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}
  * @return : RET_OK - success
  *           ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
  */
 AV.Cloud.define("kongcv_get_smscode", function(request, response) {
     var mobilePhoneNumber = request.params.mobilePhoneNumber;
@@ -39,7 +41,9 @@ AV.Cloud.define("kongcv_get_smscode", function(request, response) {
  * @param  : request - {"mobilePhoneNumber":"13xxxxxx", "smsCode":"yyyyy"}
  *           response - RET_OK or RET_ERROR
  * @return : RET_OK - success, sessionToken - must storge
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"sessionToken\":\"xxxxxxxx\"}"}
  *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
  */
 AV.Cloud.define("kongcv_signup", function(request, response) {
     var mobilePhoneNumber = request.params.mobilePhoneNumber;
