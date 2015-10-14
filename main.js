@@ -38,11 +38,10 @@ AV.Cloud.define("kongcv_get_smscode", function(request, response) {
  * brief   : user sign up
  * @param  : request - {"mobilePhoneNumber":"13xxxxxx", "smsCode":"yyyyy"}
  *           response - RET_OK or RET_ERROR
- * @return : RET_OK - success
+ * @return : RET_OK - success, sessionToken - must storge
  *           RET_ERROR - system error
  */
 AV.Cloud.define("kongcv_signup", function(request, response) {
-    console.log("request", request);
     var mobilePhoneNumber = request.params.mobilePhoneNumber;
     var smsCode = request.params.smsCode;
 
@@ -56,12 +55,20 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
         return;
     }
 
+    var json_obj = eval("("+RESULT_MSG.RET_OK+")");
+    json_obj["sessionToken"] = smsCode;
+    response.success(JSON.stringify(json_obj));
+    return;
+
     var user = new AV.User();
     user.signUpOrlogInWithMobilePhone(
         request.params,
         {
             success : function(user) {
-                response.success(RESULT_MSG.RET_OK);
+                console.log("*****************token", user._sessionToken);
+                var json_obj = eval("("+RESULT_MSG.RET_OK+")");
+                json_obj["sessionToken"] = user._sessionToken;
+                response.success(JSON.stringify(json_obj));
             },
             error : function(error) {
                 response.error(error)
