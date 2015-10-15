@@ -27,7 +27,7 @@ AV.Cloud.define("kongcv_get_smscode", function(request, response) {
     }
 
     AV.Cloud.requestSmsCode(mobilePhoneNumber).then(
-        function() {
+        function(result) {
             response.success(RESULT_MSG.RET_OK);
         },
         function(error) {
@@ -58,11 +58,6 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
         response.success(ERROR_MSG.ERR_SMSCODE_MUST_EXIST);
         return;
     }
-
-    var json_obj = eval("("+RESULT_MSG.RET_OK+")");
-    json_obj["sessionToken"] = smsCode;
-    response.success(JSON.stringify(json_obj));
-    return;
 
     var user = new AV.User();
     user.signUpOrlogInWithMobilePhone(
