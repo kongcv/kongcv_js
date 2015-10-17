@@ -1,0 +1,68 @@
+kongcv_get_smscode:得到短信验证码
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_smscode
+request:
+参数说明:
+   mobilePhoneNumber":手机号
+请求格式:
+   {"mobilePhoneNumber":"xxxxxxxx"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+
+kongcv_signup:手机号和短信验证码一键注册
+url:https://api.leancloud.cn/1.1/functions/kongcv_signup
+request:
+参数说明:
+   mobilePhoneNumber":手机号
+   smsCode:短信验证码
+   role:角色 park_manager - 停车管理员 worker - 地推人员
+   mode:模式 debug - 开发模式 release - 上线模式
+正常请求格式:
+   {"mobilePhoneNumber":"xxxxxxxx","smsCode":"sssss"}
+带角色的请求格式:
+   {"mobilePhoneNumber":"xxxxxxxx","smsCode":"sssss","role":"park_manager","mode":"debug"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+   sessionToken - 前端必须保存，修改user数据需要传递sessionToken
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"sessionToken\":"xxxxxxxxx"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_insert_parkdata:插入停车位数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_parkdata
+request:
+参数说明:
+   user_id - curb(道边停)模式下,传入管理员手机号,community(社区停)模式下，传入用户objectid
+   worker_id - curb(道边停)模式下,传入地推人员objectid,community(社区停)模式下可以不传值or没有这个参数
+   address - 停车位地址
+   location_info - 坐标， __type:GeoPoint - 数据类型，latitude - 纬度 longitude - 经度
+   hire_start - 出租起始时间
+   hire_end - 出租结束时间
+   city - 城市
+   normal - 正规车位 true:是 false:否，curb(道边停)模式下可以不传值or没有这个参数
+   park_area - 车位面积，curb(道边停)模式下可以不传值or没有这个参数
+   park_height - 车位限高，curb(道边停)模式下可以不传值or没有这个参数
+   gate_card - 门禁卡，关于门禁卡的需求，curb(道边停)模式下可以不传值or没有这个参数
+   hire_method_id - 出租类型的objectid
+   struct - 结构 地面:0 地下:1
+   mode - 模式 curb(道边停)community(社区停)
+curb请求格式：也适用与community
+   {"user_id":"13581688418","worker_id":"5621f1bf60b27db44ed6d6fd","address":"xxxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00", "city":"beijing", "normal":"true", "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["xxxx","xxxx"],"struct":0, "mode":"curb"}
+
