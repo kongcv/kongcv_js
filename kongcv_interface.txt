@@ -65,4 +65,10 @@ request:
    mode - 模式 curb(道边停)community(社区停)
 curb请求格式：也适用与community
    {"user_id":"13581688418","worker_id":"5621f1bf60b27db44ed6d6fd","address":"xxxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00", "city":"beijing", "normal":"true", "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["xxxx","xxxx"],"struct":0, "mode":"curb"}
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 
