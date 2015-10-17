@@ -45,6 +45,24 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_get_advertise:得到轮播图
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_advertise
+request:
+请求格式:
+   {}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - 返回结果集                 
+        {recordset json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 kongcv_insert_parkdata:插入停车位数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_parkdata
 request:
@@ -60,11 +78,11 @@ request:
    park_area - 车位面积，curb(道边停)模式下可以不传值or没有这个参数
    park_height - 车位限高，curb(道边停)模式下可以不传值or没有这个参数
    gate_card - 门禁卡，关于门禁卡的需求，curb(道边停)模式下可以不传值or没有这个参数
-   hire_method_id - 出租类型的objectid
+   hire_method - 出租类型,__type:GeoPoint - 数据类型,className - 类名,objectId - 数据id
    struct - 结构 地面:0 地下:1
    mode - 模式 curb(道边停)community(社区停)
 curb请求格式：也适用与community
-   {"user_id":"13xxxxxx","worker_id":"5621f1bf60b27db44ed6d6fd","address":"xxxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00", "city":"beijing", "normal":"true", "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["xxxx","xxxx"],"struct":0, "mode":"curb"}
+   {"user_id":"13xxxxxx","worker_id":"5621f1bf60b27db44ed6d6fd","address":"xxxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00", "city":"beijing", "normal":"true", "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method":[{"__type":"Point","className":"kongcv_hire_method","objectId":"5620a6dc60b27457e84bb21d"}],"struct":0, "mode":"curb"}
 response:
 参数说明:
    result - 返回结果
