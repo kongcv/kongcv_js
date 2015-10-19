@@ -96,4 +96,26 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-
+kongcv_location_search:车位搜索
+url:https://api.leancloud.cn/1.1/functions/kongcv_location_search
+request:
+参数说明:
+   location_info - 坐标数据
+   max_distance - 最大距离值
+   skip - 跳过记录数
+   limit - 限定返回记录数
+   mode - 停车模式 curb(道边停)community(社区停)
+请求格式:
+   {"location_info":{"latitude":11.1,"longitude":116.4},"max_distance":3, "skip":10,"limit":10,"mode":"curb"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - 返回结果集                 
+        {recordset json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
