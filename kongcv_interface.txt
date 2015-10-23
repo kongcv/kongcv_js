@@ -86,9 +86,9 @@ kongcv_get_hire_method:得到停车类型的出租方法
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_hire_method
 request:
 请求格式:
-   {"hire_type_id":"xxxx"}
+   {"park_type_id":"xxxx"}
 参数说明:
-   hire_type_id - 停车类型的objectId
+   park_type_id - 停车类型的objectId
 response:
 参数说明:
    result - 返回结果
