@@ -63,6 +63,46 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_get_park_type:得到停车类型
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_park_type
+request:
+请求格式:
+   {}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   返回数据中picture是停车类型的图片，url是图片链接,name是类型名称
+   RET_OK - 返回结果集                 
+        {recordset json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_hire_method:得到停车类型的出租方法
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_hire_method
+request:
+请求格式:
+   {"hire_type_id":"xxxx"}
+参数说明:
+   hire_type_id - 停车类型的objectId
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   返回数据中method是出租方式
+   RET_OK - 返回结果集                 
+        {recordset json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 kongcv_insert_parkdata:插入停车位数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_parkdata
 request:
@@ -103,11 +143,12 @@ request:
 参数说明:
    location_info - 坐标数据
    max_distance - 最大距离值
+   hire_method_id - 出租方式objectid，如果为所有类型搜索此项可以不传值或没有这个参数
    skip - 跳过记录数
    limit - 限定返回记录数
    mode - 停车模式 curb(道边停)community(社区停)
 请求格式:
-   {"location_info":{"latitude":11.1,"longitude":116.4},"max_distance":3, "skip":10,"limit":10,"mode":"curb"}
+   {"location_info":{"latitude":11.1,"longitude":116.4},"max_distance":3, "hire_method_id":"xxxx", "skip":10,"limit":10,"mode":"curb"}
 response:
 参数说明:
    result - 返回结果
