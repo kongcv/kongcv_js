@@ -113,6 +113,9 @@ request:
    location_info - 坐标， __type:GeoPoint - 数据类型，latitude - 纬度 longitude - 经度
    hire_start - 出租起始时间
    hire_end - 出租结束时间
+   tail_num - 限行尾号
+   day_start - 错时出租时间段开始时间
+   day_end - 错时出租时间段结束时间
    city - 城市
    normal - 正规车位 true:是 false:否，curb(道边停)模式下可以不传值or没有这个参数
    park_area - 车位面积，curb(道边停)模式下可以不传值or没有这个参数
@@ -123,7 +126,7 @@ request:
    struct - 结构 地面:0 地下:1
    mode - 模式 curb(道边停)community(社区停)
 curb请求格式：也适用与community
-   {"user_id":"13xxxxxx","worker_id":"5621f1bf60b27db44ed6d6fd","address":"xxxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00", "city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"struct":0,"mode":"curb"}
+   {"user_id":"13xxxxxx","worker_id":"5621f1bf60b27db44ed6d6fd","address":"xxxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","day_start":"9:00","tail_num":"5","day_end":"20:00", "city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"struct":0,"mode":"curb"}
 response:
 参数说明:
    result - 返回结果
