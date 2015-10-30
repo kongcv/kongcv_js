@@ -7,7 +7,7 @@ request:
    {"mobilePhoneNumber":"xxxxxxxx"}
 response:
 参数说明:
-   result - 返回结果
+   result - 返回结果park info
    state - 状态
    code - 消息编号
    msg - 描述消息
@@ -161,5 +161,26 @@ response:
 回应格式:      
    RET_OK - 返回结果集                 
         {recordset json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_park_info:得到停车位详细信息
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_park_info
+request:
+请求格式:
+   {"park_id":"xxxx", "mode":"community"}
+参数说明:
+   park_id - 停车位的objectId
+   mode - 模式 curb(道边停)community(社区停)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                 
+        {record json}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
