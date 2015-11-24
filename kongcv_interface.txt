@@ -141,6 +141,78 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_insert_tradedata:插入交易数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_tradedata
+request:
+参数说明:
+   user_id - 用户objectid
+   park_id - 停车位的objectId
+   hire_start - 交易出租起始时间
+   hire_end - 交易出租结束时间
+   hire_method_id - 出租类型objectId
+   price - 交易价格
+   mode - 模式 curb(道边停)community(社区停)
+   {"user_id":"xxxxxxxxxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_insert_comment:插入评论数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_comment
+request:
+参数说明:
+   user_id - 用户objectid
+   park_id - 停车位的objectId
+   comment - 评论内容
+   grade - 车位评分
+   hire_method_id - 出租类型objectId
+   mode - 模式 curb(道边停)community(社区停)
+   {"user_id" : "xxxxxx", "comment" : "test comment", "park_id" : "xxxxxxxxxxx","grade":5, "mode" : "community"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_comment:得到评论数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_comment
+request:
+参数说明:
+   user_id - 用户objectid
+   park_id - 停车位的objectId
+   skip - 跳过记录数
+   limit - 限定返回记录数
+   mode - 模式 curb(道边停)community(社区停)
+   {"user_id" : "xxxxxx", "park_id" : "xxxxxxxxxxx", "skip":0, "limit":10, "mode" :"community"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - 返回结果集                 
+        {record json arrray}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 kongcv_location_search:车位搜索
 url:https://api.leancloud.cn/1.1/functions/kongcv_location_search
 request:
