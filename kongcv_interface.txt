@@ -46,6 +46,28 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_push_smsinfo:发送短信信息
+url:https://api.leancloud.cn/1.1/functions/kongcv_push_smsinfo
+request:
+参数说明:
+   mobilePhoneNumber":手机号
+   push_type : 发送类型(verify_request-租用请求,verify_accept-接受租用,verify_reject-拒绝租用)
+请求格式:
+   {"mobilePhoneNumber":"xxxxxxxx", "push_type":"xxx"}
+response:
+参数说明:
+   result - 返回结果park info
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+
 kongcv_get_advertise:得到轮播图
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_advertise
 request:
