@@ -1,3 +1,26 @@
+更新用户数据:
+url:https://api.leancloud.cn/1.1/users/55a47496e4b05001a7732c5f(55a47496e4b05001a7732c5f改成你自己的user_id)
+request:
+参数说明:
+   X-LC-Session:你自己保存的sessiontoken,需要添加到http header中
+   device_token：是你从jpush获得的registionId
+   device_type : ios or andriod
+请求格式:
+   {"device_token":"xxxxx","device_type":"ios"}'
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{更新结果}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+http请求格式:
+curl -X PUT \  
+-H "X-LC-Id: appid" \  
+-H "X-LC-Key: appkey" \  
+-H "X-LC-Session: sessionToken" \  
+-H "Content-Type: application/json" \  
+-d '{"device_token":"xxxxx","device_type":"ios"}' \  
+https://api.leancloud.cn/1.1/users/55a47496e4b05001a7732c5f
+
 kongcv_get_smscode:得到短信验证码
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_smscode
 request:
