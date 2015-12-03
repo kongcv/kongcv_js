@@ -41,7 +41,6 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-
 kongcv_signup:手机号和短信验证码一键注册
 url:https://api.leancloud.cn/1.1/functions/kongcv_signup
 request:
@@ -90,6 +89,39 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_jpush_message_p2p:发送JPsh推送通知
+url:https://api.leancloud.cn/1.1/functions/kongcv_jpush_message_p2p
+request:
+参数说明:
+   mobilePhoneNumber - 手机号
+   push_type - 发送类型(verify_request-租用请求,verify_accept-接受租用,verify_reject-拒绝租用)
+   device_type - 设备类型ios or android
+   device_token - 要发送的对方registrationId
+   extras - 附加信息
+   park_id - 车位objectId,
+   park_type - 车位类型
+   hire_method_id - 车位出租方式id
+   own_device_token - 自己手机的registrationdId
+   own_device_typd - 自己手机类型ios or android
+请求格式:
+   verify_request类型下格式:
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":            "verify_request", "device_token":"xxxxxxx", "device_type":"ios", "extras":{"park_id":"xxxxx","park_type":"community","hire_method_id":"xxxxx","own_device_token":"xxxxx","own_device_type":"android"}}
+   verify_accept类型下格式:
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":            "verify_accept", "device_token":"xxxxx", "device_type":"ios", "extras":{"park_id":"xxxxx","park_type":"community","hire_method_id":"xxxxx"}}
+   verify_reject类型下格式:
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":            "verify_accept", "device_token":"xxxxx", "device_type":"ios"}
+response:
+参数说明:
+   result - 返回结果park info
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
 
 kongcv_get_advertise:得到轮播图
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_advertise
