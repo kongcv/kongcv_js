@@ -93,26 +93,72 @@ kongcv_jpush_message_p2p:发送JPsh推送通知
 url:https://api.leancloud.cn/1.1/functions/kongcv_jpush_message_p2p
 request:
 参数说明:
-   mobilePhoneNumber - 手机号
+   mobilePhoneNumber - 对方手机号
    push_type - 发送类型(verify_request-租用请求,verify_accept-接受租用,verify_reject-拒绝租用)
    device_type - 设备类型ios or android
    device_token - 要发送的对方registrationId
+   user_id - 自己的user_id
    extras - 附加信息
    park_id - 车位objectId,
    park_type - 车位类型
    hire_method_id - 车位出租方式id
+   hire_start - 出租起始时间
+   hire_end - 出租结束时间
    own_device_token - 自己手机的registrationdId
    own_device_typd - 自己手机类型ios or android
 请求格式:
    verify_request类型下格式:
-   {"mobilePhoneNumber":"1xxxxxxx", "push_type":            "verify_request", "device_token":"xxxxxxx", "device_type":"ios", "extras":{"park_id":"xxxxx","park_type":"community","hire_method_id":"xxxxx","own_device_token":"xxxxx","own_device_type":"android"}}
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_request", "device_token":"xxxxxxx","device_type":"ios","user_id":"xxxx","extras":{"park_id":"xxxxx","park_type":"community","hire_method_id":"xxxxx","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","own_device_token":"xxxxx","own_device_type":"android", "push_type":"verify_request"}}
    verify_accept类型下格式:
-   {"mobilePhoneNumber":"1xxxxxxx", "push_type":            "verify_accept", "device_token":"xxxxx", "device_type":"ios", "extras":{"park_id":"xxxxx","park_type":"community","hire_method_id":"xxxxx"}}
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"xxxxx", "device_type":"ios","user_id":"xxxx","extras":{"park_id":"xxxxx","park_type":"community","hire_method_id":"xxxxx","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"verify_accept"}}
    verify_reject类型下格式:
-   {"mobilePhoneNumber":"1xxxxxxx", "push_type":            "verify_accept", "device_token":"xxxxx", "device_type":"ios"}
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"xxxxx", "device_type":"ios","user_id":"xxxx","extrax":{"push_type":"verify_accept"}}
 response:
 参数说明:
    result - 返回结果park info
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_insert_accept:插入通知接受数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_accept
+request:
+参数说明:
+   req_mobile - 被请求方(出租人)手机号
+   user_mobile - 请求方(求租人)自己手机号
+   park_id - 停车位的objectId
+   mode - 模式 curb(道边停)community(社区停)
+   {"req_mobile":"xxxxxxxxxx","user_mobile":"xxxxx","park_id":       "xxxxxxxxxxx","mode":"community"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_accept:得到通知接受数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_accept
+request:
+参数说明:
+   user_mobile - 请求方(求租人)自己手机号
+   park_id - 停车位的objectId
+   mode - 模式 curb(道边停)community(社区停)
+   {"user_mobile":"xxxxx","park_id":"xxxxxxxxxxx","mode":"community"}
+response:
+参数说明:
+   result - 返回结果
    state - 状态
    code - 消息编号
    msg - 描述消息
@@ -244,6 +290,26 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_insert_trade_billdata:插入交易数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_trade_billdata
+注意：调用kongcv_insert_trad_billdata需要交易单id，如果没有trade_id,需要调用kongcv_insert_tradedata接口,支付差额不需要调用kongcv_insert_tradedata,因为已有交易单id
+request:
+参数说明:
+   trade_id - 交易单objectid
+   {"trade_id":"xxxxx"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 kongcv_insert_comment:插入评论数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_comment
 request:
@@ -252,7 +318,6 @@ request:
    park_id - 停车位的objectId
    comment - 评论内容
    grade - 车位评分
-   hire_method_id - 出租类型objectId
    mode - 模式 curb(道边停)community(社区停)
    {"user_id" : "xxxxxx", "comment" : "test comment", "park_id" : "xxxxxxxxxxx","grade":5, "mode" : "community"}
 response:
