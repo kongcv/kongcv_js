@@ -305,6 +305,7 @@ response:
    code - 消息编号
    msg - 描述消息
    error - 错误描述
+   trade_id - 交易单id
 回应格式:      
    RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
         {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
