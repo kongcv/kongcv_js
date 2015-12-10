@@ -253,7 +253,7 @@ request:
    mode - 模式 curb(道边停)community(社区停)
 curb请求格式：也适用与community
    hire_time - 出租时间段，如是全时请填“0”，curb(道边停)模式下可以不传值or没有这个参数
-   {"user_id":"13xxxxxx","worker_id":"5621f1bf60b27db44ed6d6fd","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"struct":0,"mode":"curb"}
+   {"user_id":"13xxxxxx","hirer_id":"xxxxxx","worker_id":"5621f1bf60b27db44ed6d6fd","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"struct":0,"mode":"curb"}
 response:
 参数说明:
    result - 返回结果
@@ -293,13 +293,14 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_insert_tradedata
 request:
 参数说明:
    user_id - 用户objectid
+   hirer_id - 出租人objectId
    park_id - 停车位的objectId
    hire_start - 交易出租起始时间
    hire_end - 交易出租结束时间
    hire_method_id - 出租类型objectId
    price - 交易价格
    mode - 模式 curb(道边停)community(社区停)
-   {"user_id":"xxxxxxxxxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community"}
+   {"user_id":"xxxxxxxxxx","hirer_id":"xxxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community"}
 response:
 参数说明:
    result - 返回结果
@@ -424,3 +425,76 @@ response:
         {record json}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_park_list:得到停车位列表
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_park_list
+request:
+请求格式:
+   {"user_id":"xxxxx", "mobile":"xxxx","skip":0, "limit":10,"mode":        "community", "action":"userid"}
+参数说明:
+   user_id - 用户objectid
+   mobile - 手机号,只能在curb模式下用
+   skip - 跳过记录数
+   limit - 限定返回记录数
+   mode - 模式 curb(道边停)community(社区停)
+   action - userid(使用user_id做查询), mobile(使用mobile手机号做查询)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                 
+        {record json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_trade_info:得到交易单详细信息
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_trade_info
+request:
+请求格式:
+   {"trade_id":"xxxx","role":"hirer", "mode":"community"}
+参数说明:
+   trade_id - 交易单的objectId
+   role - 角色, hirer(出租人), customer(顾客,消费者)
+   mode - 模式 curb(道边停)community(社区停)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                 
+        {record json}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_trade_list:得到交易单详细信息
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_trade_list
+request:
+请求格式:
+   {"user_id":"xxxxx", "role":"customer","skip":0, "limit":10,"mode":       "community"}
+参数说明:
+   trade_id - 交易单的objectId
+   role - 角色, hirer(出租人), customer(顾客,消费者)
+   skip - 跳过记录数
+   limit - 限定返回记录数
+   mode - 模式 curb(道边停)community(社区停)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                 
+        {record json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+
