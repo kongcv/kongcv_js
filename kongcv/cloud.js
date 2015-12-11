@@ -1086,7 +1086,7 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
         return;
     }
     
-    var hirer_id = request.params.hirer;
+    var hirer_id = request.params.hirer_id;
     if (typeof(hirer_id) == "undefined" || hirer_id.length === 0) {
         response.success(ERROR_MSG.ERR_HIRER_MUST_EXIST);
         return;
