@@ -270,11 +270,12 @@ response:
 kongcv_get_trade_date_list:得到车位租用月列表
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_trade_date_list
 request:
+   {"park_id":"xxxxxxxxxxx","query_month":"2015-10-01 00:00:00","pay_state":0, "mode":"community"}
 参数说明:
    park_id - 停车位的objectId
    query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00)
    mode - 模式 curb(道边停)community(社区停)
-   {"park_id":"xxxxxxxxxxx","query_month":"2015-10-01 00:00:00","mode":"community"}
+   pay_state - 0(所有月交易单),1(所有已完成和已支付定金交易单)
 response:
 参数说明:
    result - 返回结果
