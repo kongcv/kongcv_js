@@ -267,8 +267,8 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_get_park_date_list:得到车位租用月列表
-url:https://api.leancloud.cn/1.1/functions/kongcv_get_park_date_list
+kongcv_get_trade_date_list:得到车位租用月列表
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_trade_date_list
 request:
 参数说明:
    park_id - 停车位的objectId
