@@ -500,4 +500,23 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-
+kongcv_insert_feedback:插入反馈信息
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_feedback
+request:
+请求格式:
+   {"user_id":"xxxxx", "feedback":"xxxx"}
+参数说明:
+   user_id - 用户objectId
+   feedback - 反馈信息
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}

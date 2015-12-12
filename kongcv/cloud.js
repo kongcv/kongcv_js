@@ -42,6 +42,8 @@ var ERROR_MSG = {
     'ERR_EXTRA_FLAG_MUST_EXIST' : '{"state":"error", "code":33, "error":"额外标识必须存在"}',
     'ERR_TRADE_STATE_MUST_EXIST' : '{"state":"error", "code":34, "error":"交易状态必须存在"}',
     'ERR_QUERY_DATE_MUST_EXIST' : '{"state":"error", "code":34, "error":"查询日期必须存在"}',
+    'ERR_PAY_STATE_MUST_EXIST' : '{"state":"error", "code":35, "error":"支付状态必须存在"}',
+    'ERR_FEEDBACK_MUST_EXIST' : '{"state":"error", "code":36, "error":"反馈必须存在"}',
 };
 
 var RESULT_MSG = {
@@ -73,6 +75,7 @@ var kongcv_preorder_cls = AV.Object.extend("kongcv_preorder");
 var kongcv_accept_cls = AV.Object.extend("kongcv_accept");
 var kongcv_comment_cls = AV.Object.extend("kongcv_comment");
 var kongcv_push_message_cls = AV.Object.extend("kongcv_push_message");
+var kongcv_feedback_cls = AV.Object.extend("kongcv_feedback");
 var limit_minseconds = 30 * 60 * 1000;
 
 var user_0 = "kongcv_admin";
@@ -954,7 +957,7 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
  
 /**
  * brief   : get month trade list
- * @param  : request - {"park_id":"xxxxx", "query_month":"2015-12-01 00:00:00"}, "mode":"community"}
+ * @param  : request - {"park_id":"xxxxx", "query_month":"2015-12-01 00:00:00"}, "mode":"community", "pay_state":0}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -977,6 +980,12 @@ AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
     var mode = request.params.mode;
     if (typeof(mode) == "undefined" || mode.length === 0) {
         response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
+        return;
+    }
+
+    var pay_state = request.params.pay_state;
+    if (typeof(pay_state) == "undefined" || pay_state.length === 0) {
+        response.success(ERROR_MSG.ERR_PAY_STATE_MUST_EXIST);
         return;
     }
 
@@ -1005,9 +1014,11 @@ AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
     else if ("curb" === mode) {
         trade_query.equalTo("park_curb", kongcv_park_obj);
     }
-    
-    //trade_query.greaterThanOrEqualTo("pay_state", 1);
-    //trade_query.EqualTo("trade_state", 1);
+   
+    if (1 === pay_state) {
+      trade_query.greaterThanOrEqualTo("pay_state", 1);
+      //trade_query.EqualTo("trade_state", 1);
+    }
     trade_query.greaterThanOrEqualTo("hire_end", query_month);
     trade_query.lessThan("hire_start", next_month);
     trade_query.find({
@@ -1241,7 +1252,8 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
         trade_query.equalTo("park_curb", kongcv_park_obj);
     }
 
-    trade_query.equalTo("pay_state", 2);
+    //trade_query.greaterThanOrEqualTo("pay_state", 1);
+    trade_query.equalTo("trade_state", 1);
     trade_query.greaterThanOrEqualTo("hire_end", hire_start);
     trade_query.lessThanOrEqualTo("hire_start", hire_end);
     trade_query.find({
@@ -1990,6 +2002,47 @@ AV.Cloud.beforeSave("kongcv_accept", function(request, response) {
             return;
         }
     });
+});
+
+/**
+ * brief   : insert feedback info
+ * @param  : request - {"user_id":"xxxx", "feedback":"xxxxx"}
+ *           response - return success or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           error
+ *           {"code":142,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_insert_feedback", function(request, response) {
+    var user_id = request.params.user_id;
+    if (typeof(user_id) == "undefined" || user_id.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_ID_MUST_EXIST);
+        return;
+    }
+
+    var feedback = request.params.feedback;
+    if (typeof(feedback) == "undefined" || feedback.length === 0) {
+        response.success(ERROR_MSG.ERR_FEEDBACK_MUST_EXIST);
+        return;
+    }
+
+    var kongcv_feedback_obj = new kongcv_feedback_cls();
+ 
+    var user_obj = new user_cls();
+    user_obj.id = user_id;
+    kongcv_feedback_obj.set("user", user_obj);
+    kongcv_feedback_obj.set("feed_back", feed_back);
+
+    kongcv_feedback_obj.save().then(
+        function() {
+            response.success(RESULT_MSG.RET_OK);
+            return;
+        },
+        function(error) {
+            response.error(error);
+            return;
+        }
+    ); 
 });
 
 /**
