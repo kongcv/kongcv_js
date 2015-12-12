@@ -300,7 +300,8 @@ request:
    hire_method_id - 出租类型objectId
    price - 交易价格
    mode - 模式 curb(道边停)community(社区停)
-   {"user_id":"xxxxxxxxxx","hirer_id":"xxxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community"}
+   extra_flag - "0"(根据租用时间判断小于等于1天为短期),"1"长期(大于1天)
+   {"user_id":"xxxxxxxxxx","hirer_id":"xxxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community","extra_flag":"0"}
 response:
 参数说明:
    result - 返回结果

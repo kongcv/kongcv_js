@@ -1070,9 +1070,43 @@ AV.Cloud.define("kongcv_insert_trade_billdata", function(request, response) {
     );
 });
 
+/**                                                                              
+ *brief   : 获取日期相差天数                                                     
+ *@param  : start_date - "2015-06-01"                                                
+ *          end_date - "2015-06-02"                                                
+ *@return : num - days number                                                 
+ */                                                                               
+var get_space_days = function(start_date, end_date) {                           
+    var start_minseconds = new Date(start_date);
+    console.log("start_minsecodns", start_minseconds);
+    var end_minseconds = new Date(end_date); 
+    console.log("end_minsecodns", end_minseconds);
+    num = parseInt(Math.abs(end_minseconds - start_minseconds) / 1000 / 60 / 60 / 24);            
+    return num;                                                               
+};
+
+/**                                                                              
+ *brief   : date to string                                                     
+ *@param  : date - Date("2015-06-01")                                                
+ *@return : string                                                
+ */ 
+var get_date_2_str = function(date) {
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    if (month < 10) {
+        month = "0" + month;
+    }
+    if (day < 10) {
+        day = "0" + day;
+    }
+    var str_date = year + "-" + month + "-" + day;
+    return str_date;
+};
+
 /**
  * brief   : insert trade data
- * @param  : request - {"user_id":"xxxxxxxxxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community"}
+ * @param  : request - {"user_id":"xxxxxxxxxx","hirer_id":"xxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 00:00:00", "hire_end":"2015-10-18 00:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community", "extra_flag":"1"}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -1111,14 +1145,20 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
     }
 
     var hire_start = request.params.hire_start;
- 
+    if (typeof(hire_start) == "undefined" || hire_start.length === 0) {
+        response.success(ERROR_MSG.ERR_HIRE_START_MUST_EXIST);
+        return;
+    }
+    
     var hire_end = request.params.hire_end;
-
+ 
     var price = request.params.price;
     if (typeof(price) == "undefined" || price.length === 0) {
         response.success(ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
         return;
     }
+    
+    var extra_flag = request.params.extra_flag;
  
     var kongcv_trade_obj = new kongcv_trade_cls();
 
@@ -1140,47 +1180,49 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
         kongcv_park_obj.id = park_id;
         
         kongcv_trade_obj.set("park_community", kongcv_park_obj);
-        
-        if (typeof(hire_start) == "undefined" || hire_start.length === 0) {
-            response.success(ERROR_MSG.ERR_HIRE_START_MUST_EXIST);
-            return;
-        }
-  
-        if (typeof(hire_end) == "undefined" || hire_end.length === 0) {
-            response.success(ERROR_MSG.ERR_HIRE_END_MUST_EXIST);
-            return;
-        }
-
-        kongcv_trade_obj.set("hire_start", new Date(hire_start));
-        kongcv_trade_obj.set("hire_end", new Date(hire_end));
     }
     else if ("curb" === mode) {
         kongcv_park_obj = new kongcv_park_curb_cls();
         kongcv_park_obj.id = park_id;
         
-        kongcv_trade_obj.set("park_curb", kongcv_park_obj);
-        
-        if (debug_hire_method_timing != hire_method_id && release_hire_method_timing != hire_method_id) { 
-            if (typeof(hire_start) == "undefined" || hire_start.length === 0) {
-                response.success(ERROR_MSG.ERR_HIRE_START_MUST_EXIST);
-                return;
-            }
-
-            if (typeof(hire_end) == "undefined" || hire_end.length === 0) {
-                response.success(ERROR_MSG.ERR_HIRE_END_MUST_EXIST);
-                return;
-            }
-
-            kongcv_trade_obj.set("hire_start", new Date(hire_start));
-            kongcv_trade_obj.set("hire_end", new Date(hire_end));
-        }
+        kongcv_trade_obj.set("park_curb", kongcv_park_obj);    
     }
     else {
         response.success(ERROR_MSG.ERR_INFO_FORMAT);
         return;
     }
- 
+  
+    var charge_date = [];
+    kongcv_trade_obj.set("hire_start", new Date(hire_start));
+    if (debug_hire_method_timing != hire_method_id && release_hire_method_timing != hire_method_id) {  
+        if (typeof(hire_end) == "undefined" || hire_end.length === 0) {
+            response.success(ERROR_MSG.ERR_HIRE_END_MUST_EXIST);
+            return;
+        }
+        kongcv_trade_obj.set("hire_end", new Date(hire_end));
+
+        //var days = get_space_days(hire_start,hire_end);
+        //console.log("space days:", days);
+
+        var start_date = new Date(hire_start); 
+        var end_date = new Date(hire_end);
+        while (true) {
+            var next_month = new Date(start_date.setMonth(start_date.getMonth() + 1));
+            var str_date = get_date_2_str(next_month);
+            if (next_month > end_date) {
+                charge_date.push(get_date_2_str(end_date));
+                break;
+            }
+            else {
+                charge_date.push(str_date);
+            }
+        }
+        console.log("charge date:", charge_date);
+        kongcv_trade_obj.set("charge_date", charge_date);
+    }
+        
     kongcv_trade_obj.set("price", price);
+    kongcv_trade_obj.set("extra_flag", extra_flag);
 
     var trade_query = new AV.Query(kongcv_trade_cls);
     if ("community" === mode) {
