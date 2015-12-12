@@ -37,8 +37,11 @@ var ERROR_MSG = {
     'ERR_PARK_ACCEPT_EXIST' : '{"state":"error", "code":28, "error":"你在规定的30分钟内已接受了一次租用请求,请稍后再决定是否接受此次请求"}',
     'ERR_PARK_DATE_EXIST' : '{"state":"error", "code":29, "error":"你选择的租用日期与其他用户有冲突,请重新选择时间段"}',
     'ERR_ACTION_MUST_EXIST' : '{"state":"error", "code":30, "error":"动作方式必须存在"}',
-    'ERR_ROLE_MUST_EXIST' : '{"state":"error", "code":30, "error":"角色必须存在"}',
-    'ERR_HIRER_MUST_EXIST' : '{"state":"error", "code":30, "error":"出租人必须存在"}',
+    'ERR_ROLE_MUST_EXIST' : '{"state":"error", "code":31, "error":"角色必须存在"}',
+    'ERR_HIRER_MUST_EXIST' : '{"state":"error", "code":32, "error":"出租人必须存在"}',
+    'ERR_EXTRA_FLAG_MUST_EXIST' : '{"state":"error", "code":33, "error":"额外标识必须存在"}',
+    'ERR_TRADE_STATE_MUST_EXIST' : '{"state":"error", "code":34, "error":"交易状态必须存在"}',
+    'ERR_QUERY_DATE_MUST_EXIST' : '{"state":"error", "code":34, "error":"查询日期必须存在"}',
 };
 
 var RESULT_MSG = {
@@ -950,7 +953,7 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
 }); 
  
 /**
- * brief   : get park date
+ * brief   : get month trade list
  * @param  : request - {"park_id":"xxxxx", "query_month":"2015-12-01 00:00:00"}, "mode":"community"}
  *           response - return result or error
  * @return : RET_OK - success
@@ -958,7 +961,7 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
  *           RET_ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
-AV.Cloud.define("kongcv_get_park_date", function(request, response) {
+AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
     var park_id = request.params.park_id;
     if (typeof(park_id) == "undefined" || park_id.length === 0) {
         response.success(ERROR_MSG.ERR_PARK_ID_MUST_EXIST);
@@ -967,7 +970,7 @@ AV.Cloud.define("kongcv_get_park_date", function(request, response) {
  
     var query_month = new Date(request.params.query_month);
     if (typeof(query_month) == "undefined" || query_month.length === 0) {
-        //response.success(ERROR_MSG.ERR_HIRE_START_MUST_EXIST);
+        response.success(ERROR_MSG.ERR_QUERY_DATE_MUST_EXIST);
         return;
     }
 
@@ -1002,7 +1005,9 @@ AV.Cloud.define("kongcv_get_park_date", function(request, response) {
     else if ("curb" === mode) {
         trade_query.equalTo("park_curb", kongcv_park_obj);
     }
-    trade_query.equalTo("pay_state", 2);
+    
+    //trade_query.greaterThanOrEqualTo("pay_state", 1);
+    //trade_query.EqualTo("trade_state", 1);
     trade_query.greaterThanOrEqualTo("hire_end", query_month);
     trade_query.lessThan("hire_start", next_month);
     trade_query.find({
@@ -1159,6 +1164,10 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
     }
     
     var extra_flag = request.params.extra_flag;
+    if (typeof(extra_flag) == "undefined" || extra_flag.length === 0) {
+        response.success(ERROR_MSG.ERR_EXTRA_FLAG_MUST_EXIST);
+        return;
+    }
  
     var kongcv_trade_obj = new kongcv_trade_cls();
 
@@ -1805,7 +1814,7 @@ AV.Cloud.define("kongcv_get_trade_info", function(request, response) {
 
 /**
  * brief   : get trade list
- * @param  : request - {"user_id":"xxxxx", "role":"customer","skip":0, "limit":10,"mode":"community"}
+ * @param  : request - {"user_id":"xxxxx", "role":"customer","trade_state":0,"query_month":"2015-12-01 00:00:00"},"skip":0, "limit":10,"mode":"community"}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -1825,6 +1834,14 @@ AV.Cloud.define("kongcv_get_trade_list", function(request, response) {
         return;
     }
 
+    var trade_state = request.params.trade_state;
+    if (typeof(trade_state) == "undefined" || trade_state.length === 0) {
+        response.success(ERROR_MSG.ERR_TRADE_STATE_MUST_EXIST);
+        return;
+    }
+
+    //var query_month = new Date(request.params.query_month);
+
     var skip = request.params.skip;
     if (typeof(skip) == "undefined" || skip.length === 0) {
         response.success(ERROR_MSG.ERR_SKIP_MUST_EXIST);
@@ -1843,6 +1860,14 @@ AV.Cloud.define("kongcv_get_trade_list", function(request, response) {
         return;
     }
 
+    /*var month;
+    var next_month;
+    if (typeof(query_month) != "undefined" || query_month.length > 0) {
+        month = new Date(request.params.query_month);
+        next_month = new Date(month.setMonth(month.getMonth() + 1));
+        console.log("queyr_month:%s, next_month:%s", query_month, next_month);
+    }*/
+    
     var kongcv_park_cls;
     if ("curb" === mode) {
         kongcv_park_cls = kongcv_park_curb_cls;
@@ -1892,7 +1917,11 @@ AV.Cloud.define("kongcv_get_trade_list", function(request, response) {
         response.success(ERROR_MSG.ERR_INFO_FORMAT);
         return;
     }
-    
+   
+    if (0 === trade_state || 1 === trade_state) {
+        park_query.equalTo("trade_state", trade_state);
+    }
+
     trade_query.find({
         success : function(results) {
             for (var i = 0; i < results.length; i++) {
