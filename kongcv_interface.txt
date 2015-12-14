@@ -500,6 +500,30 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_get_pushmessage_list:得到交易单详细信息
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_pushmessge_list
+request:
+请求格式:
+   {"mobile":"1xxxx","skip":0, "limit":10, "action":"send"}
+参数说明:
+   mobile - 自己的手机号
+   action - send(发送的消息),recv(接受的消息)
+   skip - 跳过记录数
+   limit - 限定返回记录数
+response:
+   返回结构中state表示message是否操作过
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                 
+        {record json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 kongcv_insert_feedback:插入反馈信息
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_feedback
 request:

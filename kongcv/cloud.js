@@ -91,8 +91,7 @@ var user_0_ps = "kongcv!23";
  *           {"code":601,"error":"xxxxxx"}
  */
 AV.Cloud.define("kongcv_get_smscode", function(request, response) {
-    var mobilePhoneNumber = request.params.mobilePhoneNumber;
-    
+    var mobilePhoneNumber = request.params.mobilePhoneNumber; 
     if (typeof(mobilePhoneNumber) == "undefined" || mobilePhoneNumber.length === 0) {
         response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
         return;
@@ -226,7 +225,7 @@ var _kongcv_sms_send = function(request, response) {
 };
 
 AV.Cloud.define("kongcv_push_smsinfo", function(request, response) {
-   return _kongcv_sms_send(request, reponse);
+   return _kongcv_sms_send(request, response);
 });
 
 /**
@@ -237,7 +236,7 @@ AV.Cloud.define("kongcv_push_smsinfo", function(request, response) {
 * @return : success - RET_OK
 *           error - define error or system error
 */
-var _kongcv_push_message_save = function(request, response, push_info, no_resp) {
+/*var _kongcv_push_message_save = function(request, response, push_info, no_resp) {
     var push_type = request.params.push_type;
     var extras = request.params.extras;
     var req_mobile = request.params.mobilePhoneNumber;
@@ -267,7 +266,7 @@ var _kongcv_push_message_save = function(request, response, push_info, no_resp) 
             }
         }
     );   
-};
+};*/
  
 /**
  * brief   : jpush push messge, point to point
@@ -278,7 +277,64 @@ var _kongcv_push_message_save = function(request, response, push_info, no_resp) 
  *           RET_ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
+var _jpush_push_message = function(request, response, extras) {
+    var push_type = request.params.push_type;
+    var device_token = request.params.device_token;
+    var device_type = request.params.device_type;
+    var device_notify;
+    
+    if ("ios" === device_type) {
+        if ("verify_request" === push_type || "verify_accept" === push_type) {
+            device_notify = JPush.ios(push_info, 'happy', 5, true, extras);
+            console.log("add notify", extras);
+        }
+        else {
+            device_notify = JPush.ios(push_info, 'happy', 5);
+        }
+    }
+    else if ("android" === device_type) {
+        if ("verify_request" === push_type || "verify_accept" === push_type) {
+            device_notify = JPush.android(push_info, null, 1, extras);
+        }
+        else {
+            device_notify = JPush.android(push_info, null, 1);
+        }
+    }
+    else {
+        response.success(ERROR_MSG.ERR_INFO_FORMAT);
+        return;
+    }
+
+    JPush_client.push().setPlatform(device_type)
+    .setAudience(JPush.registration_id(device_token))
+    .setNotification('Hi, Kongcv', device_notify)
+    .send(function(err, res) {
+        if (err) {
+            if (err instanceof JPush.APIConnectionError) {
+                console.log(err.message);
+                response.error(error);
+            } 
+            else if (err instanceof  JPush.APIRequestError) {
+                console.log(err.message);
+                response.error(error);
+            }
+        } 
+        else {
+            console.log('Sendno: ' + res.sendno);
+            console.log('Msg_id: ' + res.msg_id);
+            console.log("send sms message");
+            _kongcv_sms_send(request, response);
+        }
+    });
+};
+
 AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) { 
+    var req_mobile = request.params.mobilePhoneNumber;
+    if (typeof(req_mobile) == "undefined" || req_mobile.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
+        return;
+    }
+
     var push_type = request.params.push_type;
     if (typeof(push_type) == "undefined" || push_type.length === 0) {
         response.success(ERROR_MSG.ERR_PUSH_TYPE_MUST_EXIST);
@@ -388,52 +444,37 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
         console.log("parser extras", extras);
     }
 
-    var device_notify;
-    if ("ios" === device_type) {
-        if ("verify_request" === push_type || "verify_accept" === push_type) {
-            device_notify = JPush.ios(push_info, 'happy', 5, true, extras);
-            console.log("add notify", extras);
-        }
-        else {
-            device_notify = JPush.ios(push_info, 'happy', 5);
-        }
-    }
-    else if ("android" === device_type) {
-        if ("verify_request" === push_type || "verify_accept" === push_type) {
-            device_notify = JPush.android(push_info, null, 1, extras);
-        }
-        else {
-            device_notify = JPush.android(push_info, null, 1);
-        }
+    if ("verify_request" === push_type) { 
+        var own_mobile = extras.own_mobile;
+
+        var user_obj = new user_cls();
+        user_obj.id = user_id; 
+
+        var kongcv_push_message_obj = new kongcv_push_message_cls();
+        kongcv_push_message_obj.set("req_mobile", req_mobile);
+        kongcv_push_message_obj.set("own_mobile", own_mobile);
+        kongcv_push_message_obj.set("push_info", push_info);
+        kongcv_push_message_obj.set("push_type", push_type);
+        kongcv_push_message_obj.set("extras", extras);
+        kongcv_push_message_obj.set("user", user_obj);
+
+        kongcv_push_message_obj.save().then(
+            function(message_obj) { 
+                var json_obj = eval(extras);
+                json_obj["message_id"] = message_obj.id;
+                extras = JSON.stringify(json_obj);
+                
+                _jpush_push_message (request, response, extras);
+            },
+            function(error) {
+                response.error(error);
+            }
+        ); 
     }
     else {
-        response.success(ERROR_MSG.ERR_INFO_FORMAT);
-        return;
+        _jpush_push_message(request, response, extras);
     }
-
-    JPush_client.push().setPlatform(device_type)
-    .setAudience(JPush.registration_id(device_token))
-    .setNotification('Hi, Kongcv', device_notify)
-    .send(function(err, res) {
-        if (err) {
-            if (err instanceof JPush.APIConnectionError) {
-                console.log(err.message);
-                response.error(error);
-            } else if (err instanceof  JPush.APIRequestError) {
-                console.log(err.message);
-                response.error(error);
-            }
-        } else {
-            console.log('Sendno: ' + res.sendno);
-            console.log('Msg_id: ' + res.msg_id);
-            console.log("send sms message");
-            if ("verify_request" === push_type) {
-                _kongcv_push_message_save(request, response, push_info, true);
-            }
-            _kongcv_sms_send(request, response);
-        }
-    });
-});
+ });
 
 /**
  * brief   : get hire method
@@ -592,7 +633,7 @@ AV.Cloud.define("kongcv_insert_accept", function(request, response) {
 });
 
 /**
- * brief   : hook - beforesave, collect - kongcv_accept
+ * brief   : get accept info
  * @param  : request - {"user_mobile":"xxxxx","park_id":"xxxxxxxxxxx","mode":"community"}
  *           response - return success or error
  * @return : success
@@ -957,7 +998,7 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
  
 /**
  * brief   : get month trade list
- * @param  : request - {"park_id":"xxxxx", "query_month":"2015-12-01 00:00:00"}, "mode":"community", "pay_state":0}
+ * @param  : request - {"park_id":"xxxxx", "query_month":"2015-12-01 00:00:00", "mode":"community", "pay_state":0}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -1021,6 +1062,7 @@ AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
     }
     trade_query.greaterThanOrEqualTo("hire_end", query_month);
     trade_query.lessThan("hire_start", next_month);
+    trade_query.descending("createdAt");
     trade_query.find({
         success : function(results) {
             response.success(results);
@@ -1425,6 +1467,7 @@ AV.Cloud.define('kongcv_get_comment', function(request , response) {
     user_obj.id = user_id;
     
     var query = new AV.Query(kongcv_comment_cls);
+    query.descending("createdAt");
     query.skip(skip);
     query.limit(limit);
     query.equalTo('user', user_obj);
@@ -1678,6 +1721,7 @@ AV.Cloud.define("kongcv_get_park_list", function(request, response) {
     }
 
     var park_query = new AV.Query(kongcv_park_cls);
+    park_query.descending("createdAt");
     park_query.skip(skip);
     park_query.limit(limit);
     //park_query.include("user");
@@ -1896,6 +1940,7 @@ AV.Cloud.define("kongcv_get_trade_list", function(request, response) {
     user_obj.id = user_id;
 
     var trade_query = new AV.Query(kongcv_trade_cls);
+    trade_query.descending("createdAt");
     trade_query.skip(skip);
     trade_query.limit(limit);
     //trade_query.include("hire_method");
@@ -1954,6 +1999,68 @@ AV.Cloud.define("kongcv_get_trade_list", function(request, response) {
                 }
             }
 
+            response.success(results);
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
+});
+
+/**
+ * brief   : get pushmessage list
+ * @param  : request - {"mobilePhoneNumber":"xxxxx", "skip":0, "limit":10,"action":"send"}
+ *           response - return result or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_get_pushmessage_list", function(request, response) {
+    var mobilePhoneNumber = request.params.mobilePhoneNumber; 
+    if (typeof(mobilePhoneNumber) == "undefined" || mobilePhoneNumber.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
+        return;
+    }
+ 
+    var action = request.params.action;
+    if (typeof(action) == "undefined" || action.length === 0) {
+        response.success(ERROR_MSG.ERR_ACTION_MUST_EXIST);
+        return;
+    }
+
+    var skip = request.params.skip;
+    if (typeof(skip) == "undefined" || skip.length === 0) {
+        response.success(ERROR_MSG.ERR_SKIP_MUST_EXIST);
+        return;
+    }
+    
+    var limit = request.params.limit;
+    if (typeof(limit) == "undefined" || limit.length === 0) {
+        response.success(ERROR_MSG.ERR_LIMIT_MUST_EXIST);
+        return;
+    }
+
+    var message_query = new AV.Query(kongcv_push_message_cls);
+    if ("send" === action) {
+        message_query.equalTo("own_mobile", mobilePhoneNumber);
+        message_query.equalTo("push_type", "verify_request");
+    }
+    else if ("recv" === action) {
+        message_query.equalTo("req_mobile", mobilePhoneNumber);
+        message_query.equalTo("push_type", "verify_request");
+    }
+    else {
+        response.success(ERROR_MSG.ERR_INFO_FORMAT);
+        return;
+    }
+   
+    message_query.skip(skip);
+    message_query.limit(limit);
+    message_query.descending("createdAt");
+    message_query.find({
+        success : function(results) {
             response.success(results);
         },
         error : function(error) {
