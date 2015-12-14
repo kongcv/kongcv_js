@@ -544,3 +544,23 @@ response:
         {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_change_pushmessage_state:改变推送消息状态
+url:https://api.leancloud.cn/1.1/functions/kongcv_change_pushmessage_state
+request:
+请求格式:
+   {"message_id":"xxxxx"}
+参数说明:
+   message_id - 消息objectId
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}

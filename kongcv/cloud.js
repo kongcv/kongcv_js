@@ -44,6 +44,7 @@ var ERROR_MSG = {
     'ERR_QUERY_DATE_MUST_EXIST' : '{"state":"error", "code":34, "error":"查询日期必须存在"}',
     'ERR_PAY_STATE_MUST_EXIST' : '{"state":"error", "code":35, "error":"支付状态必须存在"}',
     'ERR_FEEDBACK_MUST_EXIST' : '{"state":"error", "code":36, "error":"反馈必须存在"}',
+    'ERR_MESSAGE_ID_MUST_EXIST' : '{"state":"error", "code":27, "error":"消息ID不能为空"}',
 };
 
 var RESULT_MSG = {
@@ -2071,47 +2072,6 @@ AV.Cloud.define("kongcv_get_pushmessage_list", function(request, response) {
 });
 
 /**
- * brief   : hook - beforesave, collect - kongcv_accept
- * @param  : request - {"save data"}
- *           response - return success or error
- * @return : success
- *           {"save data"}
- *           error
- *           {"code":142,"error":"xxxxxx"}
- */
-AV.Cloud.beforeSave("kongcv_accept", function(request, response) {
-    var park_community = request.object.get('park_community'); 
-    
-    var now_date = new Date();
-    var now_minseconds = now_date.getTime();
-    var accept_minseconds = now_minseconds - limit_minseconds;
-    var accept_date = new Date(accept_minseconds);
-    console.log("now_date", now_date);
-    console.log("accept_date", accept_date);
-
-    var accept_query = new AV.Query(kongcv_accept_cls);
-    accept_query.equalTo("park_community", park_community);
-    accept_query.greaterThan("updatedAt", accept_date);
-    accept_query.find({
-        success : function(results) {
-            var kongcv_accept_obj = new kongcv_accept_cls();
-            if (results.length > 0) {
-                response.error(ERROR_MSG.ERR_PARK_ACCEPT_EXIST);
-                return;
-            }
-            else if (0 === results.length) { 
-                console.log("start save");
-                response.success();
-            }
-        },
-        error : function(error) {
-            response.error(error);
-            return;
-        }
-    });
-});
-
-/**
  * brief   : insert feedback info
  * @param  : request - {"user_id":"xxxx", "feedback":"xxxxx"}
  *           response - return success or error
@@ -2150,6 +2110,85 @@ AV.Cloud.define("kongcv_insert_feedback", function(request, response) {
             return;
         }
     ); 
+});
+
+/**
+ * brief   : change push message state
+ * @param  : request - {"message_id":"xxxx"}
+ *           response - return success or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           error
+ *           {"code":142,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_change_pushmessage_state", function(request, response) {
+    var message_id = request.params.message_id;
+    if (typeof(message_id) == "undefined" || message_id.length === 0) {
+        response.success(ERROR_MSG.ERR_MESSAGE_ID_MUST_EXIST);
+        return;
+    }
+    
+    var message_query = new AV.Query(kongcv_push_message_cls);
+    message_query.get(message_id, {
+        success : function(message_obj) {
+            message_obj.set("state", 1);
+            message_obj.save().then(
+                function() {
+                    response.success(RESULT_MSG.RET_OK);
+                    return;
+                },
+                function(error) {
+                    response.error(error);
+                    return;
+                }
+            );        
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
+}); 
+
+/**
+ * brief   : hook - beforesave, collect - kongcv_accept
+ * @param  : request - {"save data"}
+ *           response - return success or error
+ * @return : success
+ *           {"save data"}
+ *           error
+ *           {"code":142,"error":"xxxxxx"}
+ */
+AV.Cloud.beforeSave("kongcv_accept", function(request, response) {
+    var park_community = request.object.get('park_community'); 
+    
+    var now_date = new Date();
+    var now_minseconds = now_date.getTime();
+    var accept_minseconds = now_minseconds - limit_minseconds;
+    var accept_date = new Date(accept_minseconds);
+    console.log("now_date", now_date);
+    console.log("accept_date", accept_date);
+
+    var accept_query = new AV.Query(kongcv_accept_cls);
+    accept_query.equalTo("park_community", park_community);
+    accept_query.greaterThan("updatedAt", accept_date);
+    accept_query.find({
+        success : function(results) {
+            var kongcv_accept_obj = new kongcv_accept_cls();
+            if (results.length > 0) {
+                response.error(ERROR_MSG.ERR_PARK_ACCEPT_EXIST);
+                return;
+            }
+            else if (0 === results.length) { 
+                console.log("start save");
+                response.success();
+            }
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
 });
 
 /**
