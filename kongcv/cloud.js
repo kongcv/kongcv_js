@@ -277,7 +277,7 @@ AV.Cloud.define("kongcv_push_smsinfo", function(request, response) {
  *           RET_ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
-var _jpush_push_message = function(request, response, extras) {
+var _jpush_push_message = function(request, response, push_info, extras) {
     var push_type = request.params.push_type;
     var device_token = request.params.device_token;
     var device_type = request.params.device_type;
@@ -285,8 +285,8 @@ var _jpush_push_message = function(request, response, extras) {
     
     if ("ios" === device_type) {
         if ("verify_request" === push_type || "verify_accept" === push_type) {
-            device_notify = JPush.ios(push_info, 'happy', 5, true, extras);
             console.log("add notify", extras);
+            device_notify = JPush.ios(push_info, 'happy', 5, true, extras);
         }
         else {
             device_notify = JPush.ios(push_info, 'happy', 5);
@@ -462,9 +462,9 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
             function(message_obj) { 
                 var json_obj = eval(extras);
                 json_obj["message_id"] = message_obj.id;
-                extras = JSON.stringify(json_obj);
+                var new_extras = json_obj;
                 
-                _jpush_push_message (request, response, extras);
+                _jpush_push_message (request, response, push_info, new_extras);
             },
             function(error) {
                 response.error(error);
@@ -472,7 +472,7 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
         ); 
     }
     else {
-        _jpush_push_message(request, response, extras);
+        _jpush_push_message(request, response, push_info, extras);
     }
  });
 
