@@ -77,6 +77,7 @@ var kongcv_accept_cls = AV.Object.extend("kongcv_accept");
 var kongcv_comment_cls = AV.Object.extend("kongcv_comment");
 var kongcv_push_message_cls = AV.Object.extend("kongcv_push_message");
 var kongcv_feedback_cls = AV.Object.extend("kongcv_feedback");
+var kongcv_white_list_cls = AV.Object.extend("kongcv_white_list");
 var limit_minseconds = 30 * 60 * 1000;
 
 var user_0 = "kongcv_admin";
@@ -197,6 +198,7 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
 *           error - define error or system error
 */
 var _kongcv_sms_send = function(request, response) {
+    console.log("sms_send:", request);
     var mobilePhoneNumber = request.params.mobilePhoneNumber;
     if (typeof(mobilePhoneNumber) == "undefined" || mobilePhoneNumber.length === 0) {
         response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
@@ -219,6 +221,7 @@ var _kongcv_sms_send = function(request, response) {
             return;
         },
         function(error) {
+            console.log("send sms error");
             response.error(error);
             return;
         }
@@ -279,6 +282,7 @@ AV.Cloud.define("kongcv_push_smsinfo", function(request, response) {
  *           {"code":601,"error":"xxxxxx"}
  */
 var _jpush_push_message = function(request, response, push_info, extras) {
+    console.log("push_message", request);
     var push_type = request.params.push_type;
     var device_token = request.params.device_token;
     var device_type = request.params.device_type;
@@ -2149,6 +2153,40 @@ AV.Cloud.define("kongcv_change_pushmessage_state", function(request, response) {
         }
     });
 }); 
+
+/**
+ * brief   : query white list
+ * @param  : request - {"mobilePhoneNumber":"xxxx"}
+ *           response - return success or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           error
+ *           {"code":142,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_query_white_list", function(request, response) {
+    var mobilePhoneNumber = request.params.mobilePhoneNumber; 
+    if (typeof(mobilePhoneNumber) == "undefined" || mobilePhoneNumber.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
+        return;
+    }
+
+    var white_list_query = new AV.Query(kongcv_white_list_cls); 
+    white_list_query.equalTo("mobilePhoneNumber", mobilePhoneNumber);
+    white_list_query.find({
+        success : function(white_list_obj) {                
+            if (1 === white_list_obj.length) {
+                response.success(RESULT_MSG.RET_OK);
+            }
+            else if (0 === white_list_obj.length) {
+                response.success(RESULT_MSG.RET_FAIL);
+            }
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
+});
 
 /**
  * brief   : hook - beforesave, collect - kongcv_accept
