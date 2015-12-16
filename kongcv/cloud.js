@@ -1003,7 +1003,7 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
  
 /**
  * brief   : get month trade list
- * @param  : request - {"park_id":"xxxxx", "query_month":"2015-12-01 00:00:00", "mode":"community", "pay_state":0}
+ * @param  : request - {"park_id":"xxxxx", "query_month":"2015-12-01 00:00:00", "skip":0, "limit":10,"mode":"community", "pay_state":0}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -1020,6 +1020,18 @@ AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
     var query_month = new Date(request.params.query_month);
     if (typeof(query_month) == "undefined" || query_month.length === 0) {
         response.success(ERROR_MSG.ERR_QUERY_DATE_MUST_EXIST);
+        return;
+    }
+
+    var skip = request.params.skip;
+    if (typeof(skip) == "undefined" || skip.length === 0) {
+        response.success(ERROR_MSG.ERR_SKIP_MUST_EXIST);
+        return;
+    }
+    
+    var limit = request.params.limit;
+    if (typeof(limit) == "undefined" || limit.length === 0) {
+        response.success(ERROR_MSG.ERR_LIMIT_MUST_EXIST);
         return;
     }
 
@@ -1068,6 +1080,8 @@ AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
     trade_query.greaterThanOrEqualTo("hire_end", query_month);
     trade_query.lessThan("hire_start", next_month);
     trade_query.descending("createdAt");
+    trade_query.skip(skip);
+    trade_query.limit(limit);
     trade_query.find({
         success : function(results) {
             response.success(results);
