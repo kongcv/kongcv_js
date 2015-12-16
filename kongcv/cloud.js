@@ -1006,7 +1006,7 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
 }); 
  
 /**
- * brief   : get month trade list
+ * brief   : get park month trade list
  * @param  : request - {"park_id":"xxxxx", "query_month":"2015-12-01 00:00:00", "skip":0, "limit":10,"mode":"community", "pay_state":0}
  *           response - return result or error
  * @return : RET_OK - success
@@ -1014,7 +1014,7 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
  *           RET_ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
-AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
+AV.Cloud.define("kongcv_get_park_date_list", function(request, response) {
     var park_id = request.params.park_id;
     if (typeof(park_id) == "undefined" || park_id.length === 0) {
         response.success(ERROR_MSG.ERR_PARK_ID_MUST_EXIST);
@@ -1082,6 +1082,88 @@ AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
       //trade_query.EqualTo("trade_state", 1);
     }
     trade_query.greaterThanOrEqualTo("hire_end", query_month);
+    trade_query.lessThan("hire_start", next_month);
+    trade_query.descending("createdAt");
+    trade_query.skip(skip);
+    trade_query.limit(limit);
+    trade_query.find({
+        success : function(results) {
+            response.success(results);
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
+});
+
+/**
+ * brief   : get month trade list
+ * @param  : request - {"user_id":"xxxxx", "query_month":"2015-12-01 00:00:00", "skip":0, "limit":10,"mode":"community", "pay_state":0}
+ *           response - return result or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
+    var user_id = request.params.user_id;
+    if (typeof(user_id) == "undefined" || user_id.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_ID_MUST_EXIST);
+        return;
+    }
+ 
+    var query_month = new Date(request.params.query_month);
+    if (typeof(query_month) == "undefined" || query_month.length === 0) {
+        response.success(ERROR_MSG.ERR_QUERY_DATE_MUST_EXIST);
+        return;
+    }
+
+    var skip = request.params.skip;
+    if (typeof(skip) == "undefined" || skip.length === 0) {
+        response.success(ERROR_MSG.ERR_SKIP_MUST_EXIST);
+        return;
+    }
+    
+    var limit = request.params.limit;
+    if (typeof(limit) == "undefined" || limit.length === 0) {
+        response.success(ERROR_MSG.ERR_LIMIT_MUST_EXIST);
+        return;
+    }
+
+    var mode = request.params.mode;
+    if (typeof(mode) == "undefined" || mode.length === 0) {
+        response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
+        return;
+    }
+
+    var pay_state = request.params.pay_state;
+    if (typeof(pay_state) == "undefined" || pay_state.length === 0) {
+        response.success(ERROR_MSG.ERR_PAY_STATE_MUST_EXIST);
+        return;
+    }
+
+    var month = new Date(request.params.query_month);
+    var next_month = new Date(month.setMonth(month.getMonth() + 1));
+    console.log("queyr_month:%s, next_month:%s", query_month, next_month);
+
+    var trade_query = new AV.Query(kongcv_trade_cls);
+    if ("community" === mode) {
+        trade_query.exists("park_community");
+    }
+    else if ("curb" === mode) {
+        trade_query.exists("park_curb");
+    }
+    else {
+        response.success(ERROR_MSG.ERR_INFO_FORMAT);
+        return;
+    }
+   
+    if (1 === pay_state) {
+      trade_query.greaterThanOrEqualTo("pay_state", 1);
+      //trade_query.EqualTo("trade_state", 1);
+    }
+    trade_query.greaterThanOrEqualTo("hire_start", query_month);
     trade_query.lessThan("hire_start", next_month);
     trade_query.descending("createdAt");
     trade_query.skip(skip);

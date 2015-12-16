@@ -266,12 +266,37 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_get_trade_date_list:得到车位租用月列表
+kongcv_get_park_date_list:得到车位租用月列表
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_trade_date_list
 request:
    {"park_id":"xxxxxxxxxxx","query_month":"2015-10-01 00:00:00","skip":0,"limit":10,"pay_state":0, "mode":"community"}
 参数说明:
    park_id - 停车位的objectId
+   query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00)
+   skip - 跳过记录数
+   limit - 限定返回记录数
+   mode - 模式 curb(道边停)community(社区停)
+   pay_state - 0(所有月交易单),1(所有已完成和已支付定金交易单)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                  
+        {record json arrray}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+
+kongcv_get_trade_date_list:得到用户租用月列表
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_trade_date_list
+request:
+   {"user_id":"xxxxxxxxxxx","query_month":"2015-10-01 00:00:00","skip":0,"limit":10,"pay_state":0, "mode":"community"}
+参数说明:
+   user_id - 用户的objectId
    query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00)
    skip - 跳过记录数
    limit - 限定返回记录数
