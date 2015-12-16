@@ -237,8 +237,8 @@ request:
    park_detail - 停车位地址的补充描述(数据必须有)
    park_description - 车位描述(车位格式化信息,数据可以为空)
    location_info - 坐标， __type:GeoPoint - 数据类型，latitude - 纬度 longitude - 经度
-   hire_start - 出租起始时间
-   hire_end - 出租结束时间
+   hire_start - 出租起始时间,curb(道边停)模式下可以不传值or没有这个参数(车位格式化信息,数据可以为空)
+   hire_end - 出租结束时间,curb(道边停)模式下可以不传值or没有这个参数(车位格式化信息,数据可以为空)
    no_hire - 每周不可出租日(车位格式化信息,数据可以为空)
    tail_num - 限行尾号(车位格式化信息,数据可以为空)
    city - 城市
@@ -248,11 +248,10 @@ request:
    gate_card - 门禁卡，关于门禁卡的需求，curb(道边停)模式下可以不传值or没有这个参数(车位格式化信息,数据可以为空)
    hire_method_id - 出租类型objectId
    hire_price - 出租价格
-   hire_time - 出租时间段，如是全时请填“0”，curb(道边停)模式下可以不传值or没有这个参数
-   struct - 结构 地面:0 地下:1
+   hire_time - 出租时间段
+   struct - 结构 地面:0 地下:1 curb(道边停)模式下可以不传值or没有这个参数
    mode - 模式 curb(道边停)community(社区停)
 curb请求格式：也适用与community
-   hire_time - 出租时间段，如是全时请填“0”，curb(道边停)模式下可以不传值or没有这个参数
    {"user_id":"13xxxxxx","hirer_id":"xxxxxx","worker_id":"5621f1bf60b27db44ed6d6fd","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"struct":0,"mode":"curb"}
 response:
 参数说明:
