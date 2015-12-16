@@ -44,7 +44,8 @@ var ERROR_MSG = {
     'ERR_QUERY_DATE_MUST_EXIST' : '{"state":"error", "code":34, "error":"查询日期必须存在"}',
     'ERR_PAY_STATE_MUST_EXIST' : '{"state":"error", "code":35, "error":"支付状态必须存在"}',
     'ERR_FEEDBACK_MUST_EXIST' : '{"state":"error", "code":36, "error":"反馈必须存在"}',
-    'ERR_MESSAGE_ID_MUST_EXIST' : '{"state":"error", "code":27, "error":"消息ID不能为空"}',
+    'ERR_MESSAGE_ID_MUST_EXIST' : '{"state":"error", "code":37, "error":"消息ID不能为空"}',
+    'ERR_MONEY_MUST_EXIST' : '{"state":"error", "code":38, "error":"体现数不能为空"}',
 };
 
 var RESULT_MSG = {
@@ -2194,6 +2195,94 @@ AV.Cloud.define("kongcv_query_white_list", function(request, response) {
             else if (0 === white_list_obj.length) {
                 response.success(RESULT_MSG.RET_FAIL);
             }
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
+});
+
+/**
+ * brief   : insert withdraw deposit
+ * @param  : request - {"user_id":"xxxx", "money":50}
+ *           response - return success or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           error
+ *           {"code":142,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_insert_withdraw_deposit", function(request, response) {
+    var user_id = request.params.user_id;
+    if (typeof(user_id) == "undefined" || user_id.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_ID_MUST_EXIST);
+        return;
+    }
+
+    var money = request.params.money;
+    if (typeof(money) == "undefined" || money.length === 0) {
+        response.success(ERROR_MSG.ERR_MONEY_MUST_EXIST);
+        return;
+    }
+
+    var user_obj = new AV.User();
+    user_obj.id = user_id;
+
+    var kongcv_trade_obj = new kongcv_trade_cls();
+    kongcv_trade_obj.set("money", money);
+    kongcv_trade_obj.set("action", 1);
+    kongcv_trade_obj.set("user", user_obj);
+
+    kongcv_trade_obj.save().then(
+        function(message_obj) { 
+            response.success(RESULT_MSG.RET_OK);
+        },
+        function(error) {
+            response.error(error);
+        }
+    ); 
+});
+
+/**
+ * brief   : get withdraw deposit
+ * @param  : request - {"user_id":"xxxxx","skip":0, "limit":10}
+ *           response - return result or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_get_withdraw_deposit", function(request, response) { 
+    var user_id = request.params.user_id;
+    if (typeof(user_id) == "undefined" || user_id.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_ID_MUST_EXIST);
+        return;
+    }
+
+    var skip = request.params.skip;
+    if (typeof(skip) == "undefined" || skip.length === 0) {
+        response.success(ERROR_MSG.ERR_SKIP_MUST_EXIST);
+        return;
+    }
+    
+    var limit = request.params.limit;
+    if (typeof(limit) == "undefined" || limit.length === 0) {
+        response.success(ERROR_MSG.ERR_LIMIT_MUST_EXIST);
+        return;
+    }
+
+    var user_obj = new user_cls();
+    user_obj.id = user_id;
+
+    var trade_query = new AV.Query(kongcv_trade_cls);
+    trade_query.descending("createdAt");
+    trade_query.equalTo("action", 1);
+    trade_query.skip(skip);
+    trade_query.limit(limit);
+
+    trade_query.find({
+        success : function(results) {
+            response.success(results);
         },
         error : function(error) {
             response.error(error);

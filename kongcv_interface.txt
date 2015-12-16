@@ -587,3 +587,46 @@ response:
         {"result":"{\"state\":\"failed\",\"code\":1,\"msg\":\"失败\"}"}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_insert_withdraw_deposit:插入提现数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_withdraw_deposit
+request:
+请求格式:
+   {"user_id":"xxxxx", "money":100}
+参数说明:
+   user_id - 用户objectId
+   money - 提现金额
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":0,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_withdraw_deposit:得到提现数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_withdraw_deposit
+request:
+请求格式:
+   {"user_id":"xxxxxx","skip":0,"limit":10}
+参数说明:
+   user_id - 用户objectId
+   skip - 跳过记录数
+   limit - 限定返回记录数
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success        
+        {record json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
