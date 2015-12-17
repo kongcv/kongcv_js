@@ -545,6 +545,29 @@ AV.Cloud.define("kongcv_get_advertise", function(request, response) {
 });
  
 /**
+ * brief   : get bank
+ * @param  : request - {}
+ *           response - return bank recordset or error
+ * @return : RET_OK - success
+ *           {recordset json array}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_get_bank", function(request, response) {
+    var query = new AV.Query(kongcv_bank_cls);
+    query.find({
+        success : function(results) {
+            response.success(results);
+            return;
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
+});
+
+/**
  * brief   : get park type
  * @param  : request - {}
  *           response - return park_type recordset or error
@@ -683,39 +706,43 @@ AV.Cloud.define("kongcv_get_accept", function(request, response) {
         response.success(ERROR_MSG.ERR_INFO_FORMAT);
         return;
     }
- 
-    /*var now_date = new Date();
-    var now_minseconds = now_date.getTime();
-    var accept_minseconds = now_minseconds - limit_minseconds;
-    var accept_date = new Date(accept_minseconds);
-    console.log("now_date", now_date);
-    console.log("accept_date", accept_date);*/
 
     var accept_query = new AV.Query(kongcv_accept_cls);
     if ("community" === mode) {
         accept_query.equalTo("park_community", kongcv_park_community_obj);
+        accept_query.limit(1);
     }
     else if ("curb" === mode) {
+        var now_date = new Date();
+        var now_minseconds = now_date.getTime();
+        var accept_minseconds = now_minseconds - limit_minseconds;
+        var accept_date = new Date(accept_minseconds);
         accept_query.equalTo("park_curb", kongcv_park_curb_obj);
+        accept_query.equalTo("user_mobile", user_mobile);
+        accept_query.greaterThan("updatedAt", accept_date);
     }
-    //accept_query.greaterThan("updatedAt", accept_date);
     accept_query.descending("createdAt");
     //accept_query.first({
     accept_query.find({
         success : function(results) {
             if (results.length > 0) {
                 var kongcv_accept_obj = results[0];
-                if (user_mobile === kongcv_accept_obj.get("user_mobile")) {
+                if ("community" === mode) {
+                    if (user_mobile === kongcv_accept_obj.get("user_mobile")) {
+                        response.success(RESULT_MSG.RET_OK);
+                    }
+                    else {
+                        response.success(RESULT_MSG.RET_FAIL);
+                    }
+                }
+                else if ("curb" === mode) {
                     response.success(RESULT_MSG.RET_OK);
                 }
-                else {
-                    response.success(RESULT_MSG.RET_FAIL);
-                }
-                return;
             }
             else if (0 === results.length) { 
                 response.success(RESULT_MSG.RET_FAIL);
             }
+            return;
         },
         error : function(error) {
             response.error(error);
