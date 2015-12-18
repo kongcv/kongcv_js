@@ -685,7 +685,7 @@ request:
    bank_card.card - 银行卡号
    bank_card.name - 持卡人姓名
    passwd - 提现密码,用md5生成校验码
-   action - new(新创建),card(更新卡号),passwd(更新密码)
+   action - new(新创建),card(更新卡号),passwd(更新密码),system(系统)
 response:
 参数说明:
    result - 返回结果
