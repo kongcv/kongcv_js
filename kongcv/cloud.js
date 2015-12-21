@@ -48,7 +48,15 @@ var ERROR_MSG = {
     'ERR_MONEY_MUST_EXIST' : '{"state":"error", "code":38, "error":"体现数不能为空"}',
     'ERR_BANK_CARD_MUST_EXIST' : '{"state":"error", "code":39, "error":"银行卡不能为空"}',
     'ERR_PASSWD_MUST_EXIST' : '{"state":"error", "code":40, "error":"密码不能为空"}',
-    'ERR_PURSE_CREATED' : '{"state":"error", "code":40, "error":"钱包已创建"}',
+    'ERR_PURSE_CREATED' : '{"state":"error", "code":41, "error":"钱包已创建"}',
+    'ERR_BILL_ID_MUST_EXIST' : '{"state":"error", "code":42, "error":"支付帐单id必须存在"}',
+    'ERR_PAY_TOOL_MUST_EXIST' : '{"state":"error", "code":43, "error":"支付工具必须存在"}',
+    'ERR_PAY_ID_MUST_EXIST' : '{"state":"error", "code":44, "error":"支付ID必须存在"}',
+    'ERR_NOTIFY_ID_MUST_EXIST' : '{"state":"error", "code":45, "error":"通知ID必须存在"}',
+    'ERR_PAY_TYPE_MUST_EXIST' : '{"state":"error", "code":46, "error":"支付类型必须存在"}',
+    'ERR_COUPON_ONLY_ONE' : '{"state":"error", "code":47, "error":"一单交易优惠卷只能使用一次"}',
+    'ERR_PAY_TOOL_MUST_SAME' : '{"state":"error", "code":48, "error":"支付工具必须一致"}',
+    'ERR_PAY_TYPE_FORMAT' : '{"state":"error", "code":49, "error":"支付类型格式错误"}',
 };
 
 var RESULT_MSG = {
@@ -62,8 +70,8 @@ var PUSH_INFO = {
     'VERIFY_REQUEST' : '你好，有一个新的租用请求，请及时回复！'
 };
 
-var debug_role_id = "561e1b9b60b227b7f4ab449e";
-var release_role_id = "561f4128ddb24819b7e4bc52";
+var debug_park_manager_role_id = "561e1b9b60b227b7f4ab449e";
+var debug_worker_role_id = "561f4128ddb24819b7e4bc52";
 var debug_hire_method_timing = "56373f1100b0ee7f5ee8355c";
 var release_hire_method_timing = "add objectid";
 
@@ -150,10 +158,10 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
         if (typeof(mode) != "undefined" || mode.length > 0) {
             if ("debug" === mode) {
                 if ("park_manager" === role) {
-                    role_id = debug_role_id;
+                    role_id = debug_park_manager_role_id;
                 }
                 else if ("worker" === role) {
-                    role_id = release_role_id;
+                    role_id = debug_worker_role_id;
                 }
             }
             else if ("release" === mode) {
@@ -1237,6 +1245,7 @@ AV.Cloud.define("kongcv_insert_trade_billdata", function(request, response) {
             trade_query.get(trade_id, {
                 success : function(trade_obj) {
                     trade_obj.add("trade_bill_id", bill_id);
+                    //trade_obj.add("trade_bill_id", bill_obj);
 
                     trade_obj.save().then(
                         function(result) {
@@ -1260,6 +1269,177 @@ AV.Cloud.define("kongcv_insert_trade_billdata", function(request, response) {
             return;
         }
     );
+});
+
+/**
+ * brief   : put trade bill
+ * @param  : request - {"bill_id":"xxxxx","money":100,"pay_tool":"alipy","pay_id":"xxxx","notify_id":"xxxx","coupon":0,"pay_type":"xxxx"}
+ *           response - return result or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
+    var bill_id = request.params.bill_id;
+    if (typeof(bill_id) == "undefined" || bill_id.length === 0) {
+        response.success(ERROR_MSG.ERR_BILL_ID_MUST_EXIST);
+        return;
+    }
+
+    var money = request.params.money;
+    if (typeof(money) == "undefined" || money.length === 0) {
+        response.success(ERROR_MSG.ERR_MONEY_MUST_EXIST);
+        return;
+    }
+
+    var pay_tool = request.params.pay_tool;
+    if (typeof(pay_tool) == "undefined" || pay_tool.length === 0) {
+        response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_EXIST);
+        return;
+    }
+
+    var pay_id = request.params.pay_id;
+    if (typeof(pay_id) == "undefined" || pay_id.length === 0) {
+        response.success(ERROR_MSG.ERR_PAY_ID_MUST_EXIST);
+        return;
+    }
+
+    var notify_id = request.params.notify_id;
+    if (typeof(notify_id) == "undefined" || notify_id.length === 0) {
+        response.success(ERROR_MSG.ERR_NOTIFY_ID_MUST_EXIST);
+        return;
+    }
+
+    var pay_type = request.params.pay_type;
+    if (typeof(pay_type) == "undefined" || pay_type.length === 0) {
+        response.success(ERROR_MSG.ERR_PAY_TYPE_MUST_EXIST);
+        return;
+    }
+    
+    var coupon = request.params.coupon;
+
+    var kongcv_trade_bill_obj = new kongcv_trade_bill_cls();
+    kongcv_trade_bill_obj.id = bill_id;
+    
+    var bill_query = new AV.Query(kongcv_trade_bill_cls);
+    bill_query.include("trade");
+    bill_query.get(bill_id, {
+        success : function(bill_obj) {
+            var trade_obj = bill_obj.get("trade");
+            var trade_coupon = trade_obj.get("coupon");
+            var trade_pay_tool = trade_obj.get("pay_tool");
+            var trade_handsel_state = trade_obj.get("handsel_state");
+            //console.log("trade_coupon", trade_coupon);
+            //console.log("trade_pay_tool", trade_pay_tool);
+            //console.log("trade_handsel_state", trade_handsel_state);
+
+            if (typeof(trade_handsel_state) != "undefined") {
+                if (1 === trade_handsel_state) {
+                    if ("handsel" === pay_type) {
+                        response.success(ERROR_MSG.ERR_PAY_TYPE_FORMAT);
+                        return;
+                    }
+                }
+            }
+            else {
+                console.log(ERROR_MSG.ERR_SYSTEM_TRADE);
+            }
+
+            if (typeof(coupon) != "undefined") {
+                if (coupon > 0) {
+                    if (trade_coupon > 0) {
+                        response.success(ERROR_MSG.ERR_COUPON_ONLY_ONE);
+                        return;
+                    }
+                    else if (0 === trade_coupon){
+                        bill_obj.set("coupon", coupon);
+                    }
+                }
+            }
+            else {
+                console.log(ERROR_MSG.ERR_SYSTEM_TRADE);
+            }
+
+
+            if (typeof(trade_pay_tool) != "undefined") {
+                if (pay_tool != trade_pay_tool) {
+                    response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_SAME);
+                    return;
+                }
+            }
+            else {
+                console.log(ERROR_MSG.ERR_SYSTEM_TRADE);
+            }
+
+            bill_obj.set("money", money);
+            bill_obj.set("pay_tool", pay_tool);
+            bill_obj.set("pay_id", pay_id);
+            bill_obj.set("notify_id", notify_id);
+            bill_obj.set("pay_type", pay_type);
+            bill_obj.set("pay_state", 1);
+            if (typeof(coupon) != "undefined" || coupon > 0) {
+                bill_obj.set("coupon", coupon);
+            }
+
+            bill_obj.save().then(
+                function(result) { 
+                    if ("money" === pay_type) {
+                        trade_obj.set("pay_tool", pay_tool);
+                        trade_obj.set("money", money);
+                        trade_obj.set("pay_state", 2);
+                        trade_obj.set("trade_state", 1);
+                    }
+                    else if ("handsel" === pay_type) {
+                        trade_obj.set("pay_tool", pay_tool);
+                        trade_obj.set("money", money);
+                        trade_obj.set("handsel", money);
+                        trade_obj.set("pay_state", 1);
+                        trade_obj.set("handsel_state", 1);
+                    }
+                    else if ("balance" === pay_type) {
+                        //console.log("trade:", trade_obj);
+                        var trade_money = trade_obj.get("money");
+                        if (typeof(trade_money) === "undefined") {
+                            console.log(ERROR_MSG.ERR_SYSTEM_TRADE);
+                            trade_money = 0;
+                        }
+                        trade_money += money;
+                        trade_obj.set("money", trade_money);
+                        trade_obj.set("balance", money);
+                        trade_obj.set("pay_state", 2);
+                        trade_obj.set("trade_state", 1);
+                    }
+
+                    if (typeof(coupon) != "undefined" || coupon > 0) {
+                        trade_obj.set("coupon", coupon);
+                    }
+
+                    trade_obj.save().then(
+                        function(result) {
+                            response.success(RESULT_MSG.RET_OK);
+                            return;
+                        },
+                        function(error) {
+                            response.error(error);
+                            return;
+                        }
+                    );
+
+                    //response.success(RESULT_MSG.RET_OK);
+                    return;
+                },
+                function(error) {
+                    response.error(error);
+                    return;
+                }
+            );
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
 });
 
 /**                                                                              
@@ -2110,7 +2290,7 @@ AV.Cloud.define("kongcv_get_trade_list", function(request, response) {
     }
    
     if (0 === trade_state || 1 === trade_state) {
-        park_query.equalTo("trade_state", trade_state);
+        trade_query.equalTo("trade_state", trade_state);
     }
 
     trade_query.find({

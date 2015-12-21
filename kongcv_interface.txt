@@ -381,6 +381,30 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_put_trade_billdata:插入交易数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_put_trade_billdata
+request:
+参数说明:
+   bill_id - 交易账单objectid
+   money - 交易钱数
+   pay_tool - 支付工具 alipy(支付宝) wxpy(微信支付)
+   pay_id - 第三方返回的支付id
+   notify_id - 第三方返回的回执id
+   pay_type - 支付类型, money(全款),handsel(定金),balance(差额)
+   {"bill_id":"5673ee9560b2f42a12731bb9","money":100,"pay_tool":"alipy","pay_id":"123456","notify_id": "123456", "pay_type":"balance"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 kongcv_insert_comment:插入评论数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_comment
 request:
@@ -525,7 +549,7 @@ request:
 请求格式:
    {"user_id":"xxxxx", "role":"customer","trade_state":0, "skip":0, "limit":10,"mode":       "community"}
 参数说明:
-   trade_id - 交易单的objectId
+   user_id - 用户的objectId
    role - 角色, hirer(出租人), customer(顾客,消费者)
    trade_state - 0(未完成交易), 1(已完成交易)
    skip - 跳过记录数
