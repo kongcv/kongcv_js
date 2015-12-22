@@ -57,6 +57,7 @@ var ERROR_MSG = {
     'ERR_COUPON_ONLY_ONE' : '{"state":"error", "code":47, "error":"一单交易优惠卷只能使用一次"}',
     'ERR_PAY_TOOL_MUST_SAME' : '{"state":"error", "code":48, "error":"支付工具必须一致"}',
     'ERR_PAY_TYPE_FORMAT' : '{"state":"error", "code":49, "error":"支付类型格式错误"}',
+    'ERR_USER_SESSIONTOKEN_MUST_EXIST' : '{"state":"error", "code":50, "error":"用户sessiontoken不能为空"}',
 };
 
 var RESULT_MSG = {
@@ -123,6 +124,102 @@ AV.Cloud.define("kongcv_get_smscode", function(request, response) {
             return;
         }
     );
+});
+
+/**
+ * brief   : mobile verify smscode
+ * @param  : request - {"mobilePhoneNumber":"13xxxxxx", "smsCode":"xxxx"}
+ *           response - RET_OK or ERROR
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}
+ * @return : RET_OK - success
+ *           ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_verify_smscode", function(request, response) {
+    var mobilePhoneNumber = request.params.mobilePhoneNumber; 
+    if (typeof(mobilePhoneNumber) == "undefined" || mobilePhoneNumber.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
+        return;
+    }
+    
+    var smsCode = request.params.smsCode;
+    if (typeof(smsCode) == "undefined" || smsCode.length === 0) {
+        response.success(ERROR_MSG.ERR_SMSCODE_MUST_EXIST);
+        return;
+    }
+
+    AV.Cloud.verifySmsCode(smsCode, mobilePhoneNumber).then(
+        function() {
+            response.success(RESULT_MSG.RET_OK);
+            return;
+        },
+        function(error) {
+            response.error(error);
+            return;
+        }
+    );
+});
+
+/**
+ * brief   : put userinfo(mobile)
+ * @param  : request - {"mobilePhoneNumber":"13xxxxxx","user_name":"zhouhaoxuan", "device_token":"111111", "device_type":"ios"}
+ *           response - RET_OK or ERROR
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}
+ * @return : RET_OK - success
+ *           ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_put_userinfo", function(request, response) { 
+    var user = request.user; 
+    if (typeof(user) == "undefined" || user.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_SESSIONTOKEN_MUST_EXIST);
+        return;
+    }
+    
+    var mobilePhoneNumber = request.params.mobilePhoneNumber; 
+    var user_name = request.params.user_name; 
+    var device_token = request.params.device_token; 
+    var device_type = request.params.device_type; 
+
+    console.log("user:", user);
+    if (typeof(mobilePhoneNumber) != "undefined") {
+        if (mobilePhoneNumber.length > 0) {
+            user.set("mobilePhoneNumber", mobilePhoneNumber);
+            var user_name = user.get("username");
+            if (user_name === mobilePhoneNumber) {
+                user.set("username", mobilePhoneNumber);
+            }
+        }
+    }
+    
+    if (typeof(device_token) != "undefined") {
+        if (device_token.length > 0) {
+            user.set("device_token", device_token);
+        }
+    }
+
+    if (typeof(device_type) != "undefined") {
+        if (device_type.length > 0) {
+            user.set("device_type", device_type);
+        }
+    }
+ 
+    if (typeof(user_name) != "undefined") {
+        if (user_name.length > 0) {
+            user.set("username", user_name);
+        }
+    }
+
+    user.save().then(
+        function() {
+            response.success(RESULT_MSG.RET_OK);
+            return;
+        },
+        function(error) {
+            response.error(error);
+            return;
+        }     
+    ); 
 });
 
 /**
@@ -288,7 +385,7 @@ AV.Cloud.define("kongcv_push_smsinfo", function(request, response) {
  
 /**
  * brief   : jpush push messge, point to point
- * @param  : request - {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"xxxx",extras:{"park_id":"xxxxx","mode":"community","hire_method_id":"xxxxx","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","own_device_token":"xxxxx","own_device_type":"android","own_mobile":"1xxxxx", "push_type":"verify_accept"}}
+ * @param  : request - {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"xxxx",extras:{"park_id":"xxxxx","mode":"community","address":"xxxxx","hire_method_id":"xxxxx","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","own_device_token":"xxxxx","own_device_type":"android","own_mobile":"1xxxxx", "push_type":"verify_accept"}}
  *           response - return map recordset or error
  * @return : RET_OK - success
  *           {recordset json array}
@@ -404,6 +501,12 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
             return;
         }
         
+        var extras_address = extras.address;
+        if (typeof(extras_address) == "undefined" || extras_address.length === 0) {
+            response.success(ERROR_MSG.ERR_ADDRESS_MUST_EXIST);
+            return;
+        }
+
         var extras_own_mobile = extras.own_mobile;
         if (typeof(extras_own_mobile) == "undefined" || extras_own_mobile.length === 0) {
             response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
@@ -2411,7 +2514,7 @@ AV.Cloud.define("kongcv_insert_feedback", function(request, response) {
     var user_obj = new user_cls();
     user_obj.id = user_id;
     kongcv_feedback_obj.set("user", user_obj);
-    kongcv_feedback_obj.set("feed_back", feed_back);
+    kongcv_feedback_obj.set("feed_back", feedback);
 
     kongcv_feedback_obj.save().then(
         function() {

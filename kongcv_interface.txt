@@ -1,26 +1,3 @@
-更新用户数据:
-url:https://api.leancloud.cn/1.1/users/55a47496e4b05001a7732c5f(55a47496e4b05001a7732c5f改成你自己的user_id)
-request:
-参数说明:
-   X-LC-Session:你自己保存的sessiontoken,需要添加到http header中
-   device_token：是你从jpush获得的registionId
-   device_type : ios or andriod
-请求格式:
-   {"device_token":"xxxxx","device_type":"ios"}'
-回应格式:      
-   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
-        {"result":"{更新结果}"}
-   error:
-        {code:1,"error":"xxxxxxxxxxxxxx"}
-http请求格式:
-curl -X PUT \  
--H "X-LC-Id: appid" \  
--H "X-LC-Key: appkey" \  
--H "X-LC-Session: sessionToken" \  
--H "Content-Type: application/json" \  
--d '{"device_token":"xxxxx","device_type":"ios"}' \  
-https://api.leancloud.cn/1.1/users/55a47496e4b05001a7732c5f
-
 kongcv_get_smscode:得到短信验证码
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_smscode
 request:
@@ -28,6 +5,52 @@ request:
    mobilePhoneNumber - 手机号
 请求格式:
    {"mobilePhoneNumber":"xxxxxxxx"}
+response:
+参数说明:
+   result - 返回结果park info
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_verify_smscode:验证短信验证码
+url:https://api.leancloud.cn/1.1/functions/kongcv_verify_smscode
+request:
+参数说明:
+   mobilePhoneNumber - 手机号
+   smsCode:短信验证码
+请求格式:
+   {"mobilePhoneNumber":"xxxxxxxx","smsCode":"sssss"}
+response:
+参数说明:
+   result - 返回结果park info
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_put_userinfo:更新手机号码
+url:https://api.leancloud.cn/1.1/functions/kongcv_put_userinfo
+request:
+特别说明:
+   在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>"
+参数说明:
+   mobilePhoneNumber - 新手机号,如不更新此参数可以不传值或没有
+   user_name - 用户名,如不更新此参数可以不传值或没有
+   device_token：是你从jpush获得的registionId,如不更新此参数可以不传值或没有
+   device_type : ios or andriod,如不更新此参数可以不传值或没有
+请求格式:
+   {"mobilePhoneNumber":"13xxxxxx","user_name":"xxxxx","device_token":"111111", "device_type":"ios"}
 response:
 参数说明:
    result - 返回结果park info
@@ -100,12 +123,13 @@ request:
    user_id - 自己的user_id
    extras - 附加信息
    park_id - 车位objectId,
-   park_type - 车位类型
+   mode - 模式 curb(道边停)community(社区停)
    hire_method_id - 车位出租方式id
    hire_start - 出租起始时间
    hire_end - 出租结束时间
    own_device_token - 自己手机的registrationdId
-   own_device_typd - 自己手机类型ios or android
+   own_device_type - 自己手机类型ios or android
+   own_mobile - 自己手机号
 请求格式:
    verify_request类型下格式:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_request", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16",extras:{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","own_device_token":"021a12c5dc4","own_device_type":"ios","own_mobile":"1xxxxx","push_type":"verify_request"}}
@@ -569,10 +593,10 @@ response:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
 kongcv_get_pushmessage_list:得到交易单详细信息
-url:https://api.leancloud.cn/1.1/functions/kongcv_get_pushmessge_list
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_pushmessage_list
 request:
 请求格式:
-   {"mobile":"1xxxx","skip":0, "limit":10, "action":"send"}
+   {"mobilePhoneNumber":"1xxxx","skip":0, "limit":10, "action":"send"}
 参数说明:
    mobile - 自己的手机号
    action - send(发送的消息),recv(接受的消息)
