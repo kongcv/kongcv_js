@@ -39,7 +39,7 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_put_userinfo:更新手机号码
+kongcv_put_userinfo:更新用户信息
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_userinfo
 request:
 特别说明:
