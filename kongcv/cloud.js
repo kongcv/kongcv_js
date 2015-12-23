@@ -2017,6 +2017,7 @@ AV.Cloud.define("kongcv_location_search", function(request, response) {
     query.skip(skip);
     query.limit(limit);
     query.equalTo('park_space', 1);
+    query.equalTo('hide', 0);
     query.include("user");
     query.include("hire_method");
     if (typeof(hire_method_id) != "undefined" && hire_method_id.length > 0) {
@@ -2041,6 +2042,63 @@ AV.Cloud.define("kongcv_location_search", function(request, response) {
     });
 }); 
  
+/**
+ * brief   : set park hide
+ * @param  : request - {"park_id":"xxxx", "mode":"community"}
+ *           response - return park info
+ * @return : RET_OK - success
+ *           {recordset json array}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_put_park_hide", function(request, response) { 
+    var park_id = request.params.park_id;
+    if (typeof(park_id) == "undefined" || park_id.length === 0) {
+        response.success(ERROR_MSG.ERR_PARK_ID_MUST_EXIST);
+        return;
+    }
+
+    var mode = request.params.mode;
+    if (typeof(mode) == "undefined" || mode.length === 0) {
+        response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
+        return;
+    }
+
+    var kongcv_park_cls;
+    if ("curb" === mode) {
+        kongcv_park_cls = kongcv_park_curb_cls;
+    }
+    else if ("community" === mode) {
+        kongcv_park_cls = kongcv_park_community_cls;
+    }
+    else {
+        response.success(ERROR_MSG.ERR_INFO_FORMAT);
+        return;
+    }
+
+    var query = new AV.Query(kongcv_park_cls);
+    query.get(park_id, {
+        success : function(park_obj) {
+            park_obj.set("hide", 1);
+
+            park_obj.save().then(
+                function() {
+                    response.success(RESULT_MSG.RET_OK);
+                    return;
+                },
+                function(error) {
+                    response.error(error);
+                    return;
+                }
+            ); 
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
+});
+
 /**
  * brief   : get park information
  * @param  : request - {"park_id":"xxxx", "mode":"community"}
@@ -2084,20 +2142,17 @@ AV.Cloud.define("kongcv_get_park_info", function(request, response) {
         query.include("user");
     }
     query.include("hire_method");
-    query.find({
-        success : function(results) {
-            for (var i = 0; i < results.length; i++) {
-                results[i].set("hire_method", JSON.stringify(results[i].get("hire_method")));
-                if ("curb" === mode) {
-                    results[i].set("user_group", JSON.stringify(results[i].get("user_group")));
-                }
-                else if ("community" === mode) {
-                    results[i].set("user", JSON.stringify(results[i].get("user")));
-                }
-
+    query.get(park_id, {
+        success : function(park_obj) {
+            park_obj.set("hire_method", JSON.stringify(park_obj.get("hire_method")));
+            if ("curb" === mode) {
+                park_obj.set("user_group", JSON.stringify(park_obj.get("user_group")));
+            }
+            else if ("community" === mode) {
+                park_obj.set("user", JSON.stringify(park_obj.get("user")));
             }
 
-            response.success(results);
+            response.success(park_obj);
             return;
         },
         error : function(error) {
