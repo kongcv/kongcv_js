@@ -58,6 +58,7 @@ var ERROR_MSG = {
     'ERR_PAY_TOOL_MUST_SAME' : '{"state":"error", "code":48, "error":"支付工具必须一致"}',
     'ERR_PAY_TYPE_FORMAT' : '{"state":"error", "code":49, "error":"支付类型格式错误"}',
     'ERR_USER_SESSIONTOKEN_MUST_EXIST' : '{"state":"error", "code":50, "error":"用户sessiontoken不能为空"}',
+    'ERR_PARK_DETAIL_MUST_EXIST' : '{"state":"error", "code":50, "error":"车位地址详情不能为空"}',
 };
 
 var RESULT_MSG = {
@@ -127,6 +128,34 @@ AV.Cloud.define("kongcv_get_smscode", function(request, response) {
 });
 
 /**
+ * brief   : mobile verify mobile
+ * @param  : request - {"smsCode":"xxxx"}
+ *           response - RET_OK or ERROR
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}
+ * @return : RET_OK - success
+ *           ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_verify_mobile", function(request, response) { 
+    var smsCode = request.params.smsCode;
+    if (typeof(smsCode) == "undefined" || smsCode.length === 0) {
+        response.success(ERROR_MSG.ERR_SMSCODE_MUST_EXIST);
+        return;
+    }
+    
+    AV.User.verifyMobilePhone(smsCode).then(
+        function(obj) {
+            response.success(RESULT_MSG.RET_OK);
+            return;
+        },
+        function(error) {
+            response.error(error);
+            return;
+        }
+    );
+});
+
+/**
  * brief   : mobile verify smscode
  * @param  : request - {"mobilePhoneNumber":"13xxxxxx", "smsCode":"xxxx"}
  *           response - RET_OK or ERROR
@@ -147,9 +176,11 @@ AV.Cloud.define("kongcv_verify_smscode", function(request, response) {
         response.success(ERROR_MSG.ERR_SMSCODE_MUST_EXIST);
         return;
     }
-
+    
+    console.log("request:",request.params);
     AV.Cloud.verifySmsCode(smsCode, mobilePhoneNumber).then(
-        function() {
+        function(obj) {
+            console.log("obj",obj);
             response.success(RESULT_MSG.RET_OK);
             return;
         },
@@ -211,7 +242,11 @@ AV.Cloud.define("kongcv_put_userinfo", function(request, response) {
     }
 
     user.save().then(
-        function() {
+        function(user_obj) {
+            //var json_obj = eval("("+RESULT_MSG.RET_OK+")");
+            //json_obj["sessionToken"] = user._sessionToken;
+            //response.success(JSON.stringify(json_obj));
+            //return;
             response.success(RESULT_MSG.RET_OK);
             return;
         },
@@ -889,6 +924,11 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
     }
 
     var park_detail = request.params.park_detail;
+    if (typeof(park_detail) == "undefined" || park_detail.length === 0) {
+        response.success(ERROR_MSG.ERR_PARK_DETAIL_MUST_EXIST);
+        return;
+    }
+
     address += '&'+ park_detail;
     console.log("address:",address);
      
