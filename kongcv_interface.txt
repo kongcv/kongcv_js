@@ -69,10 +69,11 @@ request:
 参数说明:
    mobilePhoneNumber - 新手机号,如不更新此参数可以不传值或没有,如变更手机需调用kongcv_verify_mobile做短信验证
    user_name - 用户名,如不更新此参数可以不传值或没有
-   device_token：是你从jpush获得的registionId,如不更新此参数可以不传值或没有
-   device_type : ios or andriod,如不更新此参数可以不传值或没有
+   device_token - 是你从jpush获得的registionId,如不更新此参数可以不传值或没有
+   device_type - ios or andriod,如不更新此参数可以不传值或没有
+   license_plate - 车牌,如不更新此参数可以不传值或没有
 请求格式:
-   {"mobilePhoneNumber":"13xxxxxx","user_name":"xxxxx","device_token":"111111", "device_type":"ios"}
+   {"mobilePhoneNumber":"13xxxxxx","user_name":"xxxxx","device_token":"111111", "device_type":"ios", "license_plate":"xxxx"}
 response:
 参数说明:
    result - 返回结果park info

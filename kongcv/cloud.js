@@ -193,7 +193,7 @@ AV.Cloud.define("kongcv_verify_smscode", function(request, response) {
 
 /**
  * brief   : put userinfo(mobile)
- * @param  : request - {"mobilePhoneNumber":"13xxxxxx","user_name":"zhouhaoxuan", "device_token":"111111", "device_type":"ios"}
+ * @param  : request - {"mobilePhoneNumber":"13xxxxxx","user_name":"zhouhaoxuan", "device_token":"111111", "device_type":"ios","license_plate":"xxxx"}
  *           response - RET_OK or ERROR
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}
  * @return : RET_OK - success
@@ -211,6 +211,7 @@ AV.Cloud.define("kongcv_put_userinfo", function(request, response) {
     var user_name = request.params.user_name; 
     var device_token = request.params.device_token; 
     var device_type = request.params.device_type; 
+    var license_plate = request.params.license_plate; 
 
     console.log("user:", user);
     if (typeof(mobilePhoneNumber) != "undefined") {
@@ -241,12 +242,14 @@ AV.Cloud.define("kongcv_put_userinfo", function(request, response) {
         }
     }
 
+    if (typeof(license_plate) != "undefined") {
+        if (license_plate.length > 0) {
+            user.set("license_plate", license_plate);
+        }
+    }
+
     user.save().then(
         function(user_obj) {
-            //var json_obj = eval("("+RESULT_MSG.RET_OK+")");
-            //json_obj["sessionToken"] = user._sessionToken;
-            //response.success(JSON.stringify(json_obj));
-            //return;
             response.success(RESULT_MSG.RET_OK);
             return;
         },
