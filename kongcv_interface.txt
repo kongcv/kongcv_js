@@ -726,6 +726,8 @@ response:
 kongcv_insert_withdraw_deposit:插入提现数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_withdraw_deposit
 request:
+特别说明:
+   在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>"
 请求格式:
    {"user_id":"xxxxx", "money":100}
 参数说明:

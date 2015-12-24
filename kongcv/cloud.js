@@ -59,6 +59,7 @@ var ERROR_MSG = {
     'ERR_PAY_TYPE_FORMAT' : '{"state":"error", "code":49, "error":"支付类型格式错误"}',
     'ERR_USER_SESSIONTOKEN_MUST_EXIST' : '{"state":"error", "code":50, "error":"用户sessiontoken不能为空"}',
     'ERR_PARK_DETAIL_MUST_EXIST' : '{"state":"error", "code":50, "error":"车位地址详情不能为空"}',
+    'ERR_USERID_SESSIONTOKEN_UNMATCHED' : '{"state":"error", "code":51, "error":"user_id和sessionToken不匹配"}',
 };
 
 var RESULT_MSG = {
@@ -200,6 +201,26 @@ AV.Cloud.define("kongcv_verify_smscode", function(request, response) {
  *           ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
+var _check_mobile = function(str) {
+    var partten = /^1[3,5,8]\d{9}$/;
+    if (partten.test(str)) {
+        return true;
+    }
+    
+    return false;
+};
+
+/*AV.Cloud.define("kongcv_check_mobile", function(request, response) { 
+    var str = request.params.str;
+    if (_check_mobile(str)) {
+        response.success(RESULT_MSG.RET_OK);
+        return;
+    }
+        
+    response.success(RESULT_MSG.RET_FAIL);
+    return;
+});*/
+
 AV.Cloud.define("kongcv_put_userinfo", function(request, response) { 
     var user = request.user; 
     if (typeof(user) == "undefined" || user.length === 0) {
@@ -213,13 +234,14 @@ AV.Cloud.define("kongcv_put_userinfo", function(request, response) {
     var device_type = request.params.device_type; 
     var license_plate = request.params.license_plate; 
 
-    console.log("user:", user);
     if (typeof(mobilePhoneNumber) != "undefined") {
         if (mobilePhoneNumber.length > 0) {
             user.set("mobilePhoneNumber", mobilePhoneNumber);
             var user_name = user.get("username");
-            if (user_name === mobilePhoneNumber) {
-                user.set("username", mobilePhoneNumber);
+            if (user_name != mobilePhoneNumber) {
+                if (_check_mobile(user_name)) {
+                    user.set("username", mobilePhoneNumber);
+                }
             }
         }
     }
@@ -2714,14 +2736,25 @@ AV.Cloud.define("kongcv_insert_withdraw_deposit", function(request, response) {
         return;
     }
 
+    var user_obj = request.user; 
+    if (typeof(user_obj) == "undefined" || user_obj.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_SESSIONTOKEN_MUST_EXIST);
+        return;
+    }
+
     var money = request.params.money;
     if (typeof(money) == "undefined" || money.length === 0) {
         response.success(ERROR_MSG.ERR_MONEY_MUST_EXIST);
         return;
     }
 
-    var user_obj = new AV.User();
-    user_obj.id = user_id;
+    //var user_obj = new AV.User();
+    //user_obj.id = user_id;
+
+    if (user_id != user_obj.id) {
+        response.success(ERROR_MSG.ERR_USERID_SESSIONTOKEN_UNMATCHED);
+        return;
+    }
 
     var kongcv_trade_obj = new kongcv_trade_cls();
     kongcv_trade_obj.set("money", money);
