@@ -692,7 +692,7 @@ request:
 response:
 参数说明:
    result - 返回结果
-   state - 状态,0(未处理),1(接受),2(拒绝)
+   state - 状态
    code - 消息编号
    msg - 描述消息
    error - 错误描述
