@@ -1979,47 +1979,47 @@ AV.Cloud.define("kongcv_insert_trade_billdata", function(request, response) {
  *           RET_ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
-AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
+var _kongcv_put_trade_billdata = function(request/*, response*/) {
     var bill_id = request.params.bill_id;
     if (typeof(bill_id) == "undefined" || bill_id.length === 0) {
-        response.success(ERROR_MSG.ERR_BILL_ID_MUST_EXIST);
-        return;
+        //response.success(ERROR_MSG.ERR_BILL_ID_MUST_EXIST);
+        return {"result":"error_msg","msg":ERROR_MSG.ERR_BILL_ID_MUST_EXIST}
     }
 
     var money = request.params.money;
     if (typeof(money) == "undefined" || money.length === 0) {
-        response.success(ERROR_MSG.ERR_MONEY_MUST_EXIST);
-        return;
+        //response.success(ERROR_MSG.ERR_MONEY_MUST_EXIST);
+        return {"result":"error_msg","msg":ERROR_MSG.ERR_MONEY_MUST_EXIST}
     }
 
     var pay_tool = request.params.pay_tool;
     if (typeof(pay_tool) == "undefined" || pay_tool.length === 0) {
-        response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_EXIST);
-        return;
+        //response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_EXIST);
+        return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_TOOL_MUST_EXIST}
     }
 
     var pay_id = request.params.pay_id;
     if (typeof(pay_id) == "undefined" || pay_id.length === 0) {
-        response.success(ERROR_MSG.ERR_PAY_ID_MUST_EXIST);
-        return;
+        //response.success(ERROR_MSG.ERR_PAY_ID_MUST_EXIST);
+        return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_ID_MUST_EXIST}
     }
 
     var notify_id = request.params.notify_id;
     if (typeof(notify_id) == "undefined" || notify_id.length === 0) {
-        response.success(ERROR_MSG.ERR_NOTIFY_ID_MUST_EXIST);
-        return;
+        //response.success(ERROR_MSG.ERR_NOTIFY_ID_MUST_EXIST);
+        return {"result":"error_msg","msg":ERROR_MSG.ERR_NOTIFY_ID_MUST_EXIST}
     }
 
     var pay_type = request.params.pay_type;
     if (typeof(pay_type) == "undefined" || pay_type.length === 0) {
-        response.success(ERROR_MSG.ERR_PAY_TYPE_MUST_EXIST);
-        return;
+        //response.success(ERROR_MSG.ERR_PAY_TYPE_MUST_EXIST);
+        return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_TYPE_MUST_EXIST}
     }
     
     var mode = request.params.mode;
     if (typeof(mode) == "undefined" || mode.length === 0) {
-        response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
-        return;
+        //response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
+        return {"result":"error_msg","msg":ERROR_MSG.ERR_MODE_MUST_EXIST}
     }
 
     var coupon = request.params.coupon;
@@ -2043,8 +2043,8 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                 if (1 === trade_handsel_state) {
                     if ("handsel" === pay_type) {
                         //test code
-                        response.success(ERROR_MSG.ERR_PAY_TYPE_FORMAT);
-                        return;
+                        //response.success(ERROR_MSG.ERR_PAY_TYPE_FORMAT);
+                        return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_TYPE_FORMAT}
                     }
                 }
             }
@@ -2056,8 +2056,8 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                 if (coupon > 0) {
                     if (trade_coupon > 0) {
                         //test code
-                        response.success(ERROR_MSG.ERR_COUPON_ONLY_ONE);
-                        return;
+                        //response.success(ERROR_MSG.ERR_COUPON_ONLY_ONE);
+                        return {"result":"error_msg","msg":ERROR_MSG.ERR_COUPON_ONLY_ONE}
                     }
                     else if (0 === trade_coupon){
                         trade_obj.set("coupon", coupon);
@@ -2069,10 +2069,13 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                 console.log(ERROR_MSG.ERR_SYSTEM_TRADE);
             }
 
+            //test code
             if (typeof(trade_pay_tool) != "undefined" && trade_pay_tool.length > 0) {
-                if (pay_tool != trade_pay_tool) {
-                    response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_SAME);
-                    return;
+                var pay_tool_perfix = pay_tool.split("_");
+                var trade_pay_tool_perfix = trade_pay_tool.split("_");
+                if (pay_tool_perfix != trade_pay_tool_perfix) {
+                    //response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_SAME);
+                    return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_TOOL_MUST_SAME}
                 }
             }
             //else {
@@ -2123,12 +2126,12 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
 
                                 park_obj.save().then(
                                     function(park_obj) { 
-                                        response.success(RESULT_MSG.RET_OK);
-                                        return;
+                                        //response.success(RESULT_MSG.RET_OK);
+                                        return {"result":"result_msg","msg":RESULT_MSG.RET_OK}
                                     },
                                     function(error) {
-                                        response.error(error);
-                                        return;
+                                        //response.error(error);
+                                        return {"result":"error","msg":error}
                                     }
                                 );
                             }
@@ -2174,43 +2177,55 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
 
                                         purse_obj.save().then(
                                             function(purse_obj) {
-                                                response.success(RESULT_MSG.RET_OK);
-                                                return;
+                                                //response.success(RESULT_MSG.RET_OK);
+                                                return {"result":"result_msg","msg":RESULT_MSG.RET_OK}
                                             },
                                             function(error) {
-                                                response.error(error);
-                                                return;
+                                                //response.error(error);
+                                                return {"result":"error","msg":error}
                                             }
                                         );
                                     },
                                     error : function(error) {
-                                        response.error(error);
-                                        return;
+                                        //response.error(error);
+                                        return {"result":"error","msg":error}
                                     }
                                 }); 
                             }
                             else {
-                                response.success(RESULT_MSG.RET_OK);
-                                return;
+                                //response.success(RESULT_MSG.RET_OK);
+                                return {"result":"result_msg","msg":RESULT_MSG.RET_OK}
                             }
                         },
                         function(error) {
-                            response.error(error);
-                            return;
+                            //response.error(error);
+                            return {"result":"error","msg":error}
                         }
                     );
                 },
                 function(error) {
-                    response.error(error);
-                    return;
+                    //response.error(error);
+                    return {"result":"error","msg":error}
                 }
             );
         },
         error : function(error) {
-            response.error(error);
-            return;
+            //response.error(error);
+            return {"result":"error","msg":error}
         }
     });
+};
+
+AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
+    var ret =  _kongcv_put_trade_billdata(request, response);
+    if (ret.result === 'error') {
+        response.error(ret.msg);
+        return;
+    }
+    else { 
+        response.success(ret.msg);
+        return;
+    }
 });
 
 /**
