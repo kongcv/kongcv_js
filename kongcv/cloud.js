@@ -35,8 +35,7 @@ var ERROR_MSG = {
     'ERR_JPUSH_EXTRAS_MUST_EXIST' : '{"state":"error", "code":26, "error":"附加推送数据必须存在"}',
     'ERR_TRADE_ID_MUST_EXIST' : '{"state":"error", "code":27, "error":"交易单id必须存在"}',
     'ERR_PARK_ACCEPT_EXIST' : '{"state":"error", "code":28, "error":"你在规定的30分钟内已接受了一次租用请求,请稍后再决定是否接受此次请求"}',
-    'ERR_PARK_DATE_EXIST' : '{"state":"error", "code":29, "error":"你选择的租用日期与其他用户有冲突,请重新选择时间段"}',
-    'ERR_ACTION_MUST_EXIST' : '{"state":"error", "code":30, "error":"动作方式必须存在"}',
+    'ERR_PARK_DATE_EXIST' : '{"state":"error", "code":29, "error":"你选择的租用日期与其他用户有冲突,请重新选择时间段"}', 'ERR_ACTION_MUST_EXIST' : '{"state":"error", "code":30, "error":"动作方式必须存在"}',
     'ERR_ROLE_MUST_EXIST' : '{"state":"error", "code":31, "error":"角色必须存在"}',
     'ERR_HIRER_MUST_EXIST' : '{"state":"error", "code":32, "error":"出租人必须存在"}',
     'ERR_EXTRA_FLAG_MUST_EXIST' : '{"state":"error", "code":33, "error":"额外标识必须存在"}',
@@ -61,8 +60,9 @@ var ERROR_MSG = {
     'ERR_PARK_DETAIL_MUST_EXIST' : '{"state":"error", "code":50, "error":"车位地址详情不能为空"}',
     'ERR_USERID_SESSIONTOKEN_UNMATCHED' : '{"state":"error", "code":51, "error":"user_id和sessionToken不匹配"}',
     'ERR_USER_NO_SIGNUP' : '{"state":"error", "code":52, "error":"用户没有注册"}',
-    'ERR_PARK_NO_UPDATE' : '{"state":"error", "code":52, "error":"车位租用期间不能更新"}',
-    'ERR_DATA_NO_EXIST' : '{"state":"error", "code":52, "error":"数据不存在"}', 
+    'ERR_PARK_NO_UPDATE' : '{"state":"error", "code":53, "error":"车位租用期间不能更新"}',
+    'ERR_DATA_NO_EXIST' : '{"state":"error", "code":54, "error":"数据不存在"}', 
+    'ERR_LOOP' : '{"state":"error", "code":55, "error":"loop error"}', 
 };
 
 var RESULT_MSG = {
@@ -83,6 +83,7 @@ var release_hire_method_timing = "add objectid";
 
 var role_cls = AV.Object.extend("_Role");
 var user_cls = AV.Object.extend("_User");
+var image_file_cls = AV.Object.extend("_File");
 var kongcv_hire_method_cls = AV.Object.extend("kongcv_hire_method");
 var kongcv_advertise_cls = AV.Object.extend("kongcv_advertise");
 var kongcv_park_type_cls = AV.Object.extend("kongcv_park_type");
@@ -90,6 +91,7 @@ var kongcv_park_community_cls = AV.Object.extend("kongcv_park_community");
 var kongcv_park_curb_cls = AV.Object.extend("kongcv_park_curb");
 var kongcv_trade_cls = AV.Object.extend("kongcv_trade");
 var kongcv_trade_bill_cls = AV.Object.extend("kongcv_trade_bill");
+var kongcv_loop_trade_cls = AV.Object.extend("kongcv_loop_trade");
 var kongcv_preorder_cls = AV.Object.extend("kongcv_preorder");
 var kongcv_accept_cls = AV.Object.extend("kongcv_accept");
 var kongcv_comment_cls = AV.Object.extend("kongcv_comment");
@@ -99,6 +101,7 @@ var kongcv_white_list_cls = AV.Object.extend("kongcv_white_list");
 var kongcv_purse_cls = AV.Object.extend("kongcv_purse");
 var kongcv_bank_cls = AV.Object.extend("kongcv_bank");
 var limit_minseconds = 30 * 60 * 1000;
+var loop_num = 2;
 
 var user_0 = "kongcv_admin";
 var user_0_ps = "kongcv!23";
@@ -370,7 +373,7 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
 * @return : success - RET_OK
 *           error - define error or system error
 */
-AV.Cloud.define('kaka_upload_image', function(request, response) {
+AV.Cloud.define('kongcv_upload_image', function(request, response) {
     var user_id = request.params.user_id;
     if (typeof(user_id) == "undefined" || user_id.length === 0) {
         response.success(ERROR_MSG.ERR_USERID_MUST_HAVE);
@@ -402,29 +405,50 @@ AV.Cloud.define('kaka_upload_image', function(request, response) {
 
     var image_id = request.params.image_id;
 
+    console.log("file start save"); 
     var file_obj = new AV.File(file_name, { base64: file_base64 });
     file_obj.metaData().mimeType = "image/jpeg";
     file_obj.save().then(
         function(file_obj) {
+            console.log("file save ok"); 
             user_obj.set("image", file_obj);
             user_obj.save().then(
                 function() {
+                    console.log("image_id:", image_id);
                     if (typeof(image_id) != "undefined" || image_id.length != 0) {
-                        var image_file_query = new AV.Query(image_file_cls);
-                        image_file_query.get(image_id, {
-                            success : function(image_file_obj) {
-                                image_file_obj.destroy({
-                                    success : function() {
+                        AV.User.logIn(user_0, user_0_ps, {
+                            success :function(user_admin) { 
+                                var image_file_query = new AV.Query(image_file_cls);
+                                image_file_query.get(image_id, {
+                                    success : function(image_file_obj) {
+                                        console.log("start destory file");
+                                        image_file_obj.destroy({
+                                            success : function() {
+                                                console.log("destory file ok");
+                                                //var json_obj = eval("("+RESULT_MSG.RET_OK+")");
+                                                //json_obj["image"] = file_obj;
+                                                //response.success(JSON.stringify(json_obj));
+                                                //return;
+                                            },
+                                            error : function() {
+                                                //response.error(error);
+                                                //return;
+                                            }
+                                        });
                                     },
-                                    error : function() {
+                                    error : function(error) {
+                                        //response.error(error);
+                                        //return;
                                     }
                                 });
                             },
                             error : function(error) {
+                                //response.error(error);
+                                //return;
                             }
                         });
                     }
-
+                    
                     var json_obj = eval("("+RESULT_MSG.RET_OK+")");
                     json_obj["image"] = file_obj;
                     response.success(JSON.stringify(json_obj));
@@ -432,7 +456,7 @@ AV.Cloud.define('kaka_upload_image', function(request, response) {
                 },
                 function(error) {
                     response.error(error);
-                    return;
+                        return;
                 }
             );
         },
@@ -441,6 +465,74 @@ AV.Cloud.define('kaka_upload_image', function(request, response) {
             return;
         }
     );
+});
+
+/**
+* brief   : insert coupon
+* @param  : request -{"user_id" : "555c28b8e4b0b7e69366b482", "coupon_id":"xxxxx"}
+*           reponse - define error, result or system error
+*           {"result":"{"state":"error", "code":20, "msg":"belong type必填}"}
+* @return : success - RET_OK
+*           error - define error or system error
+*/
+var _kongcv_insert_coupon = function(user_obj, coupon_id) {
+    if (typeof(user_obj) == "undefined" || user_obj.length > 0) {
+        return false; 
+    }
+    
+    if (typeof(coupon_id) == "undefined" || coupon_id.length > 0) {
+        return false; 
+    }
+
+    var coupon_obj = new kongcv_coupon_cls();
+    coupon_obj.id = coupon_id;
+
+    var coupon_relation = user_obj.relation("coupon");
+    coupon_relation.add(coupon_obj);
+
+    user_obj.save();
+
+    return true;
+};
+
+/**
+* brief   : get coupon
+* @param  : request -{"user_id" : "555c28b8e4b0b7e69366b482"}
+*           reponse - define error, result or system error
+*           {"result":"{"state":"error", "code":20, "msg":"belong type必填}"}
+* @return : success - RET_OK
+*           error - define error or system error
+*/
+AV.Cloud.define('kongcv_get_coupon', function(request, response) {
+    var user_id = request.params.user_id;
+    if (typeof(user_id) == "undefined" || user_id.length === 0) {
+        response.success(ERROR_MSG.ERR_USERID_MUST_HAVE);
+        return;
+    }
+    
+    var user_obj = request.user; 
+    if (typeof(user_obj) == "undefined" || user_obj.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_SESSIONTOKEN_MUST_EXIST);
+        return;
+    }
+    
+    if (user_id != user_obj.id) {
+        response.success(ERROR_MSG.ERR_USERID_SESSIONTOKEN_UNMATCHED);
+        return;
+    }
+
+    var coupon_relation = user_obj.relation("coupon");
+    var coupon_relation_query = coupon_relation.query();
+    coupon_relation_query.find({
+        success : function(results) {
+            response.success(results);
+            return;
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    }); 
 });
 
 /**
@@ -1784,7 +1876,8 @@ AV.Cloud.define("kongcv_get_trade_date_list", function(request, response) {
     trade_query.descending("createdAt");
     trade_query.skip(skip);
     trade_query.limit(limit);
-    trade_query.select('-charge_date');
+    trade_query.select("-charge_date");
+    trade_query.select("-trade_bill_id");
     
     trade_query.find({
         success : function(results) {
@@ -1949,6 +2042,7 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
             if (typeof(trade_handsel_state) != "undefined") {
                 if (1 === trade_handsel_state) {
                     if ("handsel" === pay_type) {
+                        //test code
                         response.success(ERROR_MSG.ERR_PAY_TYPE_FORMAT);
                         return;
                     }
@@ -1961,18 +2055,19 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
             if (typeof(coupon) != "undefined") {
                 if (coupon > 0) {
                     if (trade_coupon > 0) {
+                        //test code
                         response.success(ERROR_MSG.ERR_COUPON_ONLY_ONE);
                         return;
                     }
                     else if (0 === trade_coupon){
-                        bill_obj.set("coupon", coupon);
+                        trade_obj.set("coupon", coupon);
+                        money += coupon;
                     }
                 }
             }
             else {
                 console.log(ERROR_MSG.ERR_SYSTEM_TRADE);
             }
-
 
             if (typeof(trade_pay_tool) != "undefined" && trade_pay_tool.length > 0) {
                 if (pay_tool != trade_pay_tool) {
@@ -1990,12 +2085,13 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
             bill_obj.set("notify_id", notify_id);
             bill_obj.set("pay_type", pay_type);
             bill_obj.set("pay_state", 1);
-            if (typeof(coupon) != "undefined" || coupon > 0) {
+            if (typeof(coupon) != "undefined" && coupon > 0) {
                 bill_obj.set("coupon", coupon);
             }
 
             bill_obj.save().then(
                 function(result) { 
+                    console.log("bill save");
                     if ("money" === pay_type) { 
                         trade_obj.set("pay_tool", pay_tool);
                         trade_obj.set("money", money);
@@ -2010,24 +2106,15 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                         trade_obj.set("handsel_state", 1);
                     }
                     else if ("balance" === pay_type) {
-                        var trade_money = trade_obj.get("money");
-                        if (typeof(trade_money) === "undefined") {
-                            console.log(ERROR_MSG.ERR_SYSTEM_TRADE);
-                            trade_money = 0;
-                        }
-                        trade_money += money;
-                        trade_obj.set("money", trade_money);
+                        trade_obj.increment("money", money);
                         trade_obj.set("balance", money);
                         trade_obj.set("pay_state", 2);
                         trade_obj.set("trade_state", 1);
                     }
 
-                    if (typeof(coupon) != "undefined" || coupon > 0) {
-                        trade_obj.set("coupon", coupon);
-                    }
-
                     trade_obj.save().then(
                         function(trade_obj) {
+                            console.log("trade save");
                             if ("money" === pay_type && "community" === mode) {
                                 var park_obj = trade_obj.get("park_community");
                                 if (typeof(park_obj) != "undefined") {
@@ -2057,7 +2144,7 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                                 purse_query.find({
                                     success : function(results) {
                                         var purse_obj;
-                                        if (1 === results.length) {
+                                        /*if (1 === results.length) {
                                             purse_obj = results[0];
                                             var purse_amount = purse_obj.get("amount");
                                             var purse_money = purse_obj.get("money");
@@ -2073,8 +2160,18 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                                             purse_obj.set("amount", trade_money);
                                             purse_obj.set("money", trade_money);
                                             purse_obj.set("user", hirer_obj);
+                                        }*/
+                                
+                                        if (1 === results.length) {
+                                            purse_obj = results[0];
                                         }
-                                        
+                                        else if (0 === results.length) {
+                                            purse_obj = new kongcv_purse_cls();
+                                            purse_obj.set("user", hirer_obj);
+                                        }
+                                        purse_obj.increment("amount", trade_money);
+                                        purse_obj.increment("money", trade_money);
+
                                         purse_obj.save().then(
                                             function(purse_obj) {
                                                 response.success(RESULT_MSG.RET_OK);
@@ -2091,6 +2188,10 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                                         return;
                                     }
                                 }); 
+                            }
+                            else {
+                                response.success(RESULT_MSG.RET_OK);
+                                return;
                             }
                         },
                         function(error) {
@@ -2111,6 +2212,132 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
         }
     });
 });
+
+/**
+ * brief   : put trade bill
+ * @param  : request - {"current_date":"2015-12-01", "skip":0, "limit":10}
+ *           response - return result or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+var _purse_charge = function(trade_obj, hirer_obj, average_money, num) {
+    var purse_query = new AV.Query(kongcv_purse_cls);
+
+    purse_query.equalTo("user", hirer_obj);
+    purse_query.limit(1);
+    purse_query.find({
+        success : function(results) {
+            var purse_obj;
+            if (1 === results.length) {
+                purse_obj = results[0];
+            }
+            else if (0 === results.length) {
+                purse_obj = new kongcv_purse_cls();
+                purse_obj.set("user", hirer_obj);
+            }
+            purse_obj.increment("amount", average_money);
+            purse_obj.increment("money", average_money);
+
+            purse_obj.save().then(
+                function(purse_obj) {
+                },
+                function(error) { 
+                    if (num === loop_num) {
+                        var kongcv_loop_trade_obj = new kongcv_loop_trade_cls();
+                        kongcv_loop_trade_obj.set("trade", trade_obj);
+                        kongcv_loop_trade_obj.save();
+                    }
+                    else {
+                        console.log("invoke purse_charge");
+                        _purse_charge(trade_obj, hirer_obj, average_money, num++);
+                    }
+                }
+            );
+        },
+        error : function(error) {
+            if (num === loop_num) {
+                var kongcv_loop_trade_obj = new kongcv_loop_trade_cls();
+                kongcv_loop_trade_obj.set("trade", trade_obj);
+                kongcv_loop_trade_obj.save();
+            }
+            else {
+                console.log("invoke purse_charge");
+                _purse_charge(trade_obj, hirer_obj, average_money, num++);
+            }
+        }
+    });
+};
+
+var _loop_trade_charge = function(request, response) {
+    var current_date = request.params.current_date;
+    if (typeof(current_date) == "undefined" || current_date.length === 0) {
+        response.success(ERROR_MSG.ERR_QUERY_DATE_MUST_EXIST);
+        return;
+    }
+    
+    var skip = request.params.skip;
+    if (typeof(skip) == "undefined" || skip.length === 0) {
+        response.success(ERROR_MSG.ERR_SKIP_MUST_EXIST);
+        return;
+    }
+    
+    var limit = request.params.limit;
+    if (typeof(limit) == "undefined" || limit.length === 0) {
+        response.success(ERROR_MSG.ERR_LIMIT_MUST_EXIST);
+        return;
+    }
+
+    var trade_query = new AV.Query(kongcv_trade_cls);
+    trade_query.skip(skip);
+    trade_query.limit(limit);
+    trade_query.equalTo("extra_flag", "1");
+    trade_query.equalTo("charge_date", current_date);
+    trade_query.equalTo("trade_state", 1);
+    trade_query.equalTo("action", 0);
+
+    trade_query.find({
+        success : function(results) {
+            for (var i = 0; i < results.length; i++) {
+                var trade_obj = results[i];
+                console.log("trade_id:", trade_obj.id);
+                var charge_date = trade_obj.get("charge_date");
+                var charge_date_len = charge_date.length;
+                var hirer_obj = trade_obj.get("hirer");
+                var money = trade_obj.get("money");
+                var average_money = parseInt(money / charge_date_len);
+                var remainder_money = money % charge_date_len;
+                console.log("average_money:%d, remainder_money:%d", average_money, remainder_money);
+                for (var j = 0; j < charge_date_len; j++) {
+                    if (current_date === charge_date[j] && j === charge_date_len - 1) {
+                        average_money += remainder_money;
+                        console.log("last date money:", average_money, remainder_money);
+                        
+                        var park_obj = trade_obj.get("park_community");
+                        if (typeof(park_obj) != "undefined") {
+                            park_obj.set("park_space", 1);
+                        }
+                    }
+                }
+               
+               console.log("trade_id:%s, hirer_id:%s, average_money:%d",trade_obj.id, hirer_obj.id, average_money);
+                _purse_charge(trade_obj, hirer_obj, average_money, 0);
+            }
+
+            response.success(RESULT_MSG.RET_OK);
+            return;
+        },
+        error : function(error) {
+            response.success(ERROR_MSG.ERR_LOOP);
+            return;
+        }
+    });
+};
+
+AV.Cloud.define("kongcv_loop_trade", function(request, response) {
+    return _loop_trade_charge(request, response);
+}); 
 
 /**                                                                              
  *brief   : 获取日期相差天数                                                     
@@ -3048,8 +3275,9 @@ AV.Cloud.define("kongcv_get_trade_list", function(request, response) {
     trade_query.descending("createdAt");
     trade_query.skip(skip);
     trade_query.limit(limit);
-    trade_query.include('hire_method');
-    trade_query.select('-charge_date');
+    trade_query.include("hire_method");
+    trade_query.select("-charge_date");
+    trade_query.select("-trade_bill_id");
 
     if ("community" === mode) {
         trade_query.exists("park_community");
@@ -3781,6 +4009,43 @@ AV.Cloud.beforeSave("kongcv_preorder", function(request, response) {
         }
     });
 });
+
+/**
+ * brief   : hook - beforesave, collect - kongcv_preorder
+ * @param  : request - {"save data"}
+ *           response - return success or error
+ * @return : success
+ *           {"save data"}
+ *           error
+ *           {"code":142,"error":"xxxxxx"}
+ */
+/*AV.Cloud.beforeSave("kongcv_purse", function(request, response) {
+    var amount = request.object.get('amount');
+    var money = request.object.get('money');
+    var hirer_obj = request.object.get('user'); 
+    var purse_obj = request.object;
+   
+    var purse_query = new AV.Query(kongcv_purse_cls);
+    purse_query.equalTo("user", hirer_obj);
+    purse_query.limit(1);
+    purse_query.find({
+        success : function(results) {
+            var purse_obj;
+            if (1 === results.length) {
+                purse_obj = results[0];
+                purse_obj.increment("amount", amount);
+                purse_obj.increment("money", money);
+                console.log("old amount", amount);
+                console.log("old money", money);
+            }
+            response.success();
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
+});*/
 
 /**
  * brief   : hook - aftersave, collect - kongcv_preorder

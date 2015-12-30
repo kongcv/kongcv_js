@@ -88,7 +88,7 @@ response:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
 kongcv_upload_image:更新用户信息
-url:https://api.leancloud.cn/1.1/functions/kongcv_uploade_image
+url:https://api.leancloud.cn/1.1/functions/kongcv_upload_image
 request:
 特别说明:
    在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>",
@@ -113,6 +113,34 @@ response:
         {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\", "image":"{xxxxx}"}"}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_coupon:得到优惠卷
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_coupon
+request:
+特别说明:
+   在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>",
+   返回结果会返回新的image json数据，需要缓存
+参数说明:
+   user_id - 用户objectId
+   file_name - 手机号.png
+   file_base64 - base64 编码的字符串(文件内容要转为base64编码格式)
+   image_id - 旧的头像id，没有参数可以不传值或没有,
+请求格式:
+    {"user_id" : "555c28b8e4b0b7e69366b482","file_name":"xxxxx","file_base64":"xxxxx","image_id":"sssss"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+   image - 头像的json数据
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\", "image":"{xxxxx}"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 
 kongcv_signup:手机号和短信验证码一键注册
 url:https://api.leancloud.cn/1.1/functions/kongcv_signup
@@ -496,7 +524,7 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_put_trade_billdata:插入交易数据
+kongcv_put_trade_billdata:插入交易数据(非前端调用接口)
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_trade_billdata
 request:
 参数说明:
@@ -906,4 +934,26 @@ response:
         {"result":"{\"state\":\"ok\",\"code\":0,\"msg\":\"成功\"}"}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
- 
+
+_loop_trade_charge:对交易但做计费计算(非前端调用接口)
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_user_group
+request:
+请求格式:
+   {"current_date":"2015-12-01", "skip":0, "limit":10}
+参数说明:
+   current_date - 计费日期
+   skip - 跳过记录数
+   limit - 限定返回记录数
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":0,\"msg\":\"成功\"}"}
+   error:
+        {"result":{"state":"error", "code":55, "error":"loop error"}"}
+
