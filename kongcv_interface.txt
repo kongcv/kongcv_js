@@ -225,6 +225,7 @@ request:
    extras - 附加信息
    park_id - 车位objectId,
    mode - 模式 curb(道边停)community(社区停)
+   address - 车位地址
    hire_method_id - 车位出租方式id
    hire_start - 出租起始时间
    hire_end - 出租结束时间
