@@ -63,6 +63,7 @@ var ERROR_MSG = {
     'ERR_PARK_NO_UPDATE' : '{"state":"error", "code":53, "error":"车位租用期间不能更新"}',
     'ERR_DATA_NO_EXIST' : '{"state":"error", "code":54, "error":"数据不存在"}', 
     'ERR_LOOP' : '{"state":"error", "code":55, "error":"loop error"}', 
+    'ERR_HIDE_MUST_EXIST' : '{"state":"error", "code":56, "error":"屏蔽设置不能为空"}',
 };
 
 var RESULT_MSG = {
@@ -1971,7 +1972,7 @@ AV.Cloud.define("kongcv_insert_trade_billdata", function(request, response) {
 });
 
 /**
- * brief   : put trade bill
+ * brief   : put trade bill (test function,release must closed)
  * @param  : request - {"bill_id":"xxxxx","money":100,"pay_tool":"alipy","pay_id":"xxxx","notify_id":"xxxx","coupon":0,"pay_type":"xxxx","mode":"community"}
  *           response - return result or error
  * @return : RET_OK - success
@@ -1979,47 +1980,47 @@ AV.Cloud.define("kongcv_insert_trade_billdata", function(request, response) {
  *           RET_ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
-var _kongcv_put_trade_billdata = function(request/*, response*/) {
+AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
     var bill_id = request.params.bill_id;
     if (typeof(bill_id) == "undefined" || bill_id.length === 0) {
-        //response.success(ERROR_MSG.ERR_BILL_ID_MUST_EXIST);
-        return {"result":"error_msg","msg":ERROR_MSG.ERR_BILL_ID_MUST_EXIST}
+        response.success(ERROR_MSG.ERR_BILL_ID_MUST_EXIST);
+        return;
     }
 
     var money = request.params.money;
     if (typeof(money) == "undefined" || money.length === 0) {
-        //response.success(ERROR_MSG.ERR_MONEY_MUST_EXIST);
-        return {"result":"error_msg","msg":ERROR_MSG.ERR_MONEY_MUST_EXIST}
+        response.success(ERROR_MSG.ERR_MONEY_MUST_EXIST);
+        return;
     }
 
     var pay_tool = request.params.pay_tool;
     if (typeof(pay_tool) == "undefined" || pay_tool.length === 0) {
-        //response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_EXIST);
-        return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_TOOL_MUST_EXIST}
+        response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_EXIST);
+        return;
     }
 
     var pay_id = request.params.pay_id;
     if (typeof(pay_id) == "undefined" || pay_id.length === 0) {
-        //response.success(ERROR_MSG.ERR_PAY_ID_MUST_EXIST);
-        return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_ID_MUST_EXIST}
+        response.success(ERROR_MSG.ERR_PAY_ID_MUST_EXIST);
+        return;
     }
 
     var notify_id = request.params.notify_id;
     if (typeof(notify_id) == "undefined" || notify_id.length === 0) {
-        //response.success(ERROR_MSG.ERR_NOTIFY_ID_MUST_EXIST);
-        return {"result":"error_msg","msg":ERROR_MSG.ERR_NOTIFY_ID_MUST_EXIST}
+        response.success(ERROR_MSG.ERR_NOTIFY_ID_MUST_EXIST);
+        return;
     }
 
     var pay_type = request.params.pay_type;
     if (typeof(pay_type) == "undefined" || pay_type.length === 0) {
-        //response.success(ERROR_MSG.ERR_PAY_TYPE_MUST_EXIST);
-        return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_TYPE_MUST_EXIST}
+        response.success(ERROR_MSG.ERR_PAY_TYPE_MUST_EXIST);
+        return;
     }
     
     var mode = request.params.mode;
     if (typeof(mode) == "undefined" || mode.length === 0) {
-        //response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
-        return {"result":"error_msg","msg":ERROR_MSG.ERR_MODE_MUST_EXIST}
+        response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
+        return;
     }
 
     var coupon = request.params.coupon;
@@ -2043,8 +2044,8 @@ var _kongcv_put_trade_billdata = function(request/*, response*/) {
                 if (1 === trade_handsel_state) {
                     if ("handsel" === pay_type) {
                         //test code
-                        //response.success(ERROR_MSG.ERR_PAY_TYPE_FORMAT);
-                        return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_TYPE_FORMAT}
+                        response.success(ERROR_MSG.ERR_PAY_TYPE_FORMAT);
+                        return;
                     }
                 }
             }
@@ -2056,8 +2057,8 @@ var _kongcv_put_trade_billdata = function(request/*, response*/) {
                 if (coupon > 0) {
                     if (trade_coupon > 0) {
                         //test code
-                        //response.success(ERROR_MSG.ERR_COUPON_ONLY_ONE);
-                        return {"result":"error_msg","msg":ERROR_MSG.ERR_COUPON_ONLY_ONE}
+                        response.success(ERROR_MSG.ERR_COUPON_ONLY_ONE);
+                        return;
                     }
                     else if (0 === trade_coupon){
                         trade_obj.set("coupon", coupon);
@@ -2074,8 +2075,8 @@ var _kongcv_put_trade_billdata = function(request/*, response*/) {
                 var pay_tool_perfix = pay_tool.split("_");
                 var trade_pay_tool_perfix = trade_pay_tool.split("_");
                 if (pay_tool_perfix != trade_pay_tool_perfix) {
-                    //response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_SAME);
-                    return {"result":"error_msg","msg":ERROR_MSG.ERR_PAY_TOOL_MUST_SAME}
+                    response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_SAME);
+                    return;
                 }
             }
             //else {
@@ -2126,12 +2127,12 @@ var _kongcv_put_trade_billdata = function(request/*, response*/) {
 
                                 park_obj.save().then(
                                     function(park_obj) { 
-                                        //response.success(RESULT_MSG.RET_OK);
-                                        return {"result":"result_msg","msg":RESULT_MSG.RET_OK}
+                                        response.success(RESULT_MSG.RET_OK);
+                                        return;
                                     },
                                     function(error) {
-                                        //response.error(error);
-                                        return {"result":"error","msg":error}
+                                        response.error(error);
+                                        return;
                                     }
                                 );
                             }
@@ -2177,55 +2178,43 @@ var _kongcv_put_trade_billdata = function(request/*, response*/) {
 
                                         purse_obj.save().then(
                                             function(purse_obj) {
-                                                //response.success(RESULT_MSG.RET_OK);
-                                                return {"result":"result_msg","msg":RESULT_MSG.RET_OK}
+                                                response.success(RESULT_MSG.RET_OK);
+                                                return;
                                             },
                                             function(error) {
-                                                //response.error(error);
-                                                return {"result":"error","msg":error}
+                                                response.error(error);
+                                                return;
                                             }
                                         );
                                     },
                                     error : function(error) {
-                                        //response.error(error);
-                                        return {"result":"error","msg":error}
+                                        response.error(error);
+                                        return;
                                     }
                                 }); 
                             }
                             else {
-                                //response.success(RESULT_MSG.RET_OK);
-                                return {"result":"result_msg","msg":RESULT_MSG.RET_OK}
+                                response.success(RESULT_MSG.RET_OK);
+                                return;
                             }
                         },
                         function(error) {
-                            //response.error(error);
-                            return {"result":"error","msg":error}
+                            response.error(error);
+                            return;
                         }
                     );
                 },
                 function(error) {
-                    //response.error(error);
-                    return {"result":"error","msg":error}
+                    response.error(error);
+                    return;
                 }
             );
         },
         error : function(error) {
-            //response.error(error);
-            return {"result":"error","msg":error}
+            response.error(error);
+            return;
         }
     });
-};
-
-AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
-    var ret =  _kongcv_put_trade_billdata(request, response);
-    if (ret.result === 'error') {
-        response.error(ret.msg);
-        return;
-    }
-    else { 
-        response.success(ret.msg);
-        return;
-    }
 });
 
 /**
@@ -2847,7 +2836,7 @@ AV.Cloud.define("kongcv_location_search", function(request, response) {
  
 /**
  * brief   : set park hide
- * @param  : request - {"park_id":"xxxx", "mode":"community"}
+ * @param  : request - {"park_id":"xxxx","hide":0, "mode":"community"}
  *           response - return park info
  * @return : RET_OK - success
  *           {recordset json array}
@@ -2858,6 +2847,12 @@ AV.Cloud.define("kongcv_put_park_hide", function(request, response) {
     var park_id = request.params.park_id;
     if (typeof(park_id) == "undefined" || park_id.length === 0) {
         response.success(ERROR_MSG.ERR_PARK_ID_MUST_EXIST);
+        return;
+    }
+
+    var hide = request.params.hide;
+    if (typeof(hide) == "undefined" || hide.length === 0) {
+        response.success(ERROR_MSG.ERR_HIDE_MUST_EXIST);
         return;
     }
 
@@ -2882,7 +2877,7 @@ AV.Cloud.define("kongcv_put_park_hide", function(request, response) {
     var query = new AV.Query(kongcv_park_cls);
     query.get(park_id, {
         success : function(park_obj) {
-            park_obj.set("park_hide", 1);
+            park_obj.set("park_hide", hide);
 
             park_obj.save().then(
                 function() {

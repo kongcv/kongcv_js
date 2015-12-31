@@ -641,11 +641,11 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_put_park_hide:设置停车位隐藏
+kongcv_put_park_hide:设置停车位隐藏or显示
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_park_hide
 request:
 请求格式:
-   {"park_id":"xxxx", "mode":"community"}
+   {"park_id":"xxxx","hide":1, "mode":"community"}
 参数说明:
    park_id - 停车位的objectId
    hide - 0(显示), 1(隐藏)
