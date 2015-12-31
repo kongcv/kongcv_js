@@ -32,9 +32,9 @@ if (app.get('env') === 'development') {
 }
 
 app.use(function(err, request, response, next) {
-    resquest.status(err.status  || 500);
-    resquest.send({
-        message: error.message,
+    response.status(err.status || 500);
+    response.send({
+        message: err.message,
         error: {}
     });
 });
