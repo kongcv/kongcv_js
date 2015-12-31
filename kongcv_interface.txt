@@ -648,6 +648,7 @@ request:
    {"park_id":"xxxx", "mode":"community"}
 参数说明:
    park_id - 停车位的objectId
+   hide - 0(显示), 1(隐藏)
    mode - 模式 curb(道边停)community(社区停)
 response:
 参数说明:
