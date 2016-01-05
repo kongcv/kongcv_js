@@ -101,6 +101,7 @@ var kongcv_feedback_cls = AV.Object.extend("kongcv_feedback");
 var kongcv_white_list_cls = AV.Object.extend("kongcv_white_list");
 var kongcv_purse_cls = AV.Object.extend("kongcv_purse");
 var kongcv_bank_cls = AV.Object.extend("kongcv_bank");
+var kongcv_log_location_search_cls = AV.Object.extend("kongcv_log_location_search");
 var limit_minseconds = 30 * 60 * 1000;
 var loop_num = 2;
 
@@ -1949,7 +1950,9 @@ AV.Cloud.define("kongcv_insert_trade_billdata", function(request, response) {
 
                     trade_obj.save().then(
                         function(result) {
-                            response.success(RESULT_MSG.RET_OK);
+                            var json_obj = eval("("+RESULT_MSG.RET_OK+")");
+                            json_obj["bill_id"] = bill_id;
+                            response.success(JSON.stringify(json_obj));
                             return;
                         },
                         function(error) {
@@ -2749,14 +2752,35 @@ AV.Cloud.define('kongcv_get_comment', function(request , response) {
 
 /**
  * brief   : search park data
- * @param  : request - {"location_info":{"latitude":11.1,"longitude":116.4},"hire_method_id":"xxxx", "mode":"curb", "skip":0, "limit":10}
+ * @param  : request - {"address":"xxxx","location_info":{"latitude":11.1,"longitude":116.4},"hire_method_id":"xxxx", "mode":"curb", "skip":0, "limit":10}
  *           response - return park recordset or error
  * @return : RET_OK - success
  *           {recordset json array}
  *           RET_ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
+var _kongcv_insert_location_search_log = function(address, location_info, hire_method_id, mode) {
+    var kongcv_log_location_search_obj = new kongcv_log_location_search_cls();
+
+    kongcv_log_location_search_obj.set("address", address);
+    
+    var point = new AV.GeoPoint(location_info);
+    kongcv_log_location_search_obj.set("location", point);
+
+    kongcv_log_location_search_obj.set("hire_method_id", hire_method_id);
+    
+    kongcv_log_location_search_obj.set("mode", mode);
+
+    kongcv_log_location_search_obj.save();
+};
+
 AV.Cloud.define("kongcv_location_search", function(request, response) {
+    var address = request.params.address;
+    if (typeof(address) == "undefined" || address.length === 0) {
+        response.success(ERROR_MSG.ERR_ADDRESS_MUST_EXIST);
+        return;
+    }
+
     var location_info = request.params.location_info;
     if (typeof(location_info) == "undefined" || location_info.length === 0) {
         response.success(ERROR_MSG.ERR_LOCATION_INFO_MUST_EXIST);
@@ -2789,7 +2813,9 @@ AV.Cloud.define("kongcv_location_search", function(request, response) {
         response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
         return;
     }
- 
+
+    _kongcv_insert_location_search_log(address, location_info, hire_method_id, mode);
+
     var kong_cls;
     var point = new AV.GeoPoint(location_info);
     if ("curb" === mode) {
@@ -3603,7 +3629,27 @@ AV.Cloud.define("kongcv_insert_withdraw_deposit", function(request, response) {
 
     kongcv_trade_obj.save().then(
         function(message_obj) { 
-            response.success(RESULT_MSG.RET_OK);
+            var purse_query = new AV.Query(kongcv_purse_cls);
+            purse_query.equalTo("user", user_obj);
+            purse_query.limit(1);
+            purse_query.find({
+                success : function(results) { 
+                    var purse_obj = results[0];
+                    purse_obj.increment("money",-money);
+                    purse_obj.save().then(
+                        function(results) { 
+                            response.success(RESULT_MSG.RET_OK);
+                            return;
+                        },
+                        function(error) {
+                        }
+                    )
+                },
+                error : function(error) {
+                    response.error(error);
+                    return;
+                }
+            }); 
         },
         function(error) {
             response.error(error);
@@ -4121,7 +4167,7 @@ AV.Cloud.beforeSave("kongcv_preorder", function(request, response) {
  */
 AV.Cloud.define("kongcv_gaode_search", function(request, response) {
     AV.Cloud.httpRequest(
-    {url:"http://restapi.amap.com/v3/place/text?&keywords=聚隆话园&city=beijing&output=json&offset=100&page=1&extensions=all&key=78c23dc6274d1bcfdca843553615f8be"}
+    {url:"http://restapi.amap.com/v3/place/text?&keywords=聚龙话园8&city=beijing&output=json&offset=100&page=1&extensions=all&key=78c23dc6274d1bcfdca843553615f8be"}
     //{url:"http://restapi.amap.com/v3/direction/driving?origin=116.440887,39.930686&destination=116.435293,39.933177&output=json&key=78c23dc6274d1bcfdca843553615f8be"}
     //{url:"http://restapi.amap.com/v3/assistant/inputtips?output=json&city=010&keywords=聚龙花园&key=78c23dc6274d1bcfdca843553615f8be"}
     ).then(

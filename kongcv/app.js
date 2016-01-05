@@ -23,8 +23,8 @@ app.use(function(request, response, next) {
 
 if (app.get('env') === 'development') {
     app.use(function(err, request, response, next) {
-        resquest.status(err.status  || 500);
-        resquest.send({
+        response.status(err.status  || 500);
+        response.send({
             message: error.message,
             error: err
         });
