@@ -64,6 +64,8 @@ var ERROR_MSG = {
     'ERR_DATA_NO_EXIST' : '{"state":"error", "code":54, "error":"数据不存在"}', 
     'ERR_LOOP' : '{"state":"error", "code":55, "error":"loop error"}', 
     'ERR_HIDE_MUST_EXIST' : '{"state":"error", "code":56, "error":"屏蔽设置不能为空"}',
+    'ERR_VERIFY_PASSWD' : '{"state":"error", "code":57, "error":"密码验证错误"}',
+    'ERR_MONEY_WITHDRAW_DEPOSIT' : '{"state":"error", "code":58, "error":"提现金额大于余额"}',
 };
 
 var RESULT_MSG = {
@@ -79,7 +81,7 @@ var PUSH_INFO = {
 
 var debug_park_manager_role_id = "561e1b9b60b227b7f4ab449e";
 var debug_worker_role_id = "561f4128ddb24819b7e4bc52";
-var release_park_manager_role_id = "568c849e00b01b9f12ab8dbc";
+var release_park_manager_role_id = "568c849e00b01b9f12ab8dbc";                   
 var release_worker_role_id = "568c84cc60b2e57bf6570cc2";
 
 var role_cls = AV.Object.extend("_Role");
@@ -330,12 +332,6 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
                 }
             }
             else if ("release" === mode) {
-                if ("park_manager" === role) {
-                    role_id = release_park_manager_role_id;
-                }
-                else if ("worker" === role) {
-                    role_id = release_worker_role_id;
-                }
             }
 
             delete request_json["role"];
@@ -913,7 +909,7 @@ AV.Cloud.define("kongcv_get_advertise", function(request, response) {
 /**
  * brief   : get company info
  * @param  : request - {}
- *           response - return bank recordset or error
+ *           response - return advertise recordset or error
  * @return : RET_OK - success
  *           {recordset json array}
  *           RET_ERROR - system error
@@ -3651,19 +3647,24 @@ AV.Cloud.define("kongcv_insert_withdraw_deposit", function(request, response) {
     var user_obj = new AV.User();
     user_obj.id = user_id;
 
-    var kongcv_trade_obj = new kongcv_trade_cls();
-    kongcv_trade_obj.set("money", money);
-    kongcv_trade_obj.set("action", 1);
-    kongcv_trade_obj.set("user", user_obj);
-
-    kongcv_trade_obj.save().then(
-        function(message_obj) { 
-            var purse_query = new AV.Query(kongcv_purse_cls);
-            purse_query.equalTo("user", user_obj);
-            purse_query.limit(1);
-            purse_query.find({
-                success : function(results) { 
-                    var purse_obj = results[0];
+    var purse_query = new AV.Query(kongcv_purse_cls);
+    purse_query.equalTo("user", user_obj);
+    purse_query.limit(1);
+    purse_query.find({
+        success : function(results) { 
+            var purse_obj = results[0];
+            var purse_money = purse_obj.get("money");
+            if (money > purse_money) {
+                response.success(ERROR_MSG.ERR_MONEY_WITHDRAW_DEPOSIT);
+                return;
+            }
+            
+            var kongcv_trade_obj = new kongcv_trade_cls();
+            kongcv_trade_obj.set("money", money);
+            kongcv_trade_obj.set("action", 1);
+            kongcv_trade_obj.set("user", user_obj);
+            kongcv_trade_obj.save().then(
+                function(results) {  
                     purse_obj.increment("money",-money);
                     purse_obj.save().then(
                         function(results) { 
@@ -3671,19 +3672,22 @@ AV.Cloud.define("kongcv_insert_withdraw_deposit", function(request, response) {
                             return;
                         },
                         function(error) {
+                            response.error(error);
+                            return;
                         }
                     )
                 },
-                error : function(error) {
+                function(error) {
                     response.error(error);
                     return;
                 }
-            }); 
+            );
         },
-        function(error) {
+        error : function(error) {
             response.error(error);
+            return;
         }
-    ); 
+    }); 
 });
 
 /**
@@ -3746,8 +3750,67 @@ AV.Cloud.define("kongcv_get_withdraw_deposit", function(request, response) {
 });
 
 /**
+ * brief   : verify purse passwd
+ * @param  : request - {"user_id":"xxxxx","passwd":"xxxx"}
+ *           response - return success or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           error
+ *           {"code":142,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_verify_purse_passwd", function(request, response) {
+    var user_id = request.params.user_id;
+    if (typeof(user_id) == "undefined" || user_id.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_ID_MUST_EXIST);
+        return;
+    }
+
+    /*var user_obj = request.user;
+    if (typeof(user_obj) == "undefined" || user_obj.length === 0) {
+        response.success(ERROR_MSG.ERR_USER_SESSIONTOKEN_MUST_EXIST);
+        return;
+    }
+
+    if (user_id != user_obj.id) {
+        response.success(ERROR_MSG.ERR_USERID_SESSIONTOKEN_UNMATCHED);
+        return;
+    }*/
+
+    var passwd = request.params.passwd;
+    if ("new" === action || "passwd" === action) {
+        if (typeof(passwd) == "undefined" || passwd.length === 0) {
+            response.success(ERROR_MSG.ERR_PASSWD_MUST_EXIST);
+            return;
+        }
+    }
+    
+    var user_obj = new AV.User();
+    user_obj.id = user_id;
+
+    var purse_query = new AV.Query(kongcv_purse_cls);
+    purse_query.equalTo("user", user_obj);
+    purse_query.find({
+        success : function(results) { 
+            var purse_obj = results[0];
+            var purse_passwd = purse_obj.get("passwd");
+            if (purse_passwd != passwd) {
+                response.success(ERROR_MSG.ERR_VERIFY_PASSWD);
+                return;
+            }
+            
+            response.success(RESULT_MSG.RET_OK);
+            return;
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    }); 
+});
+
+/**
  * brief   : get purse info
- * @param  : request - {"user_id":"xxxxx","skip":0, "limit":10}
+ * @param  : request - {"user_id":"xxxxx"}
  *           response - return success or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -3772,25 +3835,11 @@ AV.Cloud.define("kongcv_get_purse", function(request, response) {
         return;
     }*/
 
-    var skip = request.params.skip;
-    if (typeof(skip) == "undefined" || skip.length === 0) {
-        response.success(ERROR_MSG.ERR_SKIP_MUST_EXIST);
-        return;
-    }
-    
-    var limit = request.params.limit;
-    if (typeof(limit) == "undefined" || limit.length === 0) {
-        response.success(ERROR_MSG.ERR_LIMIT_MUST_EXIST);
-        return;
-    }
-
     var user_obj = new AV.User();
     user_obj.id = user_id;
 
     var purse_query = new AV.Query(kongcv_purse_cls);
     purse_query.equalTo("user", user_obj);
-    purse_query.skip(skip);
-    purse_query.limit(limit);
     purse_query.find({
         success : function(results) { 
             response.success(results);

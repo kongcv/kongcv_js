@@ -936,6 +936,27 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_verify_purse_passwd:得到钱包数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_verify_purse_passwd
+request:
+请求格式:
+   {"user_id":"xxxxxx","passwd":"xxxx"}
+参数说明:
+   user_id - 用户objectId
+   passwd - 钱包密码(md5校验码)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success        
+        {record json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+ 
 kongcv_get_purse:得到钱包数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_purse
 request:
@@ -943,8 +964,6 @@ request:
    {"user_id":"xxxxxx","skip":0,"limit":10}
 参数说明:
    user_id - 用户objectId
-   skip - 跳过记录数
-   limit - 限定返回记录数
 response:
 参数说明:
    result - 返回结果
