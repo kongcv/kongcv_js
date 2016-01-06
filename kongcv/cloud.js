@@ -101,6 +101,7 @@ var kongcv_feedback_cls = AV.Object.extend("kongcv_feedback");
 var kongcv_white_list_cls = AV.Object.extend("kongcv_white_list");
 var kongcv_purse_cls = AV.Object.extend("kongcv_purse");
 var kongcv_bank_cls = AV.Object.extend("kongcv_bank");
+var kongcv_info_cls = AV.Object.extend("kongcv_info");
 var kongcv_log_location_search_cls = AV.Object.extend("kongcv_log_location_search");
 var limit_minseconds = 30 * 60 * 1000;
 var loop_num = 2;
@@ -908,7 +909,30 @@ AV.Cloud.define("kongcv_get_advertise", function(request, response) {
         }
     });
 });
- 
+
+/**
+ * brief   : get company info
+ * @param  : request - {}
+ *           response - return bank recordset or error
+ * @return : RET_OK - success
+ *           {recordset json array}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_get_company_info", function(request, response) {
+    var query = new AV.Query(kongcv_info_cls);
+    query.find({
+        success : function(results) {
+            response.success(results);
+            return;
+        },
+        error : function(error) {
+            response.error(error);
+            return;
+        }
+    });
+});
+
 /**
  * brief   : get bank
  * @param  : request - {}
