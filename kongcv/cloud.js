@@ -79,8 +79,8 @@ var PUSH_INFO = {
 
 var debug_park_manager_role_id = "561e1b9b60b227b7f4ab449e";
 var debug_worker_role_id = "561f4128ddb24819b7e4bc52";
-var debug_hire_method_timing = "56373f1100b0ee7f5ee8355c";
-var release_hire_method_timing = "add objectid";
+var release_park_manager_role_id = "568c849e00b01b9f12ab8dbc";
+var release_worker_role_id = "568c84cc60b2e57bf6570cc2";
 
 var role_cls = AV.Object.extend("_Role");
 var user_cls = AV.Object.extend("_User");
@@ -329,6 +329,12 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
                 }
             }
             else if ("release" === mode) {
+                if ("park_manager" === role) {
+                    role_id = release_park_manager_role_id;
+                }
+                else if ("worker" === role) {
+                    role_id = release_worker_role_id;
+                }
             }
 
             delete request_json["role"];
@@ -2485,7 +2491,6 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
   
     var charge_date = [];
     kongcv_trade_obj.set("hire_start", new Date(hire_start));
-    //if (debug_hire_method_timing != hire_method_id && release_hire_method_timing != hire_method_id) {
     if (1 === extra_flag) {
         if (typeof(hire_end) == "undefined" || hire_end.length === 0) {
             response.success(ERROR_MSG.ERR_HIRE_END_MUST_EXIST);
