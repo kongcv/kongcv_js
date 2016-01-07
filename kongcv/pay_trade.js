@@ -242,6 +242,12 @@ exports.kongcv_put_trade_billdata = function(request) {
                     trade_obj.save().then(
                         function(trade_obj) {
                             console.log("trade save");
+                            var verify_trade_money = trade_obj.get("money");
+                            var verify_trade_price = trade_obj.get("price");
+                            if (verify_trade_money != verify_trade_price) {
+                                _kongcv_insert_trade_log(bill_id, request, "verify_charge");
+                            }
+                        
                             if ("money" === pay_type && "community" === mode) {
                                 var park_obj = trade_obj.get("park_community");
                                 if (typeof(park_obj) != "undefined") {

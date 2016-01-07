@@ -66,6 +66,7 @@ var ERROR_MSG = {
     'ERR_HIDE_MUST_EXIST' : '{"state":"error", "code":56, "error":"屏蔽设置不能为空"}',
     'ERR_VERIFY_PASSWD' : '{"state":"error", "code":57, "error":"密码验证错误"}',
     'ERR_MONEY_WITHDRAW_DEPOSIT' : '{"state":"error", "code":58, "error":"提现金额大于余额"}',
+    'ERR_TRADE_PRICE' : '{"state":"error", "code":59, "error":"交易金额错误"}',
 };
 
 var RESULT_MSG = {
@@ -74,9 +75,10 @@ var RESULT_MSG = {
 };
 
 var PUSH_INFO = {
-    'VERIFY_ACCEPT' : '你好，你的请求已被确认，请立即支付，订单确定后10分钟有效，过期需要下一次验证，请经快操作！',
-    'VERIFY_REJECT' : '你好，你的请求已被拒绝，可能别的用户已申请租用！',
-    'VERIFY_REQUEST' : '你好，有一个新的租用请求，请及时回复！'
+    'VERIFY_ACCEPT' : '你好,你的请求已被确认,请立即支付，订单确定后10分钟有效,过期需要下一次验证,请经快操作!',
+    'VERIFY_REJECT' : '你好,你的请求已被拒绝,可能别的用户已申请租用!',
+    'VERIFY_REQUEST' : '你好,有一个新的租用请求,请及时回复!',
+    'TRADE_CHARGE' : '你好,你的收费金额是:'
 };
 
 var debug_park_manager_role_id = "561e1b9b60b227b7f4ab449e";
@@ -624,7 +626,7 @@ AV.Cloud.define("kongcv_push_smsinfo", function(request, response) {
  
 /**
  * brief   : jpush push messge, point to point
- * @param  : request - {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"xxxx",extras:{"park_id":"xxxxx","mode":"community","address":"xxxxx","hire_method_id":"xxxxx","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","own_device_token":"xxxxx","own_device_type":"android","own_mobile":"1xxxxx", "push_type":"verify_accept"}}
+ * @param  : request - {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"xxxx",extras:{"park_id":"xxxxx","mode":"community","address":"xxxxx","hire_method_id":"xxxxx","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","own_device_token":"xxxxx","own_device_type":"android","own_mobile":"1xxxxx", "push_type":"verify_accept","price":0}}
  *           response - return map recordset or error
  * @return : RET_OK - success
  *           {recordset json array}
@@ -635,10 +637,11 @@ var _jpush_push_message = function(request, response, push_info, extras) {
     var push_type = request.params.push_type;
     var device_token = request.params.device_token;
     var device_type = request.params.device_type;
+    var mode = request.params.extras.mode;
     var device_notify;
     
     if ("ios" === device_type) {
-        if ("verify_request" === push_type || "verify_accept" === push_type) {
+        if ("verify_request" === push_type || "verify_accept" === push_type || "trade_charge" === push_type) {
             console.log("add notify", extras);
             device_notify = JPush.ios(push_info, 'happy', 5, true, extras);
         }
@@ -647,7 +650,7 @@ var _jpush_push_message = function(request, response, push_info, extras) {
         }
     }
     else if ("android" === device_type) {
-        if ("verify_request" === push_type || "verify_accept" === push_type) {
+        if ("verify_request" === push_type || "verify_accept" === push_type || "trade_charge" === push_type) {
             device_notify = JPush.android(push_info, null, 1, extras);
         }
         else {
@@ -677,7 +680,9 @@ var _jpush_push_message = function(request, response, push_info, extras) {
             console.log('Sendno: ' + res.sendno);
             console.log('Msg_id: ' + res.msg_id);
             console.log("send sms message");
-            _kongcv_sms_send(request, response);
+            if ("trade_charge" != push_type /*|| "curb" === mode*/) {
+                _kongcv_sms_send(request, response);
+            }
         }
     });
 };
@@ -737,6 +742,10 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
         push_info = PUSH_INFO.VERIFY_REQUEST;
         has_extras = 1;
     }
+    else if ("trade_charge" === push_type) {
+        push_info = PUSH_INFO.TRADE_CHARGE;
+        has_extras = 1;
+    }
     else {
         response.success(ERROR_MSG.ERR_INFO_FORMAT);
         return;
@@ -749,19 +758,19 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
             response.success(ERROR_MSG.ERR_JPUSH_EXTRAS_MUST_EXIST);
             return;
         }
-        
+ 
+        var extras_mode = extras.mode;
+        if (typeof(extras_mode) == "undefined" || extras_mode.length === 0) {
+            response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
+            return;
+        }
+       
         var extras_address = extras.address;
         if (typeof(extras_address) == "undefined" || extras_address.length === 0) {
             response.success(ERROR_MSG.ERR_ADDRESS_MUST_EXIST);
             return;
         }
-
-        var extras_own_mobile = extras.own_mobile;
-        if (typeof(extras_own_mobile) == "undefined" || extras_own_mobile.length === 0) {
-            response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
-            return;
-        }
-
+ 
         var extras_park_id = extras.park_id;
         if (typeof(extras_park_id) == "undefined" || extras_park_id.length === 0) {
             response.success(ERROR_MSG.ERR_PARK_ID_MUST_EXIST);
@@ -781,23 +790,19 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
         }
 
         var extras_hire_end = extras.hire_end;
-        if (typeof(extras_hire_end) == "undefined" || extras_hire_end.length === 0) {
-            response.success(ERROR_MSG.ERR_HIRE_END_MUST_EXIST);
-            return;
+        if ("community" === extras_mode) {
+            if (typeof(extras_hire_end) == "undefined" || extras_hire_end.length === 0) {
+                response.success(ERROR_MSG.ERR_HIRE_END_MUST_EXIST);
+                return;
+            }
         }
 
         var extras_push_type = extras.push_type;
-        if (typeof(extras_push_type) == "undefined" || extras_push_type.length === 0) {
+        if (typeof(extras_push_type) == "undefined" || extras_push_type.length === 0 || extras_push_type != push_type) {
             response.success(ERROR_MSG.ERR_PUSH_TYPE_MUST_EXIST);
             return;
         }
-
-        var extras_mode = extras.mode;
-        if (typeof(extras_mode) == "undefined" || extras_mode.length === 0) {
-            response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
-            return;
-        }
-
+ 
         if ("verify_request" === push_type) {
             var extras_device_token = extras.own_device_token;
             if (typeof(extras_device_token) == "undefined" || extras_device_token.length === 0) {
@@ -810,6 +815,25 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
                 response.success(ERROR_MSG.ERR_DEVICE_TYPE_MUST_EXIST);
                 return;
             }
+            
+            var extras_own_mobile = extras.own_mobile;
+            if (typeof(extras_own_mobile) == "undefined" || extras_own_mobile.length === 0) {
+                response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
+                return;
+            }
+        }
+       
+        if ("verify_request" === push_type || "trade_charge" === push_type) {
+            var extras_price = extras.price;
+            if (typeof(extras_price) == "undefined" || extras_price.length === 0) {
+                response.success(ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
+                return;
+            }
+        }
+
+        if ("trade_charge" === push_type) {
+            var price_info = price + "元";
+            push_info += price_info;
         }
 
         console.log("parser extras", extras);
@@ -2606,6 +2630,73 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
             return;
         }
     });
+});
+
+/**
+ * brief   : put trade charge
+ * @param  : request - {"trade_id":"xxxx","price":"xxxx", "mode":"curb"}
+ *           response - return success or error
+ * @return : RET_OK - success
+ *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
+ *           error
+ *           {"code":142,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_put_trade_charge", function(request, response) {
+    var trade_id = request.params.trade_id;
+    if (typeof(trade_id) == "undefined" || trade_id.length === 0) {
+        response.success(ERROR_MSG.ERR_TRADE_ID_MUST_EXIST);
+        return;
+    }
+ 
+    var price = request.params.price;
+    if (typeof(price) == "undefined" || price.length === 0) {
+        response.success(ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
+        return;
+    }
+
+    var mode = request.params.mode;
+    if (typeof(mode) == "undefined" || mode.length === 0) {
+        response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
+        return;
+    }
+
+    if (price <= 0) {
+        response.success(ERROR_MSG.ERR_TRADE_PRICE);
+        return;
+    }
+
+    if ("curb" === mode) {
+        var trade_query = new AV.Query(kongcv_trade_cls);
+        trade_query.get(trade_id, {
+            success : function(trade_obj) {
+                trade_obj.set("price", price);
+                var money = trade_obj.get("money");
+                if (price < money) {
+                    response.success(ERROR_MSG.ERR_TRADE_PRICE);
+                    return;
+                }
+
+                trade_obj.save().then(
+                    function(result) {
+                        response.success(RESULT_MSG.RET_OK);
+                        return;
+                    },
+                    function(error) {
+                        response.error(error);
+                        return;
+                    }
+                );
+            },
+            error : function(error) {
+                response.error(error);
+                return;
+            }
+        });
+    }
+    else {
+        response.success(ERROR_MSG.ERR_INFO_FORMAT);
+        return;
+    }
 });
 
 /**
