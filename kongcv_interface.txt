@@ -61,6 +61,29 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_get_userinfo:更新用户信息
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_userinfo
+request:
+特别说明:
+   在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>"
+参数说明:
+   mobilePhoneNumber - 手机号
+   user_id - 用户objectId
+请求格式:
+   {"mobilePhoneNumber":"13xxxxxx","user_id":"xxxx"}
+response:
+参数说明:
+   result - 返回结果user info
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK                 
+        {user json info}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 kongcv_put_userinfo:更新用户信息
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_userinfo
 request:
@@ -72,8 +95,9 @@ request:
    device_token - 是你从jpush获得的registionId,如不更新此参数可以不传值或没有
    device_type - ios or andriod,如不更新此参数可以不传值或没有
    license_plate - 车牌,如不更新此参数可以不传值或没有
+   version - 版本号
 请求格式:
-   {"mobilePhoneNumber":"13xxxxxx","user_name":"xxxxx","device_token":"111111", "device_type":"ios", "license_plate":"xxxx"}
+   {"mobilePhoneNumber":"13xxxxxx","user_name":"xxxxx","device_token":"111111", "device_type":"ios", "license_plate":"xxxx","version":"1.0.0"}
 response:
 参数说明:
    result - 返回结果park info
