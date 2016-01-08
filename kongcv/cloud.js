@@ -1,7 +1,11 @@
 var AV = require('leanengine');
 var JPush = require("./lib_jpush/JPush.js");
 
-var JPush_client = JPush.buildClient('9a21c9f40374a02d1936a9d1','204a1e5f498ba6fb4b743381');
+//jpush AppKey,MasterSecret
+//release
+//var JPush_client = JPush.buildClient('fa4a60e2a3926c041d9fada8','4dde597eb77d1f3219e793e2');
+//debug
+var JPush_client = JPush.buildClient('ca9af5e8766e94552a733c1e','9d1c242d31e803e77dbfa8f2');
 
 var ERROR_MSG = {
     'ERR_USER_MOBILE_MUST_EXIST' : '{"state":"error", "code":0, "error":"手机号不能为空"}',
@@ -662,6 +666,9 @@ var _jpush_push_message = function(request, response, push_info, extras) {
         return;
     }
 
+    console.log("device_type",device_type);
+    console.log("device_token",device_token);
+    console.log("device_notify",device_notify); 
     JPush_client.push().setPlatform(device_type)
     .setAudience(JPush.registration_id(device_token))
     .setNotification('Hi, Kongcv', device_notify)
@@ -669,11 +676,13 @@ var _jpush_push_message = function(request, response, push_info, extras) {
         if (err) {
             if (err instanceof JPush.APIConnectionError) {
                 console.log(err.message);
-                response.error(error);
+                response.error(err);
+                return;
             } 
             else if (err instanceof  JPush.APIRequestError) {
                 console.log(err.message);
-                response.error(error);
+                response.error(err);
+                return;
             }
         } 
         else {
@@ -2783,30 +2792,13 @@ AV.Cloud.define('kongcv_insert_comment', function(request , response) {
 /**
 * brief   : get comment data
 * @param  : request - 
-*           {"user_id" : "xxxxxx", "park_id" : "xxxxxxxxxxx", "skip":0, "limit":10, "mode" : "community"} 
+*           {"park_id" : "xxxxxxxxxxx", "skip":0, "limit":10, "mode" : "community"} 
 *           reponse - define error, result or system error
 *           {"result":"{"state":"error", "code":20, "msg":"belong type必填}"}
 * @return : success - RET_OK
 *           error - define error or system error
 */ 
 AV.Cloud.define('kongcv_get_comment', function(request , response) {
-    var user_id = request.params.user_id;
-    if (typeof(user_id) == "undefined" || user_id.length === 0) {
-        response.success(ERROR_MSG.ERR_USER_ID_MUST_EXIST);
-        return;
-    }
-    
-    /*var user_obj = request.user;
-    if (typeof(user_obj) == "undefined" || user_obj.length === 0) {
-        response.success(ERROR_MSG.ERR_USER_SESSIONTOKEN_MUST_EXIST);
-        return;
-    }
-    
-    if (user_id != user_obj.id) {
-        response.success(ERROR_MSG.ERR_USERID_SESSIONTOKEN_UNMATCHED);
-        return;
-    }*/
-
     var park_id = request.params.park_id;
     if (typeof(park_id) == "undefined" || park_id.length === 0) {
         response.success(ERROR_MSG.ERR_PARK_ID_MUST_EXIST);
@@ -2830,15 +2822,12 @@ AV.Cloud.define('kongcv_get_comment', function(request , response) {
         response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
         return;
     }
- 
-    var user_obj = new user_cls();
-    user_obj.id = user_id;
-    
+  
     var query = new AV.Query(kongcv_comment_cls);
-    query.descending("createdAt");
+    //query.descending("createdAt");
     query.skip(skip);
     query.limit(limit);
-    query.equalTo('user', user_obj);
+    
     if ("curb" === mode) {
         var kongcv_park_curb_obj = new kongcv_park_curb_cls();
         kongcv_park_curb_obj.id = park_id;

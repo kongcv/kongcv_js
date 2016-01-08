@@ -622,12 +622,11 @@ kongcv_get_comment:得到评论数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_comment
 request:
 参数说明:
-   user_id - 用户objectid
    park_id - 停车位的objectId
    skip - 跳过记录数
    limit - 限定返回记录数
    mode - 模式 curb(道边停)community(社区停)
-   {"user_id" : "xxxxxx", "park_id" : "xxxxxxxxxxx", "skip":0, "limit":10, "mode" :"community"}
+   {"park_id" : "xxxxxxxxxxx", "skip":0, "limit":10, "mode" :"community"}
 response:
 参数说明:
    result - 返回结果
