@@ -438,7 +438,7 @@ request:
    gate_card - 门禁卡，关于门禁卡的需求，curb(道边停)模式下可以不传值or没有这个参数(车位格式化信息,数据可以为空)
    hire_method_id - 出租类型objectId
    hire_price - 出租价格
-   hire_field - 出租类型field字段
+   hire_field - 出租类型hire_method_id同记录的field字段
    hire_time - 出租时间段
    struct - 结构 地面:0 地下:1 curb(道边停)模式下可以不传值or没有这个参数
    mode - 模式 curb(道边停)community(社区停)
@@ -673,11 +673,13 @@ request:
    address - 地点名称
    location_info - 坐标数据
    hire_method_id - 出租方式objectid，如果为所有类型搜索此项可以不传值或没有这个参数
+   hire_field - 为hire_method_id同记录的field字段值
+   sort - price(按hire_field字段价格排序),空值或没在这个字段为距离排序
    skip - 跳过记录数
    limit - 限定返回记录数
    mode - 停车模式 curb(道边停)community(社区停)
 请求格式:
-   {"address":"xxxx", "location_info":{"latitude":11.1,"longitude":116.4},"hire_method_id":"xxxx", "skip":10,"limit":10,"mode":"curb"}
+   {"address":"xxxx", "location_info":{"latitude":11.1,"longitude":116.4},"hire_method_id":"xxxx","hire_field":"interval_light_day", "sort":"price" "skip":10,"limit":10,"mode":"curb"}
 response:
 参数说明:
    result - 返回结果
