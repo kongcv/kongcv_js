@@ -61,7 +61,7 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_get_userinfo:更新用户信息
+kongcv_get_userinfo:得到用户信息
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_userinfo
 request:
 特别说明:
@@ -237,7 +237,7 @@ response:
 
 
 
-kongcv_jpush_message_p2p:发送JPsh推送通知
+kongcv_jpush_message_p2p:发送JPsh推送通知,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_jpush_message_p2p
 request:
 参数说明:
@@ -257,6 +257,7 @@ request:
    own_device_type - 自己手机类型ios or android(只在verify_request类型下需要,其他类型可以为空或没有)
    own_mobile - 自己手机号(只在verify_request类型下需要,其他类型可以为空或没有)
    price - 停车计费价格,道边计费模式下为扣除定金价格(只在verify_request和trade_charge类型下需要,其他类型可以为空或没有)
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 请求格式:
    verify_request类型下格式:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_request", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community","address":"xxxx", "hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17
@@ -417,7 +418,7 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_insert_parkdata:插入停车位数据
+kongcv_insert_parkdata:插入停车位数据, use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_parkdata
 request:
 参数说明:
@@ -442,9 +443,10 @@ request:
    hire_time - 出租时间段
    struct - 结构 地面:0 地下:1 curb(道边停)模式下可以不传值or没有这个参数
    mode - 模式 curb(道边停)community(社区停)
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 curb请求格式：也适用与community
    {"user_id":"5621f1bf60b27db44ed6d6fd"","worker_id":"13xxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5,
-   "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_field":["all_time_day"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"struct":0,"mode":"curb"}
+   "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_field":["all_time_day"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"struct":0,"mode":"curb","use_token":1}
 response:
 参数说明:
    result - 返回结果
@@ -458,7 +460,7 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_put_parkdata:更新停车位数据
+kongcv_put_parkdata:更新停车位数据,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_parkdata
 request:
 参数说明:
@@ -482,8 +484,10 @@ request:
    hire_time - 出租时间段
    struct - 结构 地面:0 地下:1 curb(道边停)模式下可以不传值or没有这个参数
    mode - 模式 curb(道边停)community(社区停)
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 curb请求格式：也适用与community
-   {"user_id":"13xxxxxx","park_id":"xxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"struct":0,"mode":"curb"}
+   {"user_id":"13xxxxxx","park_id":"xxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"hire_time":["9:00 -
+   20:00"],"struct":0,"mode":"curb","use_token":1}
 response:
 参数说明:
    result - 返回结果
@@ -523,10 +527,10 @@ response:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
 
-kongcv_get_trade_date_list:得到用户租用月列表
+kongcv_get_trade_date_list:得到用户租用月列表,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_trade_date_list
 request:
-   {"user_id":"xxxxx", "query_month":"2015-12-01 00:00:00", "role":        "customer","skip":0, "limit":10,"mode":"community", "pay_state":0}
+   {"user_id":"xxxxx", "query_month":"2015-12-01 00:00:00", "role":        "customer","skip":0, "limit":10,"mode":"community", "pay_state":0,"use_token":1}
 参数说明:
    user_id - 用户的objectId
    query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00)
@@ -535,6 +539,7 @@ request:
    limit - 限定返回记录数
    mode - 模式 curb(道边停)community(社区停)
    pay_state - 0(所有月交易单),1(所有已完成和已支付定金交易单)
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -548,7 +553,7 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_insert_tradedata:插入交易数据
+kongcv_insert_tradedata:插入交易数据,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_tradedata
 request:
 参数说明:
@@ -560,8 +565,9 @@ request:
    hire_method_id - 出租类型objectId
    price - 交易价格
    mode - 模式 curb(道边停)community(社区停)
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
    extra_flag - "0"(根据租用时间判断小于等于1天为短期),"1"长期(大于1天)
-   {"user_id":"xxxxxxxxxx","hirer_id":"xxxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community","extra_flag":"0"}
+   {"user_id":"xxxxxxxxxx","hirer_id":"xxxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community","extra_flag":"0","use_token":1}
 response:
 参数说明:
    result - 返回结果
@@ -630,7 +636,8 @@ request:
    comment - 评论内容
    grade - 车位评分
    mode - 模式 curb(道边停)community(社区停)
-   {"user_id" : "xxxxxx", "comment" : "test comment", "park_id" : "xxxxxxxxxxx","grade":5, "mode" : "community"}
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
+   {"user_id" : "xxxxxx", "comment" : "test comment", "park_id" : "xxxxxxxxxxx","grade":5, "mode" : "community", "use_token":1}
 response:
 参数说明:
    result - 返回结果
@@ -674,7 +681,7 @@ request:
    location_info - 坐标数据
    hire_method_id - 出租方式objectid，如果为所有类型搜索此项可以不传值或没有这个参数
    hire_field - 为hire_method_id同记录的field字段值
-   sort - price(按hire_field字段价格排序),空值或没在这个字段为距离排序
+   sort - price_asc(升序),price_desc(降序),(按hire_field字段价格排序),空值或没在这个字段为距离排序
    skip - 跳过记录数
    limit - 限定返回记录数
    mode - 停车模式 curb(道边停)community(社区停)
@@ -740,7 +747,7 @@ kongcv_get_park_list:得到停车位列表
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_park_list
 request:
 请求格式:
-   {"user_id":"xxxxx", "mobile":"xxxx","skip":0, "limit":10,"mode":        "community", "action":"userid"}
+   {"user_id":"xxxxx", "mobile":"xxxx","skip":0, "limit":10,"mode":        "community", "action":"userid", "use_token":1}
 参数说明:
    user_id - 用户objectid
    mobile - 手机号,只能在curb模式下用
@@ -748,6 +755,7 @@ request:
    limit - 限定返回记录数
    mode - 模式 curb(道边停)community(社区停)
    action - userid(使用user_id做查询), mobile(使用mobile手机号做查询)
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -783,13 +791,13 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_get_trade_list:得到交易单详细信息(已返回所有详细信息)
+kongcv_get_trade_list:得到交易单详细信息(已返回所有详细信息),use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_trade_list
 request:
 特别说明:
     求租下道边拿详细信息走kongcv_get_park_info,但出租类型是trade中的hire_method
 请求格式:
-   {"user_id":"xxxxx", "role":"customer","trade_state":0, "skip":0, "limit":10,"mode":"community"}
+   {"user_id":"xxxxx", "role":"customer","trade_state":0, "skip":0, "limit":10,"mode":"community", "use_token":1}
 参数说明:
    user_id - 用户的objectId
    role - 角色, hirer(出租人), hirer_second(辅助出租人-道边),mcustomer(顾客,消费者)
@@ -797,6 +805,7 @@ request:
    skip - 跳过记录数
    limit - 限定返回记录数
    mode - 模式 curb(道边停)community(社区停)
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -834,14 +843,15 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_insert_feedback:插入反馈信息
+kongcv_insert_feedback:插入反馈信息,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_feedback
 request:
 请求格式:
-   {"user_id":"xxxxx", "feedback":"xxxx"}
+   {"user_id":"xxxxx", "feedback":"xxxx","use_token":1}
 参数说明:
    user_id - 用户objectId
    feedback - 反馈信息
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -875,13 +885,14 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_query_white_list:查询白名单
+kongcv_query_white_list:查询白名单,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_query_white_list
 request:
 请求格式:
-   {"mobilePhoneNumber":"xxxxx"}
+   {"mobilePhoneNumber":"xxxxx","use_token":1}
 参数说明:
    mobilePhoneNumber - 手机号
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -897,16 +908,17 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_insert_withdraw_deposit:插入提现数据
+kongcv_insert_withdraw_deposit:插入提现数据,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_withdraw_deposit
 request:
 特别说明:
    在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>"
 请求格式:
-   {"user_id":"xxxxx", "money":100}
+   {"user_id":"xxxxx", "money":100, "use_token":1}
 参数说明:
    user_id - 用户objectId
    money - 提现金额
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -920,15 +932,16 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_get_withdraw_deposit:得到提现数据
+kongcv_get_withdraw_deposit:得到提现数据,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_withdraw_deposit
 request:
 请求格式:
-   {"user_id":"xxxxxx","skip":0,"limit":10}
+   {"user_id":"xxxxxx","skip":0,"limit":10, "use_token":1}
 参数说明:
    user_id - 用户objectId
    skip - 跳过记录数
    limit - 限定返回记录数
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -942,11 +955,11 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
         
-kongcv_put_purse:插入或更新钱包信息
+kongcv_put_purse:插入或更新钱包信息,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_purse
 request:
 请求格式:
-   {"user_id":"xxxx", "bank_card":{"bank":"xxx","card":"xxxxx","name":"xxx"},"passwd":"xxxx", "action":"new"}
+   {"user_id":"xxxx", "bank_card":{"bank":"xxx","card":"xxxxx","name":"xxx"},"passwd":"xxxx", "action":"new", "use_token":1}
 参数说明:
    user_id - 用户objectId
    bank_card.bank - 银行类型
@@ -954,6 +967,7 @@ request:
    bank_card.name - 持卡人姓名
    passwd - 提现密码,用md5生成校验码
    action - new(新创建),card(更新卡号),passwd(更新密码),system(系统)
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -967,14 +981,15 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_verify_purse_passwd:得到钱包数据
+kongcv_verify_purse_passwd:得到钱包数据,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_verify_purse_passwd
 request:
 请求格式:
-   {"user_id":"xxxxxx","passwd":"xxxx"}
+   {"user_id":"xxxxxx","passwd":"xxxx", "use_token":1}
 参数说明:
    user_id - 用户objectId
    passwd - 钱包密码(md5校验码)
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -992,9 +1007,10 @@ kongcv_get_purse:得到钱包数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_purse
 request:
 请求格式:
-   {"user_id":"xxxxxx","skip":0,"limit":10}
+   {"user_id":"xxxxxx","skip":0,"limit":10, "use_token":1}
 参数说明:
    user_id - 用户objectId
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
 参数说明:
    result - 返回结果
@@ -1052,6 +1068,30 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_park_transfer:道边车位转移(管理员版本),use_token
+url:https://api.leancloud.cn/1.1/functions/kongcv_park_transfer
+request:
+请求格式:
+   {"user_id":"xxxx", "park_id":"xxxx","transfer_mobile":"13xxxxx","mode":"curb", "use_token":1,"system":1}
+参数说明:
+   user_id - 用户objectId
+   park_id - 车位objectId,
+   transfer_mobile - 迁移至手机号用户下
+   mode - 模式 curb(道边停),只在道边使用
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
+   system - 1(系统使用,可忽略验证)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":0,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
 
 _loop_trade_charge:对交易但做计费计算(非前端调用接口)
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_user_group
@@ -1095,7 +1135,7 @@ open_id - 微信支付，自己账户的open_id
 subject - 产品名称，先传车位地址
 pay_info - pay_info.coupon - 优惠卷金额，没有为0
            pay_info.pay_type - 支付类型,money(全款),handsel(定金),balance(差额)
-           pay_info.mode - 模式 debug - 开发模式 release - 上线模式
+           pay_info.mode - 模式 curb(道边停)community(社区停)
 
 支付回执接口:
 url:http://kongcv_test.avosapps.com/pingpp_pay/notify
