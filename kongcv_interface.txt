@@ -324,6 +324,28 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_get_accept_parkinfo:得到通知接受数据并返回parkinfo
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_accept_parkinfo
+request:
+参数说明:
+   user_mobile - 请求方(求租人)自己手机号
+   park_id - 停车位的objectId
+   mode - 模式 curb(道边停)community(社区停)
+   {"user_mobile":"xxxxx","park_id":"xxxxxxxxxxx","mode":"community"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+   accept - json数据中accept = 1,表示为请求被接受
+回应格式:      
+   RET_OK -                
+        {recordset json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 kongcv_get_advertise:得到轮播图
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_advertise
 request:
@@ -686,7 +708,7 @@ request:
    limit - 限定返回记录数
    mode - 停车模式 curb(道边停)community(社区停)
 请求格式:
-   {"address":"xxxx", "location_info":{"latitude":11.1,"longitude":116.4},"hire_method_id":"xxxx","hire_field":"interval_light_day", "sort":"price" "skip":10,"limit":10,"mode":"curb"}
+   {"address":"xxxx", "location_info":{"latitude":11.1,"longitude":116.4},"hire_method_id":"xxxx","hire_field":"interval_light_day", "sort":"price_asc" "skip":10,"limit":10,"mode":"curb"}
 response:
 参数说明:
    result - 返回结果
