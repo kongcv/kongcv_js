@@ -556,7 +556,7 @@ request:
 参数说明:
    user_id - 用户的objectId
    query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00)
-   role - 角色, hirer(出租人), hirer_second(辅助出租人-道边),mcustomer(顾客,消费者)
+   role - 角色, hirer(出租人), hirer_second(辅助出租人-道边),customer(顾客,消费者)
    skip - 跳过记录数
    limit - 限定返回记录数
    mode - 模式 curb(道边停)community(社区停)
@@ -822,7 +822,7 @@ request:
    {"user_id":"xxxxx", "role":"customer","trade_state":0, "skip":0, "limit":10,"mode":"community", "use_token":1}
 参数说明:
    user_id - 用户的objectId
-   role - 角色, hirer(出租人), hirer_second(辅助出租人-道边),mcustomer(顾客,消费者)
+   role - 角色, hirer(出租人), hirer_second(辅助出租人-道边),customer(顾客,消费者)
    trade_state - 0(未完成交易), 1(已完成交易),3(所有数据)
    skip - 跳过记录数
    limit - 限定返回记录数
