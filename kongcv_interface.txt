@@ -819,10 +819,11 @@ request:
 特别说明:
     求租下道边拿详细信息走kongcv_get_park_info,但出租类型是trade中的hire_method
 请求格式:
-   {"user_id":"xxxxx", "role":"customer","trade_state":0, "skip":0, "limit":10,"mode":"community", "use_token":1}
+   {"user_id":"xxxxx", "role":"customer","hire_method_id":"xxxxx","trade_state":0, "skip":0, "limit":10,"mode":"community", "use_token":1}
 参数说明:
    user_id - 用户的objectId
    role - 角色, hirer(出租人), hirer_second(辅助出租人-道边),customer(顾客,消费者)
+   hire_method_id - 车位出租方式id,只在curb模式下使用,community可以不传或没有这个参数
    trade_state - 0(未完成交易), 1(已完成交易),3(所有数据)
    skip - 跳过记录数
    limit - 限定返回记录数
@@ -855,7 +856,7 @@ response:
    返回结构中state表示message是否操作过
 参数说明:
    result - 返回结果
-   state - 状态
+   state - 状态,0(未处理),1(接受),2(拒绝)
    code - 消息编号
    msg - 描述消息
    error - 错误描述
