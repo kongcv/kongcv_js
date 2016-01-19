@@ -894,7 +894,7 @@ request:
 请求格式:
    {"message_id":"xxxxx"}
 参数说明:
-   message_id - 消息objectId
+   message_id - 消息objectId,verify_request的push消息,extras对象中会有message_id
 response:
 参数说明:
    result - 返回结果
