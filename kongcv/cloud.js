@@ -3164,9 +3164,11 @@ AV.Cloud.define("kongcv_put_trade_charge", function(request, response) {
         var trade_query = new AV.Query(kongcv_trade_cls);
         trade_query.get(trade_id, {
             success : function(trade_obj) {
+                console.log("action",action);
                 if ("start" === action) {
                     var start_date = new Date(); 
                     trade_obj.set("hire_start", start_date);
+                    trade_obj.set("check_state", 1);
                     console.log("start date:", start_date);
                 }
                 else if ("end" === action) {
@@ -3174,6 +3176,7 @@ AV.Cloud.define("kongcv_put_trade_charge", function(request, response) {
     
                     var end_date = new Date(); 
                     trade_obj.set("hire_end", end_date);
+                    trade_obj.set("check_state", 2);
                     console.log("end date:", end_date);
         
                     var money = trade_obj.get("money");
