@@ -1074,6 +1074,8 @@ response:
 
 kongcv_put_trade_charge:道边计时交易价格,时间更新(管理员版本)
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_trade_charge
+特别说明:
+trade_id的交易单中check_state是点击状态,0(未点击),1(开始计费),2(结束计费)
 request:
 请求格式:
    {"trade_id":"xxxx","price":100, "mode":"curb","action":"start"}
@@ -1082,7 +1084,6 @@ request:
    price - 计时收费价格,这是总价
    mode - 模式 curb(道边停),只在道边使用
    action - start(更新hire_start时间),end(更新hire_end时间,并更新价格)
-
 response:
 参数说明:
    result - 返回结果
