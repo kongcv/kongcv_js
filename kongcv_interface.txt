@@ -264,7 +264,7 @@ request:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_request", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community","address":"xxxx", "hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17
    18:00:00","own_device_token":"021a12c5dc4","own_device_type":"ios","own_mobile":"1xxxxx","push_type":"verify_request","price":100}}
    verify_accept类型下格式:
-   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"verify_accept"}}
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"verify_accept", "price":100}}
    verify_reject类型下格式:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_reject", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16"}
    trade_charge类型下格式:
