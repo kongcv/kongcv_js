@@ -258,6 +258,7 @@ request:
    own_device_type - 自己手机类型ios or android(只在verify_request类型下需要,其他类型可以为空或没有)
    own_mobile - 自己手机号(只在verify_request类型下需要,其他类型可以为空或没有)
    price - 停车计费价格,道边计费模式下为扣除定金价格(只在verify_request和trade_charge类型下需要,其他类型可以为空或没有)
+   trade_id - 交易单id(只在trade_charge类型下需要,其他类型可以为空或没有)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 请求格式:
    verify_request类型下格式:
@@ -268,7 +269,7 @@ request:
    verify_reject类型下格式:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_reject", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16"}
    trade_charge类型下格式:
-   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"trade_charge", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"trade_charge","price":100}} 
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"trade_charge", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"trade_charge","trade_id":"xxxxx","price":100}} 
 response:
 参数说明:
    result - 返回结果park info
@@ -464,12 +465,12 @@ request:
    hire_price - 出租价格
    hire_field - 出租类型hire_method_id同记录的field字段
    hire_time - 出租时间段
-   struct - 结构 地面:0 地下:1 curb(道边停)模式下可以不传值or没有这个参数
+   park_struct - 结构 地面:0 地下:1 curb(道边停)模式下可以不传值or没有这个参数
    mode - 模式 curb(道边停)community(社区停)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 curb请求格式：也适用与community
    {"user_id":"5621f1bf60b27db44ed6d6fd"","worker_id":"13xxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5,
-   "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_field":["all_time_day"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"struct":0,"mode":"curb","use_token":1}
+   "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_field":["all_time_day"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"park_struct":0,"mode":"curb","use_token":1}
 response:
 参数说明:
    result - 返回结果
@@ -505,12 +506,12 @@ request:
    hire_method_id - 出租类型objectId
    hire_price - 出租价格
    hire_time - 出租时间段
-   struct - 结构 地面:0 地下:1 curb(道边停)模式下可以不传值or没有这个参数
+   park_struct - 结构 地面:0 地下:1 curb(道边停)模式下可以不传值or没有这个参数
    mode - 模式 curb(道边停)community(社区停)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 curb请求格式：也适用与community
    {"user_id":"13xxxxxx","park_id":"xxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"hire_time":["9:00 -
-   20:00"],"struct":0,"mode":"curb","use_token":1}
+   20:00"],"park_struct":0,"mode":"curb","use_token":1}
 response:
 参数说明:
    result - 返回结果
