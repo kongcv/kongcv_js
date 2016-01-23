@@ -1,4 +1,11 @@
 var AV = require('leanengine');
+var JPush = require("./lib_jpush/JPush.js");
+
+//jpush AppKey,MasterSecret
+//release
+//var JPush_client = JPush.buildClient('fa4a60e2a3926c041d9fada8','4dde597eb77d1f3219e793e2');
+//debug
+var JPush_client = JPush.buildClient('ca9af5e8766e94552a733c1e','9d1c242d31e803e77dbfa8f2');
 
 var ERROR_MSG = {
     'ERR_MODE_MUST_EXIST' : '{"state":"error", "code":12, "error":"停车模式不存在"}',
@@ -322,6 +329,47 @@ exports.kongcv_put_trade_billdata = function(request) {
         error : function(error) {
             _kongcv_insert_trade_log(bill_id, request, "bill_query" + error);
             //return {"result":"error","msg":error}
+        }
+    });
+};
+
+exports.kongcv_trade_jpush_message_p2p = function(device_token, device_type, price) {
+    var device_notify;
+    var push_info = "你好,你已收到支付费用,收费金额是";
+    var price_info = price + "元";
+    push_info += price_info;
+    
+    if ("ios" === device_type) {
+        device_notify = JPush.ios(push_info, 'happy', 1);
+    }
+    else if ("android" === device_type) {
+        device_notify = JPush.android(push_info, null, 1);
+    }
+    else {
+        console.log("kongcv_trade_jpush_push_message_p2p:",ERROR_MSG.ERR_INFO_FORMAT);
+        return {"result":"error_msg","msg":ERROR_MSG.ERR_INFO_FORMAT}
+    }
+
+    extras = {'push_type':'charge_info'};
+    
+    JPush_client.push().setPlatform(device_type)
+    .setAudience(JPush.registration_id(device_token))
+    .setNotification('Hi, Kongcv', device_notify)
+    .send(function(err, res) {
+        if (err) {
+            if (err instanceof JPush.APIConnectionError) {
+                console.log("kongcv_trade_jpush_push_message_p2p:",err);
+                //return {"result":"error_msg","msg":err}
+            } 
+            else if (err instanceof  JPush.APIRequestError) {
+                console.log("kongcv_trade_jpush_push_message_p2p:",err);
+                //return {"result":"error_msg","msg":err}
+            }
+        } 
+        else {
+            if ("trade_charge" != push_type) {
+                //return {"result":"ok"}
+            }
         }
     });
 };

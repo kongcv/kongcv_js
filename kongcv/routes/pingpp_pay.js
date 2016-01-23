@@ -131,6 +131,7 @@ router.post('/', function(req, resp, next) {
     if (mode === undefined || mode.length === 0) {
         return resp.status(400).send('notify pay_info.mode undefined');
     }
+    
     //var coupon = pay_info.coupon;
     //var pay_type = pay_info.pay_type;
     //var mode = pay_info.mode;
@@ -233,6 +234,9 @@ router.post('/notify', function(req, resp, next) {
     }
     console.log("coupon:%d, pay_type:%s, mode:%s", coupon, pay_type, mode);
 
+    var device_token = json_obj["device_token"];
+    var device_token = json_obj["device_type"];
+    
     switch (notify.type) {
         case "charge.succeeded":
             console.log("notify charge.succeeded");
@@ -256,6 +260,11 @@ router.post('/notify', function(req, resp, next) {
             }
 
             pay_charge.kongcv_put_trade_billdata(param);
+            
+            if (device_token != undefined && device_type != undefined) {
+                pay_charge.kongcv_trade_jpush_message_p2p(device_token, device_type, money);
+            }
+
             return resp.status(200).send("success");
             break;
         case "refund.succeeded":

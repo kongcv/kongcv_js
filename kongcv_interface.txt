@@ -242,11 +242,11 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_jpush_message_p2p
 request:
 参数说明:
    mobilePhoneNumber - 对方手机号
-   push_type - 发送类型(verify_request-租用请求,verify_accept-接受租用,verify_reject-拒绝租用,trade_charge-交易计费(道边停车管理员发送))
+   push_type - 发送类型(verify_request-租用请求,verify_accept-接受租用,verify_reject-拒绝租用,trade_charge-交易计费(道边停车管理员发送),charge_info-支付信息(支付后向收款人发通知))
    device_type - 设备类型ios or android
    device_token - 要发送的对方registrationId
    user_id - 自己的user_id
-   extras - 附加信息(verify_reject类型下可以没有extras或为空)
+   extras - 附加信息
    park_id - 车位objectId,
    mode - 模式 curb(道边停)community(社区停)
    address - 车位地址
@@ -259,6 +259,8 @@ request:
    own_mobile - 自己手机号(只在verify_request类型下需要,其他类型可以为空或没有)
    price - 停车计费价格,道边计费模式下为扣除定金价格(只在verify_request和trade_charge类型下需要,其他类型可以为空或没有)
    trade_id - 交易单id(只在trade_charge类型下需要,其他类型可以为空或没有)
+   pay_type - 支付类型, money(全款),handsel(定金),balance(差额)(只在trade_charge类型下需要,其他类型可以为空或没有)
+   pay_tool - 支付工具 alipy(支付宝) wxpy(微信支付)(只在trade_charge类型下需要,其他类型可以为空或没有)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 请求格式:
    verify_request类型下格式:
@@ -267,9 +269,9 @@ request:
    verify_accept类型下格式:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"verify_accept", "price":100}}
    verify_reject类型下格式:
-   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_reject", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16"}
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_reject", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"push_type":"verify_reject"}}
    trade_charge类型下格式:
-   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"trade_charge", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"trade_charge","trade_id":"xxxxx","price":100}} 
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"trade_charge", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"trade_charge","trade_id":"xxxxx","pay_type":"balance","price":100}} 
 response:
 参数说明:
    result - 返回结果park info
@@ -605,6 +607,7 @@ response:
         {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"trade_id\":\"xxx\"}"}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
+        {"code":142,"error":"Cloud Code validation failed. Error detail : {\"state\":\"error\", \"code\":65, \"error\":\"车位已被租用,请再找找其他车被吧\"}"}
 
 kongcv_insert_trade_billdata:插入交易数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_trade_billdata
@@ -1173,6 +1176,6 @@ url:http://kongcv_test.avosapps.com/pingpp_pay/notify
 push通知逻辑：
 1：求租人发通知给出租人，通知类型verify_request
 2：出租人接收通知并处理，点击通知到详情页(具体数据见通知extras字段)，可见电话，可以接受(verify_accept)和拒绝(verify_reject)
-3：回应verify_accept通知时，要调用kongcv_insert_accept,kongcv_change_pushmessage_state接口
+3：回应verify_accept通知时，要调用kongcv_change_pushmessage_state接口
 4：回应verify_reject通知时，要调用kongcv_change_pushmessage_state接口
 5：求租人接收到verify_accept通知后，详情页显示支付按钮和电话按钮
