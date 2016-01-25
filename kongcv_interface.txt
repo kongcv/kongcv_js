@@ -1158,7 +1158,7 @@ request:
     "amount":100,
     "open_id":"654321", 
     "subject":"test pay",
-    "pay_info":"{'coupon':0,'pay_type':'handsel', 'mode':'curb'}"
+    "pay_info":"{'coupon':0,'pay_type':'handsel', 'mode':'curb','device_token':'xx','device_type':'ios'}"
 }
 参数说明:
 order_no - bill_id(kongcv_trade_bill objectId);
@@ -1169,6 +1169,8 @@ subject - 产品名称，先传车位地址
 pay_info - pay_info.coupon - 优惠卷金额，没有为0
            pay_info.pay_type - 支付类型,money(全款),handsel(定金),balance(差额)
            pay_info.mode - 模式 curb(道边停)community(社区停)
+           pay_info.device_token - 是你从jpush获得的收款人registionId,如不更新此参数可以不传值或没有
+           pay_info.device_type - ios or andriod,如不更新此参数可以不传值或没有
 
 支付回执接口:
 url:http://kongcv_test.avosapps.com/pingpp_pay/notify

@@ -39,7 +39,8 @@ var ERROR_MSG = {
     'ERR_JPUSH_EXTRAS_MUST_EXIST' : '{"state":"error", "code":26, "error":"附加推送数据必须存在"}',
     'ERR_TRADE_ID_MUST_EXIST' : '{"state":"error", "code":27, "error":"交易单id必须存在"}',
     'ERR_PARK_ACCEPT_EXIST' : '{"state":"error", "code":28, "error":"你在规定的30分钟内已接受了一次租用请求,请稍后再决定是否接受此次请求"}',
-    'ERR_PARK_DATE_EXIST' : '{"state":"error", "code":29, "error":"你选择的租用日期与其他用户有冲突,请重新选择时间段"}', 'ERR_ACTION_MUST_EXIST' : '{"state":"error", "code":30, "error":"动作方式必须存在"}',
+    'ERR_PARK_DATE_EXIST' : '{"state":"error", "code":29, "error":"你选择的租用日期与其他用户有冲突,请重新选择时间段"}', 
+    'ERR_ACTION_MUST_EXIST' : '{"state":"error", "code":30, "error":"动作方式必须存在"}',
     'ERR_ROLE_MUST_EXIST' : '{"state":"error", "code":31, "error":"角色必须存在"}',
     'ERR_HIRER_MUST_EXIST' : '{"state":"error", "code":32, "error":"出租人必须存在"}',
     'ERR_EXTRA_FLAG_MUST_EXIST' : '{"state":"error", "code":33, "error":"额外标识必须存在"}',
@@ -76,7 +77,7 @@ var ERROR_MSG = {
     'ERR_LOOP_REPEAT' : '{"state":"error", "code":62, "error":"loop error,重复执行"}', 
     'ERR_PARK_STRUCT_MUST_EXIST' : '{"state":"error", "code":63, "error":"车位结构不能为空"}', 
     'ERR_MESSAGE_STATE_MUST_EXIST' : '{"state":"error", "code":64, "error":"消息状态不能为空"}',
-    'ERR_PARK_NO_SPACE' : '{"state":"error", "code":65, "error":"车位已被租用,请再找找其他车被吧"}',
+    'ERR_PARK_NO_SPACE' : '{"state":"error", "code":65, "error":"车位已被租用,请再找找其他车位吧"}',
 };
 
 var RESULT_MSG = {
@@ -877,7 +878,7 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
         }
        
         var extras_price;
-        if ("verify_request" === push_type || "trade_charge" === push_type) {
+        if ("verify_request" === push_type || "verify_accept" === push_type || "trade_charge" === push_type) {
             var extras_price = extras.price;
             if (typeof(extras_price) == "undefined" || extras_price.length === 0) {
                 console.log("kongcv_jpush_message_p2p:",ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
@@ -1162,7 +1163,14 @@ AV.Cloud.define("kongcv_insert_accept", function(request, response) {
         },
         function(error) {
             console.log("kongcv_insert_accept:",error);
-            response.error(error);
+            if (142 === error.code) {
+                var error_message = error.message.split("Error detail :")[1];
+                response.success(error_message);
+            }
+            else {
+                response.error(error);
+            }
+
             return;
         }
     );
@@ -1905,10 +1913,7 @@ AV.Cloud.define("kongcv_put_parkdata", function(request, response) {
         hire_method_obj.id = hire_method_array[i];
         hire_method.push(hire_method_obj);
         hire_price.push(hire_price_array[i]);
-        hire_time.push(hire_time_array[i]);
-        
-        var price_num = hire_price_array[i].split('/')[0];
-        kongcv_park_obj.set(hire_field_array[i], Number(price_num));
+        hire_time.push(hire_time_array[i]);    
     } 
 
     if ("community" === mode) { 
@@ -1980,6 +1985,11 @@ AV.Cloud.define("kongcv_put_parkdata", function(request, response) {
                 kongcv_park_community_obj.set("gate_card", gate_card);
                 kongcv_park_community_obj.set("park_struct", park_struct);
                 kongcv_park_community_obj.set("park_description", park_description);
+                
+                for (var i = 0; i < hire_method_num; i++) {
+                    var price_num = hire_price_array[i].split('/')[0];
+                    kongcv_park_community_obj.set(hire_field_array[i], Number(price_num));
+                } 
 
                 kongcv_park_community_obj.save().then(
                     function() {
@@ -2018,7 +2028,12 @@ AV.Cloud.define("kongcv_put_parkdata", function(request, response) {
                 kongcv_park_curb_obj.set("hire_time", hire_time);
                 kongcv_park_curb_obj.set("park_description", park_description);
                 kongcv_park_curb_obj.set("park_struct", park_struct);
-
+                
+                for (var i = 0; i < hire_method_num; i++) {
+                    var price_num = hire_price_array[i].split('/')[0];
+                    kongcv_park_curb_obj.set(hire_field_array[i], Number(price_num));
+                }
+                
                 kongcv_park_curb_obj.save().then(
                     function() {
                         response.success(RESULT_MSG.RET_OK);
@@ -2663,6 +2678,14 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                     trade_obj.save().then(
                         function(trade_obj) {
                             console.log("trade save");
+                            var verify_trade_money = trade_obj.get("money");
+                            var verify_trade_price = trade_obj.get("price");
+                            if ("money" === pay_type || "balance" === pay_type) { 
+                                if (verify_trade_money != verify_trade_price) {
+                                    _kongcv_insert_trade_log(bill_id, request, "verify_charge");
+                                }
+                            }
+
                             if ("money" === pay_type && "community" === mode) {
                                 var park_obj = trade_obj.get("park_community");
                                 if (typeof(park_obj) != "undefined") {
@@ -3131,7 +3154,13 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
                         },
                         function(error) {
                             console.log("kongcv_insert_tradedata:",error);
-                            response.error(error);
+                            if (142 === error.code) {
+                                var error_message = error.message.split("Error detail :")[1];
+                                response.success(error_message);
+                            }
+                            else {
+                                response.error(error);
+                            }
                             return;
                         }
                     ); 
