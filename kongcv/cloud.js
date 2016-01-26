@@ -404,7 +404,6 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
         {
             success : function(user) {
                 if (typeof(role_id) != "undefined" && role_id.length > 0) {
-                    console.log("add role id");
                     var role_obj = new role_cls();
                     role_obj.id = role_id;
 
@@ -412,9 +411,14 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
                     user.save();
                 }
 
+                console.log("user:",user);
+
                 var json_obj = eval("("+RESULT_MSG.RET_OK+")");
                 json_obj["sessionToken"] = user._sessionToken;
                 json_obj["user_id"] = user.id;
+                json_obj["device_token"] = user._serverData.device_token;
+                json_obj["device_type"] = user._serverData.device_type;
+                json_obj["image_url"] = user._serverData.image._url;
                 response.success(JSON.stringify(json_obj));
                 return;
             },
@@ -2966,7 +2970,7 @@ var get_date_2_str = function(date) {
 
 /**
  * brief   : insert trade data
- * @param  : request - {"user_id":"xxxxxxxxxx","hirer_id":"xxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 00:00:00", "hire_end":"2015-10-18 00:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community", "extra_flag":"1","use_token":1}
+ * @param  : request - {"user_id":"xxxxxxxxxx","license_plate":"xxxx","hirer_id":"xxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 00:00:00", "hire_end":"2015-10-18 00:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community", "extra_flag":"1","use_token":1}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -2980,7 +2984,8 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
         response.success(ERROR_MSG.ERR_USER_ID_MUST_EXIST);
         return;
     }
-    
+   
+    var license_plate;
     var user_obj;
     var use_token = request.params.use_token;
     if (typeof(use_token) != "undefined" && 1 === use_token) {
@@ -2996,10 +3001,14 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
             response.success(ERROR_MSG.ERR_USERID_SESSIONTOKEN_UNMATCHED);
             return;
         }
+
+        license_plate = user_obj.get("license_plate");
     }
     else {
         user_obj = new user_cls();
         user_obj.id = user_id;
+
+        license_plate = request.params.license_plate;
     }
 
     var hirer_id = request.params.hirer_id;
@@ -3049,6 +3058,10 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
  
     var kongcv_trade_obj = new kongcv_trade_cls();
     kongcv_trade_obj.set("user", user_obj);
+
+    if (typeof(license_plate) != "undefined" && license_plate.length > 0) {
+        kongcv_trade_obj.set("license_plate", license_plate);
+    }
     
     var hirer_obj = new user_cls();
     hirer_obj.id = hirer_id; 

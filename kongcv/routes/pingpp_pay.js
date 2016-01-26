@@ -117,25 +117,21 @@ router.post('/', function(req, resp, next) {
     //console.log("pay_info", pay_info);
     
     var json_obj = eval("(" + pay_info + ")");
-    var coupon = json_obj["coupon"];
+    var coupon = json_obj["cp"];
     if (coupon === undefined || coupon.length === 0) {
         return resp.status(400).send('notify pay_info.coupon undefined');
     }
 
-    var pay_type = json_obj["pay_type"];
+    var pay_type = json_obj["pt"];
     if (pay_type === undefined || pay_type.length === 0) {
         return resp.status.send('notify pay_info.pay_type undefined');
     }
     
-    var mode = json_obj["mode"];
+    var mode = json_obj["md"];
     if (mode === undefined || mode.length === 0) {
         return resp.status(400).send('notify pay_info.mode undefined');
     }
     
-    //var coupon = pay_info.coupon;
-    //var pay_type = pay_info.pay_type;
-    //var mode = pay_info.mode;
-    //var par_info_str = JSON.stringify(pay_info);
     console.log("pay_info", pay_info);
     console.log("coupon:%d, pay_type:%s, mode:%s", coupon, pay_type, mode);
 
@@ -218,24 +214,25 @@ router.post('/notify', function(req, resp, next) {
     console.log("body", body);
  
     var json_obj = eval("(" + body + ")");
-    var coupon = json_obj["coupon"];
+    var coupon = json_obj["cp"];
     if (coupon === undefined || coupon.length === 0) {
         return resp.status(400).send('error:notify body.coupon undefined');
     }
 
-    var pay_type = json_obj["pay_type"];
+    var pay_type = json_obj["pt"];
     if (pay_type === undefined || pay_type.length === 0) {
         return resp.status(400).send('error:notify body.pay_type undefined');
     }
 
-    var mode = json_obj["mode"];
+    var mode = json_obj["md"];
     if (mode === undefined || mode.length === 0) {
         return resp.status(400).send('error:notify body.mode undefined');
     }
     console.log("coupon:%d, pay_type:%s, mode:%s", coupon, pay_type, mode);
 
-    var device_token = json_obj["device_token"];
-    var device_token = json_obj["device_type"];
+    var mobile = json_obj["mb"];
+    var device_token = json_obj["tk"];
+    var device_token = json_obj["tp"];
     
     switch (notify.type) {
         case "charge.succeeded":
@@ -262,7 +259,8 @@ router.post('/notify', function(req, resp, next) {
             pay_charge.kongcv_put_trade_billdata(param);
             
             if (device_token != undefined && device_type != undefined) {
-                pay_charge.kongcv_trade_jpush_message_p2p(device_token, device_type, money);
+                console.log("send jpush");
+                pay_charge.kongcv_trade_jpush_message_p2p(mobile, device_token, device_type, money, mode);
             }
 
             return resp.status(200).send("success");

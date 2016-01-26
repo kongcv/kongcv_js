@@ -158,10 +158,14 @@ response:
    msg - 描述消息
    error - 错误描述
    sessionToken - 前端必须保存，修改user数据需要传递sessionToken
+   device_token - 前端必须保存, 发通知需要device_token
+   device_type - 前端必须保存, 发通知需要device_type
+   image_url - 前端必须保存, 用户头像需要image_url
    user_id - 用户objectId
 回应格式:      
    RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
-        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"sessionToken\":"xxxxxxxxx"}"}
+        {"result": "{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"sessionToken\":\"809iaa8j9lerejj6dbjfjy4nh\",\"user_id\":\"567a65eb00b08d6c01eb265d\",\"device_token\":\"0011baa4c6c\",\"device_type\":\"ios\",\"image_url\":\"http://ac-ATcs8k4n.clouddn.com/0e3ee07bfb2ca442.jpg\"}"
+    }
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
@@ -1167,12 +1171,12 @@ channel - 支付渠道,具体有那些看ping++文档，用到的alipay,wx,wx_pu
 amount - 支付钱数(ping++这里单位是分,现在这里用元，由后台统一转为分)
 open_id - 微信支付，自己账户的open_id
 subject - 产品名称，先传车位地址
-pay_info - pay_info.coupon - 优惠卷金额，没有为0
-           pay_info.pay_type - 支付类型,money(全款),handsel(定金),balance(差额)
-           pay_info.mode - 模式 curb(道边停)community(社区停)
-           pay_info.device_token - 是你从jpush获得的收款人registionId,如不更新此参数可以不传值或没有
-           pay_info.device_type - ios or andriod,如不更新此参数可以不传值或没有
-           pay_info.mobilePhoneNumber - 手机号
+pay_info - pay_info.cp(coupon) - 优惠卷金额，没有为0
+           pay_info.pt(pay_type) - 支付类型,money(全款),handsel(定金),balance(差额)
+           pay_info.md(mode) - 模式 curb(道边停)community(社区停)
+           pay_info.tk(device_token) - 是你从jpush获得的收款人registionId,如不更新此参数可以不传值或没有
+           pay_info.tp(device_type) - ios or andriod,如不更新此参数可以不传值或没有
+           pay_info.mb(mobile) - 手机号
 
 支付回执接口:
 url:http://kongcv_test.avosapps.com/pingpp_pay/notify
