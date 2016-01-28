@@ -612,11 +612,12 @@ request:
    hire_start - 交易出租起始时间
    hire_end - 交易出租结束时间
    hire_method_id - 出租类型objectId
+   unit_price - 出租单位价格
    price - 交易价格
    mode - 模式 curb(道边停)community(社区停)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
    extra_flag - "0"(根据租用时间判断小于等于1天为短期),"1"长期(大于1天)
-   {"user_id":"xxxxxxxxxx","hirer_id":"xxxx","license_plate":"xxxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community","extra_flag":"0","use_token":1}
+   {"user_id":"xxxxxxxxxx","hirer_id":"xxxx","license_plate":"xxxx","park_id":"xxxxxxxxxxx","unit_price":10, "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community","extra_flag":"0","use_token":1}
 response:
 参数说明:
    result - 返回结果
@@ -1205,3 +1206,7 @@ push通知逻辑：
 3：回应verify_accept通知时，要调用kongcv_change_pushmessage_state接口
 4：回应verify_reject通知时，要调用kongcv_change_pushmessage_state接口
 5：求租人接收到verify_accept通知后，详情页显示支付按钮和电话按钮
+
+rule逻辑:
+1：00 - 0（1）不显示电话,订单确认后可见电话,0（2）默认订单确认可点
+        1（1）
