@@ -1184,7 +1184,7 @@ request:
     "amount":100,
     "open_id":"654321", 
     "subject":"test pay",
-    "pay_info":"{'coupon':0,'pay_type':'handsel', 'mode':'curb','device_token':'xx','device_type':'ios','mobilePhoneNumber':'1xxxxx'}"
+    "pay_info":"{'cp':0,'pt':'handsel', 'md':'curb','tk':'xx','tp':'ios','mb':'1xxxxx'}"
 }
 参数说明:
 order_no - bill_id(kongcv_trade_bill objectId, kongcv_insert_trade_billdata接口获得);
