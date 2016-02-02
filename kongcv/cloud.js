@@ -78,6 +78,8 @@ var ERROR_MSG = {
     'ERR_PARK_STRUCT_MUST_EXIST' : '{"state":"error", "code":63, "error":"车位结构不能为空"}', 
     'ERR_MESSAGE_STATE_MUST_EXIST' : '{"state":"error", "code":64, "error":"消息状态不能为空"}',
     'ERR_PARK_NO_SPACE' : '{"state":"error", "code":65, "error":"车位已被租用,请再找找其他车位吧"}',
+    'ERR_PERSONAL_MUST_EXIST' : '{"state":"error", "code":66, "error":"车位所属性质"}',
+    'ERR_HOUR_METER_FINISHED' : '{"state":"error", "code":67, "error":"计时收费已完成"}',
 };
 
 var RESULT_MSG = {
@@ -117,6 +119,7 @@ var kongcv_white_list_cls = AV.Object.extend("kongcv_white_list");
 var kongcv_purse_cls = AV.Object.extend("kongcv_purse");
 var kongcv_bank_cls = AV.Object.extend("kongcv_bank");
 var kongcv_info_cls = AV.Object.extend("kongcv_info");
+var kongcv_service_file_cls = AV.Object.extend("kongcv_service_file");
 var kongcv_log_location_search_cls = AV.Object.extend("kongcv_log_location_search");
 var limit_minseconds = 30 * 60 * 1000;
 var loop_num = 2;
@@ -416,9 +419,11 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
                 var json_obj = eval("("+RESULT_MSG.RET_OK+")");
                 json_obj["sessionToken"] = user._sessionToken;
                 json_obj["user_id"] = user.id;
-                json_obj["device_token"] = user._serverData.device_token;
-                json_obj["device_type"] = user._serverData.device_type;
-                json_obj["image_url"] = user._serverData.image._url;
+                //json_obj["device_token"] = user._serverData.device_token;
+                //json_obj["device_type"] = user._serverData.device_type;
+                if (undefined != user._serverData.image) {
+                    json_obj["image_url"] = user._serverData.image._url;
+                }
                 response.success(JSON.stringify(json_obj));
                 return;
             },
@@ -799,8 +804,9 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
         return;
     }
 
+    var extras_mode;;
     if (1 === has_extras) { 
-        var extras_mode = extras.mode;
+        extras_mode = extras.mode;
         if (typeof(extras_mode) == "undefined" || extras_mode.length === 0) {
             console.log("kongcv_jpush_message_p2p:",ERROR_MSG.ERR_MODE_MUST_EXIST);
             response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
@@ -936,6 +942,7 @@ AV.Cloud.define("kongcv_jpush_message_p2p", function(request, response) {
         kongcv_push_message_obj.set("push_type", push_type);
         kongcv_push_message_obj.set("extras", extras);
         kongcv_push_message_obj.set("user", user_obj);
+        kongcv_push_message_obj.set("mode", extras_mode);
 
         kongcv_push_message_obj.save().then(
             function(message_obj) { 
@@ -986,6 +993,31 @@ AV.Cloud.define("kongcv_get_hire_method", function(request, response) {
         },
         error : function(error) {
             console.log("kongcv_get_hire_method:",error);
+            response.error(error);
+            return;
+        }
+    });
+});
+
+/**
+ * brief   : get service file
+ * @param  : request - {}
+ *           response - return service file recordset or error
+ * @return : RET_OK - success
+ *           {recordset json array}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+AV.Cloud.define("kongcv_get_service_file", function(request, response) {
+    var query = new AV.Query(kongcv_service_file_cls);
+    
+    query.find({
+        success : function(results) {
+            response.success(results);
+            return;
+        },
+        error : function(error) {
+            console.log("kongcv_get_service_file:",error);
             response.error(error);
             return;
         }
@@ -1397,7 +1429,7 @@ AV.Cloud.define("kongcv_get_accept_parkinfo", function(request, response) {
 
 /**
  * brief   : insert park data
- * @param  : request - {"user_id":"xxxxxxxxxx","worker_id":"xxxxxxxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type": "GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"], "tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5,"gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_field":["all_time_day"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"park_struct":0,"mode":"community","use_token":1}
+ * @param  : request - {"user_id":"xxxxxxxxxx","worker_id":"xxxxxxxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type": "GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"], "tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5,"gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_field":["all_time_day"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"park_struct":0,"mode":"community","use_token":1,"personal":1}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -1434,11 +1466,11 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
     }
 
     var city = request.params.city;
-    if (typeof(city) == "undefined" || city.length === 0) {
+    /*if (typeof(city) == "undefined" || city.length === 0) {
         console.log("kongcv_insert_parkdata:",ERROR_MSG.ERR_CITY_MUST_EXIST);
         response.success(ERROR_MSG.ERR_CITY_MUST_EXIST);
         return;
-    }
+    }*/
 
     var address = request.params.address;
     if (typeof(address) == "undefined" || address.length === 0) {
@@ -1453,7 +1485,7 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
         response.success(ERROR_MSG.ERR_PARK_DETAIL_MUST_EXIST);
         return;
     }
-
+ 
     address += '&'+ park_detail;
     console.log("address:",address);
      
@@ -1566,6 +1598,13 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
             response.success(ERROR_MSG.ERR_HIRE_END_MUST_EXIST);
             return;
         } 
+
+        var personal = request.params.personal;
+        if (typeof(personal) == "undefined" || personal.length === 0) {
+            console.log("kongcv_insert_parkdata:",ERROR_MSG.ERR_PERSONAL_MUST_EXIST);
+            response.success(ERROR_MSG.ERR_PERSONAL_MUST_EXIST);
+            return;
+        }
 
         var community_query = new AV.Query(kongcv_park_community_cls);
         community_query.equalTo("user", user_obj);
@@ -2970,7 +3009,7 @@ var get_date_2_str = function(date) {
 
 /**
  * brief   : insert trade data
- * @param  : request - {"user_id":"xxxxxxxxxx","license_plate":"xxxx","hirer_id":"xxx","park_id":"xxxxxxxxxxx", "price":100,"hire_start":"2015-10-17 00:00:00", "hire_end":"2015-10-18 00:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community", "extra_flag":"1","use_token":1}
+ * @param  : request - {"user_id":"xxxxxxxxxx","license_plate":"xxxx","hirer_id":"xxx","park_id":"xxxxxxxxxxx", "unit_price":"10/小时","price":100,"hire_start":"2015-10-17 00:00:00", "hire_end":"2015-10-18 00:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community", "extra_flag":"1","use_token":1}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -3042,6 +3081,13 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
     var hire_start = request.params.hire_start;    
     var hire_end = request.params.hire_end;
  
+    var unit_price = request.params.unit_price;
+    if (typeof(unit_price) == "undefined" || unit_price.length === 0) {
+        console.log("kongcv_insert_tradedata:",ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
+        response.success(ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
+        return;
+    }
+
     var price = request.params.price;
     if (typeof(price) == "undefined" || price.length === 0) {
         console.log("kongcv_insert_tradedata:",ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
@@ -3126,6 +3172,7 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
         kongcv_trade_obj.set("charge_date", charge_date);
     }
         
+    kongcv_trade_obj.set("unit_price", unit_price);
     kongcv_trade_obj.set("price", price);
     kongcv_trade_obj.set("extra_flag", extra_flag);
 
@@ -3210,7 +3257,7 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
 
 /**
  * brief   : put trade charge
- * @param  : request - {"trade_id":"xxxx","price":100, "mode":"curb", "action":"strart"}
+ * @param  : request - {"trade_id":"xxxx", "mode":"curb", "action":"strart"}
  *           response - return success or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -3232,58 +3279,102 @@ AV.Cloud.define("kongcv_put_trade_charge", function(request, response) {
         return;
     }
 
-    var price = request.params.price;
-    if ("end" === action) {
-        if (typeof(price) == "undefined" || price.length === 0) {
-            console.log("kongcv_put_trade_charge:",ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
-            response.success(ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
-            return;
-        }
-        
-        if (price <= 0) {
-            console.log("kongcv_put_trade_charge:",ERROR_MSG.ERR_TRADE_PRICE);
-            response.success(ERROR_MSG.ERR_TRADE_PRICE);
-            return;
-        }
-    }
-
     var mode = request.params.mode;
     if (typeof(mode) == "undefined" || mode.length === 0) {
         console.log("kongcv_put_trade_charge:",ERROR_MSG.ERR_MODE_MUST_EXIST);
         response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
         return;
     }
- 
+
+    var hire_start; 
+    var hire_end;
+    var price;
     if ("curb" === mode) {
         var trade_query = new AV.Query(kongcv_trade_cls);
         trade_query.get(trade_id, {
             success : function(trade_obj) {
+                var check_state = trade_obj.get("check_state");
+                if (2 === check_state) {
+                    response.success(ERROR_MSG.ERR_HOUR_METER_FINISHED);
+                    return;
+                }
+
                 console.log("action",action);
                 if ("start" === action) {
-                    var start_date = new Date(); 
-                    trade_obj.set("hire_start", start_date);
+                    hire_start = new Date(); 
+                    trade_obj.set("hire_start", hire_start);
                     trade_obj.set("check_state", 1);
-                    console.log("start date:", start_date);
+                    console.log("hire start:", hire_start);
                 }
-                else if ("end" === action) {
-                    trade_obj.set("price", price);
-    
-                    var end_date = new Date(); 
-                    trade_obj.set("hire_end", end_date);
-                    trade_obj.set("check_state", 2);
-                    console.log("end date:", end_date);
-        
-                    var money = trade_obj.get("money");
-                    if (price < money) {
+                else if ("end" === action) { 
+                    var unit_price = trade_obj.get("unit_price");
+                    if (typeof(unit_price) == "undefined" || unit_price.length === 0) {
+                        console.log("kongcv_put_trade_charge:",ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
+                        response.success(ERROR_MSG.ERR_HIRE_PRICE_MUST_EXIST);
+                        return;
+                    }
+
+                    var unit_price_value = Number(unit_price.split("/")[0]);
+                    console.log("unit_price_value:", unit_price_value); 
+                    if (unit_price_value <= 0) {
                         console.log("kongcv_put_trade_charge:",ERROR_MSG.ERR_TRADE_PRICE);
                         response.success(ERROR_MSG.ERR_TRADE_PRICE);
                         return;
                     }
+
+                    hire_end = new Date(); 
+                    console.log("hire end:", hire_end);
+                    var end_minseconds = hire_end.getTime();
+                    console.log("end_minseconds:",end_minseconds);
+                    trade_obj.set("hire_end", hire_end);
+                    trade_obj.set("check_state", 2);
+
+                    hire_start = trade_obj.get("hire_start");
+                    var start_minseconds = hire_start.getTime();
+                    console.log("start_minseconds:",start_minseconds);
+                    var time_num = parseInt((end_minseconds - start_minseconds) / (15 * 60 * 1000));
+                    console.log("time_num:",time_num);
+                    var remainder_time_num = (end_minseconds - start_minseconds) % (15 * 60 * 1000);
+                    console.log("minuter_num:",(end_minseconds - start_minseconds) / (60 * 1000));
+                    console.log("remainder_time_num:",remainder_time_num);
+                    if (remainder_time_num > (5 * 60 * 1000)) {
+                        console.log("remainder+1");
+                        time_num += 1;
+                    }
+                    var price_charge = unit_price_value / 4;
+                    console.log("price_charge:",price_charge);
+
+                    price = Math.ceil(time_num * price_charge);
+                    console.log("price:",price);
+
+                    trade_obj.set("price", price);
+        
+                    var money = trade_obj.get("money");
+                    if (0 == price) {
+                        price = money;
+                        trade_obj.set("trade_state", 1);
+                        trade_obj.set("pay_state", 2);
+                    }
+                    /*if (price < money) {
+                        console.log("kongcv_put_trade_charge:",ERROR_MSG.ERR_TRADE_PRICE);
+                        response.success(ERROR_MSG.ERR_TRADE_PRICE);
+                        return;
+                    }*/
                 }
 
                 trade_obj.save().then(
                     function(result) {
-                        response.success(RESULT_MSG.RET_OK);
+                        var json_obj = eval("("+RESULT_MSG.RET_OK+")");
+
+                        if ("start" === action) {
+                            json_obj["hire_start"] = hire_start;
+                        }
+                        else if ("end" === action) {
+                            json_obj["hire_end"] = hire_end;
+                            json_obj["price"] = price;
+                        }
+
+                        response.success(JSON.stringify(json_obj));
                         return;
                     },
                     function(error) {
@@ -3496,7 +3587,9 @@ var _kongcv_insert_location_search_log = function(address, location_info, hire_m
     var point = new AV.GeoPoint(location_info);
     kongcv_log_location_search_obj.set("location", point);
 
-    kongcv_log_location_search_obj.set("hire_method_id", hire_method_id);
+    var hire_method_obj = new kongcv_hire_method_cls();
+    hire_method_obj.id = hire_method_id;
+    kongcv_log_location_search_obj.set("hire_method_id", hire_method_obj);
     
     kongcv_log_location_search_obj.set("mode", mode);
 
@@ -3564,7 +3657,7 @@ AV.Cloud.define("kongcv_location_search", function(request, response) {
     query.withinKilometers("location", point, max_distance);
     query.skip(skip);
     query.limit(limit);
-    query.equalTo('park_space', 1);
+    //query.equalTo('park_space', 1);
     query.equalTo('park_hide', 0);
     query.include("user");
     //query.include("hire_method");
@@ -4191,7 +4284,7 @@ AV.Cloud.define("kongcv_get_trade_list", function(request, response) {
 
 /**
  * brief   : get pushmessage list
- * @param  : request - {"mobilePhoneNumber":"xxxxx", "skip":0, "limit":10,"action":"send"}
+ * @param  : request - {"mobilePhoneNumber":"xxxxx", "skip":0, "limit":10,"action":"send","mode":"community"}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -4226,6 +4319,13 @@ AV.Cloud.define("kongcv_get_pushmessage_list", function(request, response) {
         response.success(ERROR_MSG.ERR_LIMIT_MUST_EXIST);
         return;
     }
+    
+    var mode = request.params.mode;
+    if (typeof(mode) == "undefined" || mode.length === 0) {
+        console.log("kongcv_get_pushmessage_list:",ERROR_MSG.ERR_MODE_MUST_EXIST);
+        response.success(ERROR_MSG.ERR_MODE_MUST_EXIST);
+        return;
+    }
 
     var message_query = new AV.Query(kongcv_push_message_cls);
     if ("send" === action) {
@@ -4242,6 +4342,7 @@ AV.Cloud.define("kongcv_get_pushmessage_list", function(request, response) {
         return;
     }
    
+    message_query.equalTo("mode", mode);
     message_query.skip(skip);
     message_query.limit(limit);
     message_query.descending("createdAt");
