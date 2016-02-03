@@ -727,6 +727,8 @@ response:
 
 kongcv_location_search:车位搜索
 url:https://api.leancloud.cn/1.1/functions/kongcv_location_search
+备注:
+在出租方法中新加了停车场(parking)方法，在走kongcv_location_search接口时hire_method_id为所有类型搜索此项可以不传值或没有这个参数
 request:
 参数说明:
    address - 地点名称
@@ -1021,7 +1023,7 @@ request:
    bank_card.card - 银行卡号
    bank_card.name - 持卡人姓名
    bank_card.bank_icon_url - 银行icon_url
-   passwd - 提现密码,用md5生成校验码
+   passwd - 提现密码,用md5生成校验码(注意校验码都为小写)
    action - new(新创建),card(更新卡号),passwd(更新密码),system(系统)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 response:
