@@ -88,7 +88,7 @@ var RESULT_MSG = {
 };
 
 var PUSH_INFO = {
-    'VERIFY_ACCEPT' : '你好,你的请求已被确认,请立即支付，订单确定后10分钟有效,过期需要下一次验证,请经快操作!',
+    'VERIFY_ACCEPT' : '你好,你的请求已被确认,请立即支付，订单确定后10分钟有效,过期需要下一次验证,请尽快操作!',
     'VERIFY_REJECT' : '你好,你的请求已被拒绝,可能别的用户已申请租用!',
     'VERIFY_REQUEST' : '你好,有一个新的租用请求,请及时回复!',
     'TRADE_CHARGE' : '你好,你的收费金额是:'
@@ -121,7 +121,9 @@ var kongcv_bank_cls = AV.Object.extend("kongcv_bank");
 var kongcv_info_cls = AV.Object.extend("kongcv_info");
 var kongcv_service_file_cls = AV.Object.extend("kongcv_service_file");
 var kongcv_log_location_search_cls = AV.Object.extend("kongcv_log_location_search");
-var limit_minseconds = 30 * 60 * 1000;
+var kongcv_property_cls = AV.Object.extend("kongcv_property");
+var kongcv_rate = 0.9;
+var limit_minseconds = 10 * 60 * 1000;
 var loop_num = 2;
 
 var user_0 = "kongcv_admin";
@@ -1485,7 +1487,8 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
         response.success(ERROR_MSG.ERR_PARK_DETAIL_MUST_EXIST);
         return;
     }
- 
+
+    var community_address = address;
     address += '&'+ park_detail;
     console.log("address:",address);
      
@@ -1666,7 +1669,50 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
                                 kongcv_park_obj.set("user", user_obj);
                                 kongcv_park_obj.set("park_description", park_description);
 
-                                kongcv_park_obj.save().then(
+                                var property_distance = 1;
+                                var point = new AV.GeoPoint(location_info);
+                                var property_query = new AV.Query(kongcv_property_cls);
+                                property_query.withinKilometers("location", point, property_distance);
+                                property_query.limit(3);
+                                
+                                property_query.find({
+                                    success :function(results) {
+                                        if (results.length > 0) {
+                                            for (var i = 0; i < results.length; i++) {
+                                                console.log("has property");
+                                                var property_obj = results[i];
+                                                var community_name = property_obj.get("community");
+                                                console.log("community_name:",community_name);
+                                                console.log("community_address:",community_address);
+                                                var exist = community_address.indexOf(community_name);
+                                                if (exist >= 0) {
+                                                    console.log("has str");
+                                                    kongcv_park_obj.set("property", property_obj);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        
+                                        kongcv_park_obj.save().then(
+                                            function() {
+                                                response.success(RESULT_MSG.RET_OK);
+                                                return;
+                                            },
+                                            function(error) {
+                                                console.log("kongcv_insert_parkdata:",error);
+                                                response.error(error);
+                                                return;
+                                            }
+                                        );
+                                    },
+                                    error : function(error) {
+                                        console.log("kongcv_location_search:",error);
+                                        response.error(error);
+                                        return;
+                                    }
+                                });
+
+                                /*kongcv_park_obj.save().then(
                                     function() {
                                         response.success(RESULT_MSG.RET_OK);
                                         return;
@@ -1676,7 +1722,7 @@ AV.Cloud.define("kongcv_insert_parkdata", function(request, response) {
                                         response.error(error);
                                         return;
                                     }
-                                );
+                                );*/
                             }
                         },
                         error : function(error) {
@@ -2631,10 +2677,12 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
     kongcv_trade_bill_obj.id = bill_id;
     
     var bill_query = new AV.Query(kongcv_trade_bill_cls);
-    bill_query.include("trade");
+    //bill_query.include("trade");
+    bill_query.include("trade.property");
     bill_query.get(bill_id, {
         success : function(bill_obj) {
             var trade_obj = bill_obj.get("trade");
+            var trade_property_obj = trade_obj.get("property");
             var trade_coupon = trade_obj.get("coupon");
             var trade_pay_tool = trade_obj.get("pay_tool");
             var trade_handsel_state = trade_obj.get("handsel_state");
@@ -2673,8 +2721,8 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
 
             //test code
             if (typeof(trade_pay_tool) != "undefined" && trade_pay_tool.length > 0) {
-                var pay_tool_perfix = pay_tool.split("_");
-                var trade_pay_tool_perfix = trade_pay_tool.split("_");
+                var pay_tool_perfix = pay_tool.split("_")[0];
+                var trade_pay_tool_perfix = trade_pay_tool.split("_")[0];
                 if (pay_tool_perfix != trade_pay_tool_perfix) {
                     console.log("kongcv_put_trade_billdata:",ERROR_MSG.ERR_PAY_TOOL_MUST_SAME);
                     response.success(ERROR_MSG.ERR_PAY_TOOL_MUST_SAME);
@@ -2725,7 +2773,7 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                             var verify_trade_price = trade_obj.get("price");
                             if ("money" === pay_type || "balance" === pay_type) { 
                                 if (verify_trade_money != verify_trade_price) {
-                                    _kongcv_insert_trade_log(bill_id, request, "verify_charge");
+                                    //_kongcv_insert_trade_log(bill_id, request, "verify_charge");
                                 }
                             }
 
@@ -2765,8 +2813,59 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
                                             purse_obj = new kongcv_purse_cls();
                                             purse_obj.set("user", hirer_obj);
                                         }
-                                        purse_obj.increment("amount", trade_money);
-                                        purse_obj.increment("money", trade_money);
+                                        
+                                        var own_trade_money;
+                                        var property_rate;
+                                        var own_rate;
+
+                                        if (trade_property_obj != undefined) {
+                                            console.log("has property");
+                                            property_rate = trade_property_obj.get("rate");
+                                            own_rate = kongcv_rate - property_rate;
+                                            console.log("own_rate", own_rate);
+                                            
+                                            var property_user_obj = trade_property_obj.get("user");
+                                            var property_purse_query = new AV.Query(kongcv_purse_cls);
+                                            property_purse_query.equalTo("user", property_user_obj);
+                                            property_purse_query.limit(1);
+                                            property_purse_query.find({
+                                                success : function(results) {
+                                                    var property_purse_obj;
+                                
+                                                    if (1 === results.length) {
+                                                        property_purse_obj = results[0];
+                                                    }
+                                                    else if (0 === results.length) {
+                                                        property_purse_obj = new kongcv_purse_cls();
+                                                        property_purse_obj.set("user", property_user_obj);
+                                                    }
+
+                                                    property_trade_money = parseInt(trade_money * property_rate);
+                                                    property_purse_obj.increment("amount", property_trade_money);
+                                                    property_purse_obj.increment("money", property_trade_money);
+                                                    
+                                                    property_purse_obj.save().then(
+                                                        function(purse_obj) {
+                                                        },
+                                                        function(error) {
+                                                            console.log("kongcv_put_trade_billdata:",error);
+                                                        }
+                                                    );
+                                                },
+                                                error : function(error) {
+                                                    console.log("kongcv_put_trade_billdata:",error);
+                                                    response.error(error);
+                                                    return;
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            own_rate = kongcv_rate;
+                                            console.log("own_rate", own_rate);
+                                        }
+                                        own_trade_money = parseInt(trade_money * own_rate); 
+                                        purse_obj.increment("amount", own_trade_money);
+                                        purse_obj.increment("money", own_trade_money);
 
                                         purse_obj.save().then(
                                             function(purse_obj) {
@@ -2823,6 +2922,16 @@ AV.Cloud.define("kongcv_put_trade_billdata", function(request, response) {
  *           RET_ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
+var _kongcv_insert_loop_trade_log = function(trade_obj, date, repeat, log) {
+    var kongcv_loop_trade_obj = new kongcv_loop_trade_cls();
+    
+    kongcv_loop_trade_obj.set("trade", trade_obj);
+    kongcv_loop_trade_obj.set("date", date);
+    kongcv_loop_trade_obj.set("repeat", repeat);
+    kongcv_loop_trade_obj.add("log", log);
+    kongcv_loop_trade_obj.save();
+};
+
 var _purse_charge = function(trade_obj, hirer_obj, average_money, date, num) {
     var purse_query = new AV.Query(kongcv_purse_cls);
 
@@ -2838,36 +2947,69 @@ var _purse_charge = function(trade_obj, hirer_obj, average_money, date, num) {
                 purse_obj = new kongcv_purse_cls();
                 purse_obj.set("user", hirer_obj);
             }
-            purse_obj.increment("amount", average_money);
-            purse_obj.increment("money", average_money);
+
+            var own_trade_money;
+            var property_rate;
+            var own_rate;
+
+            var trade_property_obj = trade_obj.get("property");
+            if (trade_property_obj != undefined) {
+                console.log("has property");
+                property_rate = trade_property_obj.get("rate");
+                own_rate = kongcv_rate - property_rate;
+                console.log("own_rate", own_rate);
+
+                var property_user_obj = trade_property_obj.get("user");
+                var property_purse_query = new AV.Query(kongcv_purse_cls);
+                property_purse_query.equalTo("user", property_user_obj);
+                property_purse_query.limit(1);
+                property_purse_query.find({
+                    success : function(results) {
+                        var property_purse_obj;
+
+                        if (1 === results.length) {
+                            property_purse_obj = results[0];
+                        }
+                        else if (0 === results.length) {
+                            property_purse_obj = new kongcv_purse_cls();
+                            property_purse_obj.set("user", property_user_obj);
+                        }
+
+                        property_trade_money = parseInt(average_money * property_rate);
+                        property_purse_obj.increment("amount", property_trade_money);
+                        property_purse_obj.increment("money", property_trade_money);
+
+                        property_purse_obj.save().then(
+                            function(purse_obj) {
+                            },
+                            function(error) {
+                                _kongcv_insert_loop_trade_log(trade_obj, date, 0, "property_purse_save" + error);
+                            }
+                        );
+                    },
+                    error : function(error) {
+                        _kongcv_insert_loop_trade_log(trade_obj, date, 0, "property_purse_query" + error);
+                    }
+                });
+            }
+            else {
+                own_rate = kongcv_rate;
+                console.log("own_rate", own_rate);
+            }
+            own_average_money = parseInt(average_money * own_rate); 
+            purse_obj.increment("amount", own_average_money);
+            purse_obj.increment("money", own_average_money);
 
             purse_obj.save().then(
                 function(purse_obj) {
                 },
                 function(error) { 
-                    if (num === loop_num) {
-                        var kongcv_loop_trade_obj = new kongcv_loop_trade_cls();
-                        kongcv_loop_trade_obj.set("trade", trade_obj);
-                        kongcv_loop_trade_obj.set("date", date);
-                        kongcv_loop_trade_obj.save();
-                    }
-                    else {
-                        _purse_charge(trade_obj, hirer_obj, average_money, date, num++);
-                    }
+                    _kongcv_insert_loop_trade_log(trade_obj, date, 0, "purse_save" + error);
                 }
             );
         },
         error : function(error) {
-            if (num === loop_num) {
-                var kongcv_loop_trade_obj = new kongcv_loop_trade_cls();
-                kongcv_loop_trade_obj.set("trade", trade_obj);
-                kongcv_loop_trade_obj.set("date", date);
-                kongcv_loop_trade_obj.save();
-            }
-            else { 
-                console.log("_purse_charge:",error);
-                _purse_charge(trade_obj, hirer_obj, average_money, date, num++);
-            }
+            _kongcv_insert_loop_trade_log(trade_obj, date, 0, "purse_query" + error);
         }
     });
 };
@@ -2901,6 +3043,7 @@ var _loop_trade_charge = function(request, response) {
     trade_query.equalTo("charge_date", current_date);
     trade_query.equalTo("trade_state", 1);
     trade_query.equalTo("action", 0);
+    trade_query.include("property");
 
     trade_query.find({
         success : function(results) {
@@ -2941,11 +3084,7 @@ var _loop_trade_charge = function(request, response) {
                         }
                         else {
                             console.log("_loop_trade_charge:",ERROR_MSG.ERR_LOOP_REPEAT);
-                            var kongcv_loop_trade_obj = new kongcv_loop_trade_cls();
-                            kongcv_loop_trade_obj.set("trade", trade_obj);
-                            kongcv_loop_trade_obj.set("date", current_date);
-                            kongcv_loop_trade_obj.set("repeat", 1);
-                            kongcv_loop_trade_obj.save();
+                            _kongcv_insert_loop_trade_log(trade_obj, current_date, 1, ERROR_MSG.ERR_LOOP_REPEAT);
 
                             is_purse_charge = false; 
                             //response.success(ERROR_MSG.ERR_LOOP_REPEAT);
@@ -3009,7 +3148,7 @@ var get_date_2_str = function(date) {
 
 /**
  * brief   : insert trade data
- * @param  : request - {"user_id":"xxxxxxxxxx","license_plate":"xxxx","hirer_id":"xxx","park_id":"xxxxxxxxxxx", "unit_price":"10/小时","price":100,"hire_start":"2015-10-17 00:00:00", "hire_end":"2015-10-18 00:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","mode":"community", "extra_flag":"1","use_token":1}
+ * @param  : request - {"user_id":"xxxxxxxxxx","license_plate":"xxxx","hirer_id":"xxx","park_id":"xxxxxxxxxxx", "unit_price":"10/小时","price":100,"hire_start":"2015-10-17 00:00:00", "hire_end":"2015-10-18 00:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","property_id":"xxxx","mode":"community", "extra_flag":"1","use_token":1}
  *           response - return result or error
  * @return : RET_OK - success
  *           {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功}"}
@@ -3071,6 +3210,8 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
         return;
     }
 
+    var property_id = request.params.property_id;
+
     var mode = request.params.mode;
     if (typeof(mode) == "undefined" || mode.length === 0) {
         console.log("kongcv_insert_tradedata:",ERROR_MSG.ERR_MODE_MUST_EXIST);
@@ -3104,6 +3245,12 @@ AV.Cloud.define("kongcv_insert_tradedata", function(request, response) {
  
     var kongcv_trade_obj = new kongcv_trade_cls();
     kongcv_trade_obj.set("user", user_obj);
+
+    if (typeof(property_id) != "undefined" && property_id.length > 0) {
+        var kongcv_property_obj = new kongcv_property_cls();
+        kongcv_property_obj.id = property_id;
+        kongcv_trade_obj.set("property", kongcv_property_obj);
+    }
 
     if (typeof(license_plate) != "undefined" && license_plate.length > 0) {
         kongcv_trade_obj.set("license_plate", license_plate);

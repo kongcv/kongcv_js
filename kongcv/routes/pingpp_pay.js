@@ -1,7 +1,13 @@
 'use strict';
 var router = require('express').Router();
+//Kongcv@online_pay&2016
+var kongcv_key = "80b5b4e822f60d0254d885a7c20f7a87";
+//test key id
 var PINGPP_API_KEY = "sk_test_zrDKuD1Oqnb9aLu1iLWbnbT8";
 var PINGPP_APP_ID = "app_T80WzLmTyXDSfrv5";
+//release key id 
+//var PINGPP_API_KEY = "sk_live_vDSGyD8aPGWL1mn9eLGSyj5K";
+//var PINGPP_APP_ID = "app_jTC8uTG8yj14b5GO";
 var pingpp = require('../lib_pingpp/pingpp')(PINGPP_API_KEY);
 var pay_charge = require('../pay_trade');
 var crypto = require("crypto");
@@ -63,6 +69,11 @@ var createPayment = function(order_no, channel, amount, client_ip, open_id, subj
 
 router.post('/', function(req, resp, next) {
     //pingpp.parseHeaders(req.headers);
+    var check_kongcv_key = req.headers['x-kongcv-key-signatures'];
+    console.log("check_kongcv_key:", check_kongcv_key);
+    if (kongcv_key != check_kongcv_key) {
+        return resp.status(400).send('error:key signatures error');
+    }
     // 创建 charge
     console.log("recv ping++ pay");
     var client_ip = req.connection.remoteAddress;
@@ -154,8 +165,8 @@ router.post('/notify', function(req, resp, next) {
     var pub_key_path = __dirname + "/rsa_public_key.pem";
     console.log("ping++ rsa_public_key dir:", pub_key_path);
     var signature = req.headers['x-pingplusplus-signature'];
-    console.log("ping++ signature:", signature);
- 
+    console.log("ping++ signature:", signature); 
+
     /*try {
         notify = JSON.parse(req.params);
     } catch (err) {
@@ -232,7 +243,7 @@ router.post('/notify', function(req, resp, next) {
 
     var mobile = json_obj["mb"];
     var device_token = json_obj["tk"];
-    var device_token = json_obj["tp"];
+    var device_type = json_obj["tp"];
     
     switch (notify.type) {
         case "charge.succeeded":
@@ -258,11 +269,15 @@ router.post('/notify', function(req, resp, next) {
 
             pay_charge.kongcv_put_trade_billdata(param);
             
+            console.log("mobile:",mobile);
+            console.log("device_token:",device_token);
+            console.log("device_type:",device_type);
             if (device_token != undefined && device_type != undefined) {
                 console.log("send jpush");
                 pay_charge.kongcv_trade_jpush_message_p2p(mobile, device_token, device_type, money, mode);
             }
-
+ 
+            console.log("resp charge success");
             return resp.status(200).send("success");
             break;
         case "refund.succeeded":

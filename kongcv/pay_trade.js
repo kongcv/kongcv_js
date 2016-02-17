@@ -29,6 +29,7 @@ var RESULT_MSG = {
 var kongcv_trade_bill_cls = AV.Object.extend("kongcv_trade_bill");
 var kongcv_purse_cls = AV.Object.extend("kongcv_purse");
 var kongcv_log_trade_cls = AV.Object.extend("kongcv_log_trade");
+var kongcv_rate = 0.9;
 
 /**
  * brief   : insert trade log
@@ -159,10 +160,11 @@ exports.kongcv_put_trade_billdata = function(request) {
     console.log("kongcv_trade_bill_obj:", kongcv_trade_bill_obj);
     
     var bill_query = new AV.Query(kongcv_trade_bill_cls);
-    bill_query.include("trade");
+    bill_query.include("trade.property");
     bill_query.get(bill_id, {
         success : function(bill_obj) {
             var trade_obj = bill_obj.get("trade");
+            var trade_property_obj = trade_obj.get("property");
             var trade_coupon = trade_obj.get("coupon");
             var trade_pay_tool = trade_obj.get("pay_tool");
             var trade_handsel_state = trade_obj.get("handsel_state");
@@ -293,8 +295,54 @@ exports.kongcv_put_trade_billdata = function(request) {
                                             purse_obj = new kongcv_purse_cls();
                                             purse_obj.set("user", hirer_obj);
                                         }
-                                        purse_obj.increment("amount", trade_money);
-                                        purse_obj.increment("money", trade_money);
+
+                                        var own_trade_money;
+                                        var property_rate;
+                                        var own_rate;
+
+                                        if (trade_property_obj != undefined) {
+                                            property_rate = trade_property_obj.get("rate");
+                                            own_rate = kongcv_rate - property_rate;
+                                            
+                                            var property_user_obj = trade_property_obj.get("user");
+                                            var property_purse_query = new AV.Query(kongcv_purse_cls);
+                                            property_purse_query.equalTo("user", property_user_obj);
+                                            property_purse_query.limit(1);
+                                            property_purse_query.find({
+                                                success : function(results) {
+                                                    var property_purse_obj;
+                                
+                                                    if (1 === results.length) {
+                                                        property_purse_obj = results[0];
+                                                    }
+                                                    else if (0 === results.length) {
+                                                        property_purse_obj = new kongcv_purse_cls();
+                                                        property_purse_obj.set("user", property_user_obj);
+                                                    }
+
+                                                    property_trade_money = parseInt(trade_money * property_rate);
+                                                    property_purse_obj.increment("amount", property_trade_money);
+                                                    property_purse_obj.increment("money", property_trade_money);
+                                                    
+                                                    property_purse_obj.save().then(
+                                                        function(purse_obj) {
+                                                        },
+                                                        function(error) {
+                                                            _kongcv_insert_trade_log(bill_id, request, "property_purse_save" + error);
+                                                        }
+                                                    );
+                                                },
+                                                error : function(error) {
+                                                    _kongcv_insert_trade_log(bill_id, request, "property_purse_query" + error);
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            own_rate = kongcv_rate;
+                                        }
+                                        own_trade_money = parseInt(trade_money * own_rate); 
+                                        purse_obj.increment("amount", own_trade_money);
+                                        purse_obj.increment("money", own_trade_money);
 
                                         purse_obj.save().then(
                                             function(purse_obj) {
@@ -335,25 +383,72 @@ exports.kongcv_put_trade_billdata = function(request) {
     });
 };
 
-exports.kongcv_trade_jpush_message_p2p = function(device_token, device_type, price) {
+/**
+* brief   : push sms info
+* @param  : request -{"mobilePhoneNumber" : "xxxx","push_type":"verify_request"}
+*           reponse - define error, result or system error
+*           {"result":"{"state":"error", "code":20, "msg":"xxxx"}"}
+* @return : success - RET_OK
+*           error - define error or system error
+*/
+var _kongcv_sms_send = function(mobilePhoneNumber, push_type, pay_price) {
+    if (typeof(mobilePhoneNumber) == "undefined" || mobilePhoneNumber.length === 0) {
+        console.log("_kongcv_sms_send:",ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
+        //response.success(ERROR_MSG.ERR_USER_MOBILE_MUST_EXIST);
+        return;
+    }
+
+    if (typeof(push_type) == "undefined" || push_type.length === 0) {
+        console.log("_kongcv_sms_send:",ERROR_MSG.ERR_PUSH_TYPE_MUST_EXIST);
+        //response.success(ERROR_MSG.ERR_PUSH_TYPE_MUST_EXIST);
+        return;
+    }
+
+    AV.Cloud.requestSmsCode({
+        mobilePhoneNumber:mobilePhoneNumber,
+        template:push_type,
+        price:pay_price
+    }).then(
+        function() {
+            //response.success(RESULT_MSG.RET_OK);
+            return;
+        },
+        function(error) {
+            console.log("_kongcv_sms_send:",error);
+            //response.error(error);
+            return;
+        }
+    );
+};
+
+/**
+ * brief   : jpush push messge, point to point
+ * @param  : request - {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"xxxx",extras:{"park_id":"xxxxx","mode":"community","address":"xxxxx","hire_method_id":"xxxxx","hire_method_field":"hore_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","own_device_token":"xxxxx","own_device_type":"android","own_mobile":"1xxxxx", "push_type":"verify_accept","trade_id":"xxx","pay_type":"xxx","pay_tool":"alipy","price":0},"use_token":1}
+ *           response - return map recordset or error
+ * @return : RET_OK - success
+ *           {recordset json array}
+ *           RET_ERROR - system error
+ *           {"code":601,"error":"xxxxxx"}
+ */
+exports.kongcv_trade_jpush_message_p2p = function(mobile, device_token, device_type, price, mode) {
     var device_notify;
     var push_info = "你好,你已收到支付费用,收费金额是";
     var price_info = price + "元";
     push_info += price_info;
     
+    var extras = {'push_type':'charge_info'};
     if ("ios" === device_type) {
-        device_notify = JPush.ios(push_info, 'happy', 1);
+        device_notify = JPush.ios(push_info, 'happy', 1, true, extras);
     }
     else if ("android" === device_type) {
-        device_notify = JPush.android(push_info, null, 1);
+        device_notify = JPush.android(push_info, null, 1, extras);
     }
     else {
         console.log("kongcv_trade_jpush_push_message_p2p:",ERROR_MSG.ERR_INFO_FORMAT);
         return {"result":"error_msg","msg":ERROR_MSG.ERR_INFO_FORMAT}
     }
 
-    extras = {'push_type':'charge_info'};
-    
+    console.log("start send trade jpush");
     JPush_client.push().setPlatform(device_type)
     .setAudience(JPush.registration_id(device_token))
     .setNotification('Hi, Kongcv', device_notify)
@@ -369,9 +464,15 @@ exports.kongcv_trade_jpush_message_p2p = function(device_token, device_type, pri
             }
         } 
         else {
-            if ("trade_charge" != push_type) {
-                //return {"result":"ok"}
+            console.log("jpush send ok");
+            
+            if (typeof(mode) != "undefined" && mode.length > 0) {
+                if ("curb" === mode) {
+                    return;
+                }
             }
+
+            _kongcv_sms_send(mobile, "charge_info", price);
         }
     });
 };
