@@ -1158,6 +1158,20 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_insert_invite_code:输入邀请码
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_invite_code
+request:
+请求格式:
+   {"invite_code":"xxx"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+
 _loop_trade_charge:对交易但做计费计算(非前端调用接口)
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_user_group
 request:
