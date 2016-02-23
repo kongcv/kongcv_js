@@ -30,6 +30,7 @@ var kongcv_trade_bill_cls = AV.Object.extend("kongcv_trade_bill");
 var kongcv_purse_cls = AV.Object.extend("kongcv_purse");
 var kongcv_log_trade_cls = AV.Object.extend("kongcv_log_trade");
 var kongcv_rate = 0.9;
+var limit_price = 10;
 
 /**
  * brief   : insert trade log
@@ -164,7 +165,6 @@ exports.kongcv_put_trade_billdata = function(request) {
     bill_query.get(bill_id, {
         success : function(bill_obj) {
             var trade_obj = bill_obj.get("trade");
-            var trade_property_obj = trade_obj.get("property");
             var trade_coupon = trade_obj.get("coupon");
             var trade_pay_tool = trade_obj.get("pay_tool");
             var trade_handsel_state = trade_obj.get("handsel_state");
@@ -276,6 +276,7 @@ exports.kongcv_put_trade_billdata = function(request) {
                                 );
                             }
                             else if ("balance" === pay_type && "curb" === mode) {
+                                var curb_rate = trade_obj.get("curb_rate");
                                 var trade_money = trade_obj.get("money");
                                 console.log("trade_money", trade_money);
                                 var hirer_obj = trade_obj.get("hirer");
@@ -297,50 +298,22 @@ exports.kongcv_put_trade_billdata = function(request) {
                                         }
 
                                         var own_trade_money;
-                                        var property_rate;
                                         var own_rate;
 
-                                        if (trade_property_obj != undefined) {
-                                            property_rate = trade_property_obj.get("rate");
-                                            own_rate = kongcv_rate - property_rate;
-                                            
-                                            var property_user_obj = trade_property_obj.get("user");
-                                            var property_purse_query = new AV.Query(kongcv_purse_cls);
-                                            property_purse_query.equalTo("user", property_user_obj);
-                                            property_purse_query.limit(1);
-                                            property_purse_query.find({
-                                                success : function(results) {
-                                                    var property_purse_obj;
-                                
-                                                    if (1 === results.length) {
-                                                        property_purse_obj = results[0];
-                                                    }
-                                                    else if (0 === results.length) {
-                                                        property_purse_obj = new kongcv_purse_cls();
-                                                        property_purse_obj.set("user", property_user_obj);
-                                                    }
-
-                                                    property_trade_money = parseInt(trade_money * property_rate);
-                                                    property_purse_obj.increment("amount", property_trade_money);
-                                                    property_purse_obj.increment("money", property_trade_money);
-                                                    
-                                                    property_purse_obj.save().then(
-                                                        function(purse_obj) {
-                                                        },
-                                                        function(error) {
-                                                            _kongcv_insert_trade_log(bill_id, request, "property_purse_save" + error);
-                                                        }
-                                                    );
-                                                },
-                                                error : function(error) {
-                                                    _kongcv_insert_trade_log(bill_id, request, "property_purse_query" + error);
-                                                }
-                                            });
+                                        if (curb_rate > 0) {
+                                            own_rate = curb_rate;
                                         }
                                         else {
                                             own_rate = kongcv_rate;
                                         }
-                                        own_trade_money = parseInt(trade_money * own_rate); 
+
+                                        own_trade_money = trade_money * own_rate; 
+                                        if (own_trade_money > limit_price) {
+                                            own_trade_money = parseInt(own_trade_money);
+                                        }
+                                        else {
+                                            own_trade_money = Number(own_trade_money.toFixed(1));
+                                        }
                                         purse_obj.increment("amount", own_trade_money);
                                         purse_obj.increment("money", own_trade_money);
 
@@ -466,11 +439,11 @@ exports.kongcv_trade_jpush_message_p2p = function(mobile, device_token, device_t
         else {
             console.log("jpush send ok");
             
-            if (typeof(mode) != "undefined" && mode.length > 0) {
+            /*if (typeof(mode) != "undefined" && mode.length > 0) {
                 if ("curb" === mode) {
                     return;
                 }
-            }
+            }*/
 
             _kongcv_sms_send(mobile, "charge_info", price);
         }

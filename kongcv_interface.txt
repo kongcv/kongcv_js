@@ -1162,7 +1162,7 @@ kongcv_insert_invite_code:输入邀请码
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_invite_code
 request:
 请求格式:
-   {"invite_code":"xxx"}
+   {"invite_code":"xxx", "mobile":"xxxxx"}
 response:
 参数说明:
    result - 返回结果
@@ -1172,8 +1172,8 @@ response:
    error - 错误描述
 回应格式:      
 
-_loop_trade_charge:对交易但做计费计算(非前端调用接口)
-url:https://api.leancloud.cn/1.1/functions/kongcv_insert_user_group
+kongcv_loop_charge:对交易但做计费计算(非前端调用接口)
+url:https://api.leancloud.cn/1.1/functions/kongcv_loop_charge
 request:
 请求格式:
    {"current_date":"2015-12-01", "skip":0, "limit":10}
