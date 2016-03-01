@@ -264,7 +264,7 @@ request:
    price - 停车计费价格,道边计费模式下为扣除定金价格(只在verify_request和trade_charge类型下需要,其他类型可以为空或没有)
    trade_id - 交易单id(只在trade_charge类型下需要,其他类型可以为空或没有)
    pay_type - 支付类型, money(全款),handsel(定金),balance(差额)(只在trade_charge类型下需要,其他类型可以为空或没有)
-   pay_tool - 支付工具 alipy(支付宝) wxpy(微信支付)(只在trade_charge类型下需要,其他类型可以为空或没有)
+   pay_tool - 支付工具 alipay(支付宝) wx(微信支付)(只在trade_charge类型下需要,其他类型可以为空或没有)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 请求格式:
    verify_request类型下格式:
@@ -663,11 +663,11 @@ request:
 参数说明:
    bill_id - 交易账单objectid
    money - 交易钱数
-   pay_tool - 支付工具 alipy(支付宝) wxpy(微信支付)
+   pay_tool - 支付工具 alipay(支付宝) wx(微信支付)
    pay_id - 第三方返回的支付id
    notify_id - 第三方返回的回执id
    pay_type - 支付类型, money(全款),handsel(定金),balance(差额)
-   {"bill_id":"5673ee9560b2f42a12731bb9","money":100,"pay_tool":"alipy","pay_id":"123456","notify_id": "123456", "pay_type":"balance"}
+   {"bill_id":"5673ee9560b2f42a12731bb9","money":100,"pay_tool":"alipay","pay_id":"123456","notify_id": "123456", "pay_type":"balance"}
 response:
 参数说明:
    result - 返回结果
@@ -753,6 +753,28 @@ response:
 回应格式:      
    RET_OK - 返回结果集                 
         {recordset json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_put_park_space:设置停车位空闲or已租
+url:https://api.leancloud.cn/1.1/functions/kongcv_put_park_space
+request:
+请求格式:
+   {"park_id":"xxxx","park_space":1, "mode":"curb"}
+参数说明:
+   park_id - 停车位的objectId
+   park_space - 0(已租), 1(空闲)
+   mode - 模式 curb(道边停)community(社区停)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                 
+        {record json}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
@@ -1193,6 +1215,33 @@ response:
         {"result":"{\"state\":\"ok\",\"code\":0,\"msg\":\"成功\"}"}
    error:
         {"result":{"state":"error", "code":55, "error":"loop error"}"}
+
+kongcv_insert_property:插入物业数据,use_token
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_property
+request:
+请求格式:
+{"user_id":"567a43d134f81a1d87870d62","location_info":{"__type": "GeoPoint","latitude":11.1, "longitude":116.4}, "community_name":"1111","property_name":"2222","city":"xxxx","rate":0.4,"mode": "community"}
+参数说明:
+   user_id - 用户objectid
+   location_info - 坐标， __type:GeoPoint - 数据类型，latitude - 纬度 longitude - 经度
+   community_name - 社区名称，社区名称必须是地图数据中地址所包含的文字
+   property_name - 物业名称
+   city - 城市
+   rate - 物业费率
+   mode:模式 debug - 开发模式 release - 上线模式
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+   trade_id - 交易单id
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"trade_id\":\"xxx\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
 
 支付接口:(现在接口url均为测试链接)
 url:http://kongcv_test.avosapps.com/pingpp_pay
