@@ -1184,7 +1184,10 @@ kongcv_insert_invite_code:输入邀请码
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_invite_code
 request:
 请求格式:
-   {"invite_code":"xxx", "mobile":"xxxxx"}
+   {"invite_code":"xxx", "mobilePhoneNumber":"xxxxx", "user_id":"xxx"}
+   invite_code - 邀请码
+   mobilePhoneNumber - 电话号码（记录中保持唯一)
+   user_id - 用户objectId
 response:
 参数说明:
    result - 返回结果
