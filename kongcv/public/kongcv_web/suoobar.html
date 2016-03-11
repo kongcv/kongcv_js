@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<meta content="email=no" name="format-detection">
+<title>搜索</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/soobar.css" rel="stylesheet" type="text/css" /> 
+<link href="css/index.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-mini-0.6.4.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/move10.js"></script>
+<script type="text/javascript" src="js/suoobardy.js"></script>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=3e3c953a9052242fc94a83d9c10d1084&plugin=AMap.Autocomplete"></script>
+</head>
+<body>
+<div class="sudiv">
+	<div class="div_bar">
+    	<a class="cloa" href="index.html"><img class="rucla" src="images/55.png"/></a>
+        <div class="divtex">
+            <input id="keyword" class="text_bar" type="text" value="不输入即为周边搜索" name=""onfocus='this.value=""'/>
+		 <!-- <a class="abarright" href="javascript:;" id="tijiao"><img id="hideimg" class="img_x" src="images/4545.png"/></a>-->
+             
+        </div>
+      		<a class="ss_a" href="javascript:;" id="tijiao">搜索</a>
+    </div>
+    
+   
+      <!--底部-->
+	<div class="footbar" style="bottom:0px; margin-bottom:0px; margin-top:0px;">
+  		<li class="footcc"><a class="back1 a_backimg1" href="index.html"></a></li>
+        <li class="footcont"><a class="back2" href="javascript:;" id="fabu"></a></li>
+        <li class="footcc"><a class="back3" href="javascript:;" id="wode"></a></li>
+	</div>
+  	<div id="container" style="display:none;"></div>
+</div>
+<script>
+$(document).ready(function(){
+	$('.map_con').click(function(){
+		get_suoo();
+	})
+});
+
+</script>
+</body>
+</html>

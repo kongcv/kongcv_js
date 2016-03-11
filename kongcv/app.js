@@ -4,7 +4,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var todos = require('./routes/todos');
+//var todos = require('./routes/todos');
 var cloud = require('./cloud');
 //zhaozhenyu add
 var pingpp_pay = require('./routes/pingpp_pay');

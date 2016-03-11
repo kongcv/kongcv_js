@@ -1,0 +1,138 @@
+.qb_bar{ width:100%; background:#f7f7f7;}
+.qb_bar .qb_div	{width:100%; height:68px; }
+.qb_bar .qb_div	 .div_conin{ width:92%; height:68px; margin:0 auto; }
+.qb_bar .qb_div	.div_conin .afhqb{ float:left; display:block; width:10%; height:68px; }
+
+.qb_bar .qb_div	.div_conin .afhqb .fhimgbar{ float:left; width:38%; height:36%; margin-top:23px;}
+.qb_bar .qb_div .div_conin .qb_h1{ float:left; width:80%; height:68px; line-height:68px; font-size:24px; color:#454440; text-align:center;}
+
+.qb_bar .ye_div{width:100%; height:54px; background:#ffffff; border-top:1px solid #ebebeb; border-bottom:1px solid #ebebeb;}
+.qb_bar .ye_div .ye_mar{ width:92%; height:54px; margin:0 auto; }
+.qb_bar .ye_div .ye_mar .ul_bar{ width:100%; height:54px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_left{ float:left; width:9%; height:54px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_left .qb_img{ float:left; width:25px; height:28px; margin-top:13px;}
+.qb_bar .ye_div .ye_mar .ul_bar .ye_con{float:left; width:22%; height:54px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_con .zhspan{ float:left; width:100%; height:54px; line-height:54px; font-size:18px; color:#444444;}
+.qb_bar .ye_div .ye_mar .ul_bar .ye_right{float:left; width:50%; height:54px;}
+.qb_bar .ye_div .ye_mar .ul_bar .ye_right .num_span{ float:left; display:block; width:100%; height:54px; line-height:54px; font-size:20px; color:#ffbf73;}
+
+.qb_bar .ye_info{ width:100%; height:512px;  margin-top:26px;}
+.qb_bar .ye_info .ye_inbar{ width:100%; height:52px; background:#ffffff; border-bottom:1px solid #ebebeb;}
+.qb_bar .ye_info .ye_inbar .a_marin{ width:92%; display:block; height:52px;  margin:0 auto;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul{ width:100%; height:52px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left{ float:left; width:9%; height:52px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left .zd_img{ float:left; width:22px; height:26px; margin-top:13px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left .zd_img1{ float:left; width:26px; height:20px; margin-top:16px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left .zd_img2{ float:left; width:25px; height:26px; margin-top:12px;}
+
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_con{ float:left; width:83%; height:52px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_con .zd_bar{ float:left; display:block; width:100%; height:52px; line-height:52px; font-size:18px; color:#444444;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_right{ float:left; width:8%; height:52px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_right .inzdimg{ float:right; width:50%; height:47%; margin-top:10px;}
+	
+.footbar{ float:left;width:100%; height:62px; background:#e4e4e4; margin-top:0px;}
+.footcc{ float:left; width:20%; height:62px;}
+.footcont{ float:left; width:60%; height:62px;}
+.back1{ background:url(../images/ccw.png) no-repeat; display:block; width:34px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back2{ background:url(../images/ccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back3{ background:url(../images/ccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:11px;}
+/*点击显示背景*/
+.a_backimg1{background:url(../images/ysccw.png) no-repeat;display:block; width:34px; margin:0 auto; height:42px;background-size:cover; margin-top:13px;}
+.a_backimg2{ background:url(../images/ysccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:13px;}
+.a_backimg3{ background:url(../images/ysccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:13px;}
+
+
+
+
+@media screen and (max-device-width: 400px) {
+.qb_bar{ width:100%; background:#f7f7f7;}
+.qb_bar .qb_div	{width:100%; height:55px; }
+.qb_bar .qb_div	 .div_conin{ width:94%; height:55px; margin:0 auto; }
+.qb_bar .qb_div	.div_conin .afhqb{ float:left; display:block; width:10%; height:55px; }
+
+.qb_bar .qb_div	.div_conin .afhqb .fhimgbar{ float:left; width:40%; height:38%; margin-top:16px;}
+.qb_bar .qb_div .div_conin .qb_h1{ float:left; width:80%; height:55px; line-height:55px; font-size:20px; color:#454440; text-align:center;}
+
+.qb_bar .ye_div{width:100%; height:48px; background:#ffffff; border-top:1px solid #ebebeb; border-bottom:1px solid #ebebeb;}
+.qb_bar .ye_div .ye_mar{ width:94%; height:48px; margin:0 auto; }
+.qb_bar .ye_div .ye_mar .ul_bar{ width:100%; height:48px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_left{ float:left; width:14%; height:48px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_left .qb_img{ float:left; width:23px; height:26px; margin-top:11px;}
+.qb_bar .ye_div .ye_mar .ul_bar .ye_con{float:left; width:33%; height:48px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_con .zhspan{ float:left; width:100%; height:48px; line-height:48px; font-size:16px; color:#444444;}
+.qb_bar .ye_div .ye_mar .ul_bar .ye_right{float:left; width:53%; height:48px;}
+.qb_bar .ye_div .ye_mar .ul_bar .ye_right .num_span{ float:left; display:block; width:100%; height:48px; line-height:48px; font-size:18px; color:#ffbf73;}
+
+.qb_bar .ye_info{ width:100%; height:512px;  margin-top:14px;}
+.qb_bar .ye_info .ye_inbar{ width:100%; height:48px; background:#ffffff; border-bottom:1px solid #ebebeb;}
+.qb_bar .ye_info .ye_inbar .a_marin{ width:94%; display:block; height:46px;  margin:0 auto;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul{ width:100%; height:48px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left{ float:left; width:12%; height:48px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left .zd_img{ float:left; width:20px; height:24px; margin-top:12px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left .zd_img1{ float:left; width:24px; height:18px; margin-top:15px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left .zd_img2{ float:left; width:23px; height:24px; margin-top:12px;}
+
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_con{ float:left; width:76%; height:48px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_con .zd_bar{ float:left; display:block; width:100%; height:48px; line-height:48px; font-size:16px; color:#444444;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_right{ float:left; width:12%; height:48px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_right .inzdimg{ float:right; width:34%; height:43%; margin-top:14px;}
+	
+.footbar{ float:left;width:100%; height:62px; background:#e4e4e4; margin-top:0px;}
+.footcc{ float:left; width:20%; height:62px;}
+.footcont{ float:left; width:60%; height:62px;}
+.back1{ background:url(../images/ccw.png) no-repeat; display:block; width:34px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back2{ background:url(../images/ccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back3{ background:url(../images/ccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:11px;}
+/*点击显示背景*/
+.a_backimg1{background:url(../images/ysccw.png) no-repeat;display:block; width:34px; margin:0 auto; height:42px;background-size:cover; margin-top:13px;}
+.a_backimg2{ background:url(../images/ysccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:13px;}
+.a_backimg3{ background:url(../images/ysccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:13px;}	
+	
+	
+}
+
+@media screen and (min-device-width: 1360px) {
+.qb_bar{ width:100%; background:#f7f7f7;}
+.qb_bar .qb_div	{width:100%; height:75px; }
+.qb_bar .qb_div	 .div_conin{ width:96%; height:75px; margin:0 auto;}
+.qb_bar .qb_div	.div_conin .afhqb{ float:left; display:block; width:4%; height:75px; }
+
+.qb_bar .qb_div	.div_conin .afhqb .fhimgbar{ float:left; width:25px; height:40px; margin-top:18px;}
+.qb_bar .qb_div .div_conin .qb_h1{ float:left; width:92%; height:75px; line-height:75px; font-size:34px; color:#454440; text-align:center;}
+
+.qb_bar .ye_div{width:100%; height:90px; background:#ffffff; border-top:1px solid #ebebeb; border-bottom:1px solid #ebebeb;}
+.qb_bar .ye_div .ye_mar{ width:96%; height:90px; margin:0 auto; }
+.qb_bar .ye_div .ye_mar .ul_bar{ width:100%; height:90px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_left{ float:left; width:10%; height:90px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_left .qb_img{ float:left; width:43px; height:47px; margin-top:22px;}
+.qb_bar .ye_div .ye_mar .ul_bar .ye_con{float:left; width:24%; height:90px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_con .zhspan{ float:left; width:100%; height:90px; line-height:90px; font-size:28px; color:#444444;}
+.qb_bar .ye_div .ye_mar .ul_bar .ye_right{float:left; width:66%; height:90px; }
+.qb_bar .ye_div .ye_mar .ul_bar .ye_right .num_span{ float:left; display:block; width:100%; height:90px; line-height:90px; font-size:28px; color:#ffbf73;}
+
+.qb_bar .ye_info{ width:100%; height:648px; margin-top:30px;}
+.qb_bar .ye_info .ye_inbar{ width:100%; height:70px; background:#ffffff; border-bottom:1px solid #ebebeb;}
+.qb_bar .ye_info .ye_inbar .a_marin{ width:96%; display:block; height:70px;  margin:0 auto;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul{ width:100%; height:70px; }
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left{ float:left; width:10%; height:70px; }
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left .zd_img{ float:left; width:37px; height:45px; margin-top:13px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left .zd_img1{ float:left; width:42px; height:29px; margin-top:22px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_left .zd_img2{ float:left; width:41px; height:44px; margin-top:13px;}
+
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_con{ float:left; width:86%; height:70px; }
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_con .zd_bar{ float:left; display:block; width:100%; height:70px; line-height:70px; font-size:26px; color:#444444;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_right{ float:left; width:4%; height:70px;}
+.qb_bar .ye_info .ye_inbar .a_marin .yhk_ul .yhk_right .inzdimg{ float:right; width:17px; height:31px; margin-top:20px;}
+	
+	
+.footbar{ float:left; width:100%; height:75px; background:#e4e4e4; margin-bottom:0px;}
+.footcc{ float:left; width:20%; height:75px; }
+.footcont{ float:left; width:60%; height:75px;}
+.back1{ background:url(../images/ccw.png) no-repeat; display:block; width:42px; height:50px; margin:0 auto; background-size:cover; margin-top:13px;}
+.back2{ background:url(../images/ccw1.png) no-repeat; display:block; width:27px; height:50px; margin:0 auto; background-size:cover; margin-top:13px;}
+.back3{ background:url(../images/ccw2.png) no-repeat; display:block; width:28px; height:50px; margin:0 auto;background-size:cover; margin-top:13px;}
+/*点击显示背景*/
+.a_backimg1{background:url(../images/ysccw.png) no-repeat;display:block; width:42px; margin:0 auto; height:50px;background-size:cover; margin-top:13px;}
+.a_backimg2{ background:url(../images/ysccw1.png) no-repeat; display:block; width:27px; height:50px; margin:0 auto;background-size:cover; margin-top:13px;}
+.a_backimg3{ background:url(../images/ysccw2.png) no-repeat; display:block; width:28px; height:50px;margin:0 auto;background-size:cover; margin-top:13px;}	
+}

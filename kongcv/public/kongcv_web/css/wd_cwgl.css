@@ -1,0 +1,88 @@
+.cwgl{ width:100%; background:#f7f7f7;}
+.cwgl .cwg_div{ width:100%; height:68px; background:#f7f7f7; border-bottom:1px solid #dedede;}
+.cwgl .cwg_div .cwg_mar{ width:92%; height:68px; margin:0 auto; }
+.cwgl .cwg_div .cwg_mar .cwfh{ float:left; width:20%; height:68px; }
+.cwgl .cwg_div .cwg_mar .cwfh .imgcw{ float:left; width:20%; height:36%; margin-top:23px;}
+.cwgl .cwg_div .cwg_mar .cwglh1	{ float:left; width:60%; height:68px; line-height:68px; color:#000000;  text-align:center; font-size:24px;}
+.cwgl .div_cwgl{ width:100%;}
+.cwgl .div_cwgl .ul_cwgl{ width:92%;margin:0 auto;overflow-y:scroll; height:680px;}
+.cwgl .div_cwgl .ul_cwgl li{ width:99.5%; height:136px; background:#ffffff; border-radius:14px; border:1px solid #dedede; margin-top:10px;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww{ width:100%; height:52px; border-bottom:1px solid #dedede;}
+
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb{ width:92%; height:52px;  margin:0 auto;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb .img_cwgl{ float:left; width:19px; height:29px; margin-top:11px;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb .cwg_h1{ float:left; height:52px; line-height:52px; font-size:18px; color:#0e1005;  margin-left:12px;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb .ypb{ float:right; height:52px; line-height:52px; font-size:16px; color:#000000;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb  .bpb{float:right; height:52px; line-height:52px; font-size:16px; color:#bfbfbf;}	
+.cwgl .div_cwgl .ul_cwgl li .div_cw	{ width:100%; height:80px; }
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar{ width:92%; height:80px; margin:0 auto;}
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar .cwgl_le{ float:left; width:20%; height:32px; line-height:38px; color:#0e1005; font-size:16px;}
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar .cwgl_co{ float:left; width:37%; height:32px; line-height:38px; text-align:left; color:#0e1005; font-size:16px;}
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar .cwgl_ri{ float:left; width:43%; height:32px; line-height:38px; text-align:left; color:#0e1005; font-size:16px;}
+
+.wd_hei{ width:100%; height:389px; background:#f7f7f7;}	
+	
+
+
+
+
+
+
+
+@media screen and (max-device-width: 400px) {
+.cwgl{ width:100%; background:#f7f7f7;}
+.cwgl .cwg_div{ width:100%; height:55px; background:#f7f7f7; border-bottom:1px solid #dedede;}
+.cwgl .cwg_div .cwg_mar{ width:94%; height:55px; margin:0 auto; }
+.cwgl .cwg_div .cwg_mar .cwfh{ float:left; width:20%; height:55px; }
+.cwgl .cwg_div .cwg_mar .cwfh .imgcw{ float:left; width:20%; height:37%; margin-top:17px;}
+.cwgl .cwg_div .cwg_mar .cwglh1	{ float:left; width:60%; height:55px; line-height:55px; color:#000000;  text-align:center; font-size:20px;}
+.cwgl .div_cwgl{ width:100%;}
+.cwgl .div_cwgl .ul_cwgl{ width:94%;margin:0 auto;overflow-y:scroll; height:680px;}
+.cwgl .div_cwgl .ul_cwgl li{ width:99.5%; height:99px; background:#ffffff; border-radius:14px; border:1px solid #dedede; margin-top:10px;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww{ width:100%; height:38px; border-bottom:1px solid #dedede;}
+
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb{ width:94%; height:38px;  margin:0 auto;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb .img_cwgl{ float:left; width:15px; height:22px; margin-top:8px;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb .cwg_h1{ float:left; height:38px; line-height:38px; font-size:16px; color:#0e1005;  margin-left:12px;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb .ypb{ float:right; height:38px; line-height:38px; font-size:14px; color:#000000;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb  .bpb{float:right; height:38px; line-height:38px; font-size:14px; color:#bfbfbf;}	
+.cwgl .div_cwgl .ul_cwgl li .div_cw	{ width:100%; height:60px; }
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar{ width:94%; height:60px; margin:0 auto;}
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar .cwgl_le{ float:left; width:20%; height:30px; line-height:30px; color:#0e1005; font-size:14px;}
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar .cwgl_co{ float:left; width:37%; height:30px; line-height:30px; text-align:left; color:#0e1005; font-size:14px;}
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar .cwgl_ri{ float:left; width:38%; height:30px; line-height:30px; text-align:left; color:#0e1005; font-size:14px;}
+
+.wd_hei{ width:100%; height:389px; background:#f7f7f7;}	
+
+
+
+
+}
+
+
+
+@media screen and (min-device-width: 1360px) {
+.cwgl{ width:100%; background:#f7f7f7;}
+.cwgl .cwg_div{ width:100%; height:64px; background:#ff9c00;}
+.cwgl .cwg_div .cwg_mar{ width:96%; height:64px; margin:0 auto; }
+.cwgl .cwg_div .cwg_mar .cwfh{ float:left; width:20%; height:64px; }
+.cwgl .cwg_div .cwg_mar .cwfh .imgcw{ float:left; width:21px; height:31px; margin-top:16px;}
+.cwgl .cwg_div .cwg_mar .cwglh1	{ float:left; width:60%; height:64px; line-height:64px; color:#ffffff;  text-align:center; font-size:28px;}
+.cwgl .div_cwgl{ width:100%; margin-top:10px;}
+.cwgl .div_cwgl .ul_cwgl{ width:96%;  margin:0 auto;height:846px;}
+.cwgl .div_cwgl .ul_cwgl li{ width:99.5%; height:150px; background:#ffffff; border-radius:14px; border:1px solid #dedede; margin-top:10px;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww{ width:100%; height:60px;  border-bottom:1px solid #dedede;}
+
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb{ width:90%; height:60px;  margin:0 auto;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb .img_cwgl{ float:left; width:28px; height:40px; margin-top:10px;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb .cwg_h1{ float:left; height:60px; line-height:60px; font-size:24px; color:#0e1005;  margin-left:20px;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb .ypb{ float:right; display:block; height:60px; line-height:60px; font-size:24px; color:#000000;}
+.cwgl .div_cwgl .ul_cwgl li .div_ww .div_cwglb  .bpb{float:right;display:block; height:60px; line-height:60px; font-size:24px; color:#bfbfbf;}
+	
+.cwgl .div_cwgl .ul_cwgl li .div_cw	{ width:100%; height:89px; }
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar{ width:94%; height:89px; margin:0 auto;}
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar .cwgl_le{ float:left; width:30%; height:44px; line-height:44px; color:#0e1005; font-size:20px; }
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar .cwgl_co{ float:left; width:30%; height:44px; line-height:44px; color:#0e1005; font-size:20px; }
+.cwgl .div_cwgl .ul_cwgl li .div_cw .div_mrbar .cwgl_ri{ float:left; width:30%; height:44px; line-height:44px; color:#0e1005; font-size:20px; }
+.wd_hei{ width:100%; height:531px; background:#f7f7f7;}	
+}
