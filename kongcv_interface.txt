@@ -275,7 +275,8 @@ request:
    verify_reject类型下格式:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_reject", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"push_type":"verify_reject"}}
    trade_charge类型下格式:
-   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"trade_charge", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"trade_charge","trade_id":"xxxxx","pay_type":"balance","price":100}} 
+   {"mobilePhoneNumber":"1xxxxxxx", "push_type":"trade_charge", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17
+   18:00:00","push_type":"trade_charge","trade_id":"xxxxx","pay_type":"balance","price":100, "pay_tool":"wx"}} 
 response:
 参数说明:
    result - 返回结果park info
@@ -619,7 +620,7 @@ request:
    price - 交易价格
    mode - 模式 curb(道边停)community(社区停)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
-   extra_flag - "0"(根据租用时间判断小于等于1天为短期),"1"长期(大于1天)
+   extra_flag - "0"(根据租用时间判断小于24小时为短期),"1"长期(大于等于1天)
    {"user_id":"xxxxxxxxxx","hirer_id":"xxxx","license_plate":"xxxx","park_id":"xxxxxxxxxxx","unit_price":"10/小时“, "price":100,"hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","hire_method_id":"5620a6dc60b27457e84bb21d","property_id":"xxx","curb_rate":0.8,"mode":"community","extra_flag":"0","use_token":1}
 response:
 参数说明:
