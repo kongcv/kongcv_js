@@ -1307,3 +1307,46 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_manage_get_trade_action:得到trade action数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_trade_action
+request:
+请求格式:
+   {"skip":0,"limit":10, "action":[1,4]}
+参数说明:
+   skip - 跳过记录数
+   limit - 限定返回记录数
+   action - 0支付,1提现,2退款,3冻结,4提现完成
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success        
+        {record json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+ 
+kongcv_manage_set_trade_action:设置trade action
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_set_trade_action
+request:
+请求格式:
+   {"trade_id":"xxxx","action":1}
+参数说明:
+   trade_id - 交易单id
+   action - 0支付,1提现,2退款,3冻结,4提现完成
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"trade_id\":\"xxx\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+ 
