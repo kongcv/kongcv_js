@@ -393,6 +393,8 @@ response:
 
 kongcv_get_android_version:得到andriod版本
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_android_version
+特别注明:
+   返回结果中must字段为1是强制更新
 request:
    app_type - user:用户版, manager:管理员版
 请求格式:
