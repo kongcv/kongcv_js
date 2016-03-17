@@ -394,8 +394,9 @@ response:
 kongcv_get_android_version:得到andriod版本
 url:https://api.leancloud.cn/1.1/functions/kongcv_get_android_version
 request:
+   app_type - user:用户版, manager:管理员版
 请求格式:
-   {}
+   {"app_type":"user"}
 response:
 参数说明:
    result - 返回结果
