@@ -1389,7 +1389,7 @@ response:
    error - 错误描述
 回应格式:
    RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
-        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"trade_id\":\"xxx\"}"}
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}
    RET_FAIL - fail, {\"state\":\"failed\",\"code\":1,\"msg\":\"失败\"}                 
         {"result":"{\"state\":\"failed\",\"code\":1,\"msg\":\"失败\"}"}
    err
