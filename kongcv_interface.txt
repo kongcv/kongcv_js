@@ -1396,3 +1396,51 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
  
+kongcv_manage_get_user_list:得到user list
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_user_list
+request:
+请求格式:
+   {"skip":0,"limit":10,"city":"xxxx", "start_date":"2016-01-01 00:00:00","end_date":"2016-02-01 00:00:00"}
+参数说明:
+   device_type - ios or andriod(选填)
+   skip - 跳过记录数
+   limit - 限定返回记录数  
+   city - 城市(选填)
+   start_date - 开始时间(选填)
+   end_date - 结束时间(选填)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success        
+        {record json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+ 
+kongcv_manage_get_user_count:得到user count
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_user_count
+request:
+请求格式:
+   {"device_type":"ios","city":"xxxx", "start_date":"2016-01-01 00:00:00","end_date":"2016-02-01 00:00:00"}
+参数说明: 
+   device_type - ios or andriod(选填)
+   city - 城市(选填)
+   start_date - 开始时间(选填)
+   end_date - 结束时间(选填)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success        
+        {record json}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+ 
