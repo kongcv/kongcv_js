@@ -1400,7 +1400,7 @@ kongcv_manage_get_user_list:得到user list
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_user_list
 request:
 请求格式:
-   {"skip":0,"limit":10,"city":"xxxx", "start_date":"2016-01-01 00:00:00","end_date":"2016-02-01 00:00:00"}
+   {"device_type":"ios","skip":0,"limit":10,"city":"xxxx", "start_date":"2016-01-01 00:00:00","end_date":"2016-02-01 00:00:00"}
 参数说明:
    device_type - ios or andriod(选填)
    skip - 跳过记录数
