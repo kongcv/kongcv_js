@@ -96,10 +96,8 @@ request:
    device_type - ios or andriod,如不更新此参数可以不传值或没有
    license_plate - 车牌,如不更新此参数可以不传值或没有
    version - 版本号
-   role:角色 park_manager - 停车管理员 worker - 地推人员
-   mode:模式 debug - 开发模式 release - 上线模式
 请求格式:
-   {"mobilePhoneNumber":"13xxxxxx","user_name":"xxxxx","device_token":"111111", "device_type":"ios", "license_plate":"xxxx","version":"1.0.0", "role":"park_manager", "mode":"debug"}
+   {"mobilePhoneNumber":"13xxxxxx","user_name":"xxxxx","device_token":"111111", "device_type":"ios", "license_plate":"xxxx","version":"1.0.0"}
 response:
 参数说明:
    result - 返回结果park info
@@ -146,8 +144,12 @@ request:
 参数说明:
    mobilePhoneNumber":手机号
    smsCode:短信验证码
+   role:角色 park_manager - 停车管理员 worker - 地推人员
+   mode:模式 debug - 开发模式 release - 上线模式
 正常请求格式:
    {"mobilePhoneNumber":"xxxxxxxx","smsCode":"sssss"}
+带角色的请求格式:
+   {"mobilePhoneNumber":"xxxxxxxx","smsCode":"sssss","role":"park_manager", "mode":"debug"}
 response:
 参数说明:
    result - 返回结果
