@@ -1471,3 +1471,26 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_manage_get_park_data:得到用户租用月列表,use_token
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_park_data
+request:
+   {"query_month":"2015-12-01 00:00:00", "skip":0, "limit":10,"mode":"community", "action":"list"}
+参数说明:
+   query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00)
+   skip - 跳过记录数
+   limit - 限定返回记录数
+   mode - 模式 curb(道边停)community(社区停)
+   action - list(得到订单列表数据),count(得到订单列表总数)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                  
+        {record json arrray}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
