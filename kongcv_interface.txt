@@ -1444,7 +1444,7 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
  
-kongcv_manage_get_trade_data:得到用户租用月列表,use_token
+kongcv_manage_get_trade_data:得到用户交易月列表数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_trade_data
 request:
    {"user_id":"xxxxx", "query_month":"2015-12-01 00:00:00", "role":        "customer","skip":0, "limit":10,"mode":"community", "pay_state":0,"action":"list","use_token":1}
@@ -1471,7 +1471,7 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_manage_get_park_data:得到用户租用月列表,use_token
+kongcv_manage_get_park_data:得到停车位数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_park_data
 request:
    {"query_month":"2015-12-01 00:00:00", "skip":0, "limit":10,"mode":"community", "action":"list"}
@@ -1481,6 +1481,27 @@ request:
    limit - 限定返回记录数
    mode - 模式 curb(道边停)community(社区停)
    action - list(得到订单列表数据),count(得到订单列表总数)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                  
+        {record json arrray}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_manage_get_invite_code_data:得到邀请码数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_invite_code_data
+request:
+   {"skip":0, "limit":10, "invite_code":"xxxx"}
+参数说明:
+   skip - 跳过记录数
+   limit - 限定返回记录数
+   invite_code - 邀请码(不填为查询所有数据)
 response:
 参数说明:
    result - 返回结果
