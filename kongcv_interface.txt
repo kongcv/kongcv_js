@@ -1516,7 +1516,7 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_manage_get_feedback_data:得到邀请码数据
+kongcv_manage_get_feedback_data:得到反馈数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_feedback_data
 request:
    {"query_month":"2015-12-01 00:00:00","skip":0, "limit":10, "action":"list"}
