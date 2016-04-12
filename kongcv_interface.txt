@@ -1292,6 +1292,10 @@ pay_info - pay_info.cp(coupon) - 优惠卷金额，没有为0
            pay_info.tk(device_token) - 是你从jpush获得的收款人registionId,如不更新此参数可以不传值或没有
            pay_info.tp(device_type) - ios or andriod,如不更新此参数可以不传值或没有
            pay_info.mb(mobile) - 手机号
+计时支付：
+1：定金支付，在计时方式下，handsel_state == 0表示要支付定金
+2：差额支付，在计时方式下, handsel_state == 1 && check_state == 2可以支付差额(balance)
+3：差额支付，在计时方式下, handsel_state == 1 && check_state != 2弹出计时未结束,请稍后支付
 
 支付回执接口:
 url:http://kongcv_test.avosapps.com/pingpp_pay/notify
