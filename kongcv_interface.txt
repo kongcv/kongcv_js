@@ -96,8 +96,9 @@ request:
    device_type - ios or andriod,如不更新此参数可以不传值或没有
    license_plate - 车牌,如不更新此参数可以不传值或没有
    version - 版本号
+   city - 城市
 请求格式:
-   {"mobilePhoneNumber":"13xxxxxx","user_name":"xxxxx","device_token":"111111", "device_type":"ios", "license_plate":"xxxx","version":"1.0.0"}
+   {"mobilePhoneNumber":"13xxxxxx","user_name":"xxxxx","device_token":"111111", "device_type":"ios", "license_plate":"xxxx","version":"1.0.0", "city":"xxx"}
 response:
 参数说明:
    result - 返回结果park info
