@@ -1452,10 +1452,11 @@ response:
 kongcv_manage_get_trade_data:得到用户交易月列表数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_trade_data
 request:
-   {"user_id":"xxxxx", "query_month":"2015-12-01 00:00:00", "role":        "customer","skip":0, "limit":10,"mode":"community", "pay_state":0,"action":"list","use_token":1}
+   {"user_id":"xxxxx","start_date":"2016-01-01 00:00:00","end_date":"2016-02-01 00:00:00", "role":"customer","skip":0, "limit":10,"mode":"community", "pay_state":0,"action":"list","use_token":1}
 参数说明:
    user_id - 用户的objectId,如果user_id为“0”,指查所有数据
-   query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00)
+   start_date - 开始时间(选填)
+   end_date - 结束时间(选填)
    role - 角色, hirer(出租人), hirer_second(辅助出租人-道边),customer(顾客,消费者)
    skip - 跳过记录数
    limit - 限定返回记录数
@@ -1479,9 +1480,10 @@ response:
 kongcv_manage_get_park_data:得到停车位数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_park_data
 request:
-   {"query_month":"2015-12-01 00:00:00", "skip":0, "limit":10,"mode":"community", "action":"list"}
+   {"start_date":"2016-01-01 00:00:00","end_date":"2016-02-01 00:00:00","skip":0, "limit":10,"mode":"community", "action":"list"}
 参数说明:
-   query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00, 可以不传值)
+   start_date - 开始时间(选填)
+   end_date - 结束时间(选填)
    skip - 跳过记录数
    limit - 限定返回记录数
    mode - 模式 curb(道边停)community(社区停)
@@ -1502,8 +1504,10 @@ response:
 kongcv_manage_get_invite_code_data:得到邀请码数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_invite_code_data
 request:
-   {"skip":0, "limit":10, "action":"list","invite_code":"xxxx"}
+   {"start_date":"2016-01-01 00:00:00","end_date":"2016-02-01 00:00:00","skip":0, "limit":10, "action":"list","invite_code":"xxxx"}
 参数说明:
+   start_date - 开始时间(选填)
+   end_date - 结束时间(选填)
    skip - 跳过记录数
    limit - 限定返回记录数
    action - list(得到列表数据),count(得到列表总数)
