@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<meta content="email=no" name="format-detection">
+<title>评论星星页面</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/plxxym.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-mini-0.6.4.js"></script>
+<script src="js/plxxym.js"></script>
+
+<script src="js/jquery.raty.min.js"></script>
+</head>
+
+
+
+<body>
+<div class="plxx_div">
+	<div class="xxbar">
+    	<div class="xx_mar">
+        	<a class="closs_a" href="javascript:history.go(-1)"><img class="img_cos" src="images/bton.png"/></a>
+            <div class="pl_div">评论</div>
+        </div>
+    </div>
+	<div class="xxpf">
+    	<div class="xxcon">
+        	<span class="ztpj">总体评价</span>
+            <div id="star" class="mastar">
+            </div>
+        </div>
+    </div>
+	<div class="srfz">
+    	<div class="srfzbar">
+            <textarea class="tebar" onKeyUp="javascript:checkWord(this);" onMouseDown="javascript:checkWord(this);" name="content" style="overflow-y: scroll" id="comment"></textarea>
+            <div class="srspan">
+                还可以输入<span id="wordCheck">100</span>个字符
+            </div>
+            
+        </div>
+    </div>
+    <div class="tjdiv" id="tijiao">提&nbsp;&nbsp;交</div>
+</div>
+<script>
+        $("#star").raty(
+           {
+			   hints: ['1', '2', '3', '4', '5'],
+               path:'images',
+			  size:58,
+			    starOff: 'hx2.png',
+				starOn: 'hx1.png',
+				
+ 
+           });
+    </script>
+ <script type="text/javascript">
+
+        var maxstrlen = 100;
+        function Q(s) { return document.getElementById(s); }
+
+        function checkWord(c) {
+            len = maxstrlen;
+            var str = c.value;
+            myLen = getStrleng(str);
+            var wck = Q("wordCheck");
+
+            if (myLen > len * 2) {
+                c.value = str.substring(0, i + 1);
+            }
+            else {
+                wck.innerHTML = Math.floor((len * 2 - myLen) / 2);
+            }
+        }
+
+        function getStrleng(str) {
+            myLen = 0;
+            i = 0;
+            for (; (i < str.length) && (myLen <= maxstrlen * 2); i++) {
+                if (str.charCodeAt(i) > 0 && str.charCodeAt(i) < 128)
+                    myLen++;
+                else
+                    myLen += 2;
+            }
+            return myLen;
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+.in_div{ width:100%; height:auto; float:left; margin: 0; padding: 0; background:#f8f8f8;}
+.sy_bar{ width:100%; height:66px; line-height:66px; font-size:26px; text-align:center;color:#fffefe; background:#ff9c00;}
+.lbdiv{ float:left; width:100%; height:auto; }
+.sq_div{width:100%; float:left; height:200px;  margin-top:12px;}
+.sq_div .con_bar{ width:96%; height:200px; margin:0 auto;}
+.sq_div .con_bar a{ float:left; width:50%; height:200px; display:block; }
+.sq_div .con_bar a img{ float:left; width:100%; height:200px;}
+.moon{ float:left; width:100%; height:46px; border-bottom:1px solid #e2e2e2; background:#ffffff; border-top:1px solid #e2e2e2;margin-top:22px;}
+.moon .moon_bar{ width:96%; height:39px; margin:0 auto; overflow:hidden;}
+
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background: #222;
+  margin-right: 5px;
+  opacity: 0.8;
+  /*border: 1px solid #fff;*/
+  cursor: pointer;
+}
+.swiper-visible-switch {
+  background: #aaa;
+  border:none;
+}
+.swiper-active-switch {
+  background: #fff;
+}
+.swiper-slide .title {
+  margin-top: 0px;
+  margin-bottom: 0;
+   width:100%; border:none;
+}
+.swiper-slide .title img{ height:46px; width:100%;}
+.swiper-slide .title .bor_boom:active{ position:absolute; width:13.5%; height:36px; display:block; background:#F3F; border-bottom:3px solid #ff9c00;}
+
+.xzapp{position:absolute; width:100%; height:55px;}
+.xzapp .xzappbar{ width:100%; height:55px;}
+.xzapp .xzappbar .appleft{ float:left; width:100%; height:55px; /*background:url(../images/ios_xiazai.png) no-repeat; background-size:cover;*/}
+.xzapp .xzappbar .appleft .appimg1{ float:left; width:100%; height:66px;}
+.xzapp .xzappbar .appleft .sheie{ position:absolute;  display:block; width:7.2%; height:30px; background:url(../images/hide.png) no-repeat right; background-size:cover; margin-left:87%; margin-top:17px;}
+
+
+
+
+
+.footbar{ position:absolute;width:100%; height:62px; background:#e4e4e4; margin-top:30px;}
+.footcc{ float:left; width:20%; height:62px;}
+.footcont{ float:left; width:60%; height:62px;}
+.back1{ background:url(../images/ccw.png) no-repeat; display:block; width:34px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back2{ background:url(../images/ccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back3{ background:url(../images/ccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:11px;}
+/*点击显示背景*/
+.a_backimg1{background:url(../images/ysccw.png) no-repeat;display:block; width:34px; margin:0 auto; height:42px;background-size:cover; margin-top:13px;}
+.a_backimg2{ background:url(../images/ysccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:13px;}
+.a_backimg3{ background:url(../images/ysccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:13px;}
+.amap-copyright{ display:none;}
+.amap-logo{ display:none;}
+@media screen and (max-device-width: 400px) {
+.in_div{ width:100%; height:auto; float:left; margin: 0; padding: 0; background:#f8f8f8;}
+.sy_bar{ width:100%; height:55px; line-height:55px; font-size:22px; text-align:center;color:#fffefe; background:#ff9c00;}
+.lbdiv{ float:left; width:100%; height:auto; }
+.sq_div{width:100%; float:left; height:140px;  margin-top:10px;}
+.sq_div .con_bar{ width:96%; height:140px; margin:0 auto;}
+.sq_div .con_bar a{ float:left; width:50%; height:140px; display:block; }
+.sq_div .con_bar a img{ float:left; width:100%; height:140px;}
+.moon{ float:left; width:100%; height:39px; border-bottom:1px solid #e2e2e2; background:#ffffff; border-top:1px solid #e2e2e2;margin-top:10px;}
+.moon .moon_bar{ width:96%; height:39px; margin:0 auto; overflow:hidden;}
+
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background: #222;
+  margin-right: 5px;
+  opacity: 0.8;
+  /*border: 1px solid #fff;*/
+  cursor: pointer;
+}
+.swiper-visible-switch {
+  background: #aaa;
+  border:none;
+}
+.swiper-active-switch {
+  background: #fff;
+}
+.swiper-slide .title {
+  margin-top: 0px;
+  margin-bottom: 0;
+   width:100%; border:none;
+}
+.swiper-slide .title img{ height:40px; width:100%;}
+.swiper-slide .title .bor_boom:active{ position:absolute; width:13.5%; height:36px; display:block; background:#F3F; border-bottom:3px solid #ff9c00;}
+
+.xzapp{position:absolute; width:100%; height:55px;}
+.xzapp .xzappbar{ width:100%; height:55px;}
+.xzapp .xzappbar .appleft{ float:left; width:100%; height:55px; /*background:url(../images/ios_xiazai.png) no-repeat; background-size:cover;*/}
+.xzapp .xzappbar .appleft .appimg1{ float:left; width:100%; height:100%;}
+.xzapp .xzappbar .appleft .sheie{ position:relative;  display:block; width:7.2%; height:23px; background:url(../images/hide.png) no-repeat right; background-size:cover; margin-left:87%; margin-top:16px;}
+
+
+
+
+
+.footbar{ position:absolute;width:100%; height:62px; background:#e4e4e4; margin-top:10px;}
+.footcc{ float:left; width:20%; height:62px;}
+.footcont{ float:left; width:60%; height:62px;}
+.back1{ background:url(../images/ccw.png) no-repeat; display:block; width:34px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back2{ background:url(../images/ccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back3{ background:url(../images/ccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:11px;}
+/*点击显示背景*/
+.a_backimg1{background:url(../images/ysccw.png) no-repeat;display:block; width:34px; margin:0 auto; height:42px;background-size:cover; margin-top:13px;}
+.a_backimg2{ background:url(../images/ysccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:13px;}
+.a_backimg3{ background:url(../images/ysccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:13px;}
+.amap-copyright{ display:none;}
+.amap-logo{ display:none;}	
+	
+}
+
+
+@media screen and (min-device-width: 1360px) {
+.amap-copyright{ display:none;}
+.amap-logo{ display:none;}
+.in_div{ float:left; width:100%; height:auto; background:#f8f8f8;}
+.sy_bar{ float:left; width:100%; text-align:center; height:55px; line-height:55px; font-size:30px; color:#fffefe; background:#ff9c00;}
+.lbdiv{ float:left; width:100%; height:auto;}
+
+.sq_div{width:100%; float:left; height:300px; margin-top:40px;}
+.sq_div .con_bar{ width:96%; height:300px; margin:0 auto;}	
+.astop1{border-top:1px solid #ff9c00;}
+.astop2{border-top:1px solid #f8f8f8}
+.sq_div .con_bar a{ float:left; width:50%; height:300px; display:block; }
+.sq_div .con_bar a img{ float:left; width:100%; height:300px;}
+
+.moon{ float:left; width:100%; height:42px; border-bottom:1px solid #e2e2e2; background:#ffffff; border-top:1px solid #e2e2e2; margin-top:28px;}
+.moon .moon_bar{ width:96%; height:42px; margin:0 auto; }
+
+
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background: #222;
+  margin-right: 5px;
+  opacity: 0.8;
+  /*border: 1px solid #000;*/
+  cursor: pointer;
+}
+.swiper-visible-switch {
+  background: #aaa;
+}
+.swiper-active-switch {
+  background: #fff;
+}
+.swiper-container {
+  width: 640px;
+  height: 65px;
+  color: #fff;
+  text-align: center;
+}
+.swiper-slide .title {
+  margin-top: 0px;
+  margin-bottom: 0;
+   width:160px; border:none;
+
+}
+.swiper-slide .title img{ height:40px; width:155px; margin-top:0px;
+}
+.swiper-slide .title .bor_boom:active{ position:absolute; width:155px; height:40px; display:block; border-bottom:3px solid #ff9c00;}
+.xzapp{position:absolute; width:33.6%; height:55px; background:red;}
+.xzapp .xzappbar{ width:100%; height:55px; background:#0FF;}
+.xzapp .xzappbar .appleft{ float:left; width:100%; height:55px; background:#3F0;}
+.xzapp .xzappbar .appleft .appimg1{ float:left; width:100%; height:100%;}
+
+.xzapp .xzappbar .appleft .sheie{ position:relative; display:block; width:6.2%; height:55px; background:url(../images/gb.png) no-repeat; background-size:cover; margin-left:80%;}
+
+
+.footbar{ position:absolute; width:33.3%; height:75px; background:#e4e4e4; margin-top:25px;}
+.footcc{ float:left; width:20%; height:75px; }
+.footcont{ float:left; width:60%; height:75px;}
+.back1{ background:url(../images/ccw.png) no-repeat; display:block; width:42px; height:50px; margin:0 auto; background-size:cover; margin-top:13px;}
+.back2{ background:url(../images/ccw1.png) no-repeat; display:block; width:27px; height:50px; margin:0 auto; background-size:cover; margin-top:13px;}
+.back3{ background:url(../images/ccw2.png) no-repeat; display:block; width:28px; height:50px; margin:0 auto;background-size:cover; margin-top:13px;}
+/*点击显示背景*/
+.a_backimg1{background:url(../images/ysccw.png) no-repeat;display:block; width:42px; margin:0 auto; height:50px;background-size:cover; margin-top:13px;}
+.a_backimg2{ background:url(../images/ysccw1.png) no-repeat; display:block; width:27px; height:50px; margin:0 auto;background-size:cover; margin-top:13px;}
+.a_backimg3{ background:url(../images/ysccw2.png) no-repeat; display:block; width:28px; height:50px;margin:0 auto;background-size:cover; margin-top:13px;}
+}
