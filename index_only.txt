@@ -1,3 +1,0 @@
-class:                            field:
-kongcv_purse                      user
-kongcv_loop_trade                 trade
