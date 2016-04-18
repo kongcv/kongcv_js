@@ -3,11 +3,11 @@ var JPush = require("./lib_jpush/JPush.js");
 
 //jpush AppKey,MasterSecret
 //release
-//var JPush_client = JPush.buildClient('fa4a60e2a3926c041d9fada8','4dde597eb77d1f3219e793e2');
-//var JPush_production = true;
+var JPush_client = JPush.buildClient('fa4a60e2a3926c041d9fada8','4dde597eb77d1f3219e793e2');
+var JPush_production = true;
 //debug
-var JPush_client = JPush.buildClient('ca9af5e8766e94552a733c1e','9d1c242d31e803e77dbfa8f2');
-var JPush_production = false;
+//var JPush_client = JPush.buildClient('ca9af5e8766e94552a733c1e','9d1c242d31e803e77dbfa8f2');
+//var JPush_production = false;
 
 var ERROR_MSG = {
     'ERR_USER_MOBILE_MUST_EXIST' : '{"state":"error", "code":0, "error":"手机号不能为空"}',
@@ -428,7 +428,7 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
         }
     }
 
-    if ((mobilePhoneNumber === "18514767527" || mobilePhoneNumber === "18333693804"|| mobilePhoneNumber === "13717950391") && smsCode === "123456") {
+    if ((mobilePhoneNumber === "18514767527" || mobilePhoneNumber === "18333693804"|| mobilePhoneNumber === "13581688418") && smsCode === "123456") {
         AV.User.logIn(mobilePhoneNumber, smsCode, {
             success :function(user) { 
                 var json_obj = eval("("+RESULT_MSG.RET_OK+")");
@@ -450,7 +450,6 @@ AV.Cloud.define("kongcv_signup", function(request, response) {
     }
     else {
     var user_obj = new AV.User();
-    console.log("request_json", request_json);
     user_obj.signUpOrlogInWithMobilePhone(
         request_json,
         {

@@ -3,11 +3,12 @@ var router = require('express').Router();
 //Kongcv@online_pay&2016
 var kongcv_key = "80b5b4e822f60d0254d885a7c20f7a87";
 //test key id
-var PINGPP_API_KEY = "sk_test_zrDKuD1Oqnb9aLu1iLWbnbT8";
-var PINGPP_APP_ID = "app_T80WzLmTyXDSfrv5";
-//release key id 
-//var PINGPP_API_KEY = "sk_live_vDSGyD8aPGWL1mn9eLGSyj5K";
+//var PINGPP_API_KEY = "sk_test_zrDKuD1Oqnb9aLu1iLWbnbT8";
 //var PINGPP_APP_ID = "app_jTC8uTG8yj14b5GO";
+//var PINGPP_APP_ID = "app_T80WzLmTyXDSfrv5";
+//release key id 
+var PINGPP_API_KEY = "sk_live_vDSGyD8aPGWL1mn9eLGSyj5K";
+var PINGPP_APP_ID = "app_jTC8uTG8yj14b5GO";
 var pingpp = require('../lib_pingpp/pingpp')(PINGPP_API_KEY);
 var pay_charge = require('../pay_trade');
 var crypto = require("crypto");
@@ -66,7 +67,6 @@ var createPayment = function(order_no, channel, amount, client_ip, open_id, subj
 };
 
 router.post('/', function(req, resp, next) {
-    console.log("receive pingpp_pay");
     var check_kongcv_key = req.headers['x-kongcv-key-signatures'];
     if (kongcv_key != check_kongcv_key) {
         return resp.status(400).send('error:key signatures error');
@@ -92,7 +92,6 @@ router.post('/', function(req, resp, next) {
     if (amount === undefined || amount.length === 0) {
         return resp.status(400).send('error:charge amount undefined');
     }
-    console.log("send amount", amount);
     
     var open_id = params["open_id"];
     if (open_id === undefined || open_id.length === 0) {
@@ -104,7 +103,6 @@ router.post('/', function(req, resp, next) {
         return resp.status(400).send('error:charge subject undefined');
     }
     subject = "空车位订单-" + order_no;
-    console.log("subject:", subject);
     
     var pay_info = params["pay_info"];
     if (pay_info === undefined || pay_info.length === 0) {
@@ -138,7 +136,6 @@ router.post('/', function(req, resp, next) {
 });
 
 router.post('/notify', function(req, resp, next) {
-    console.log("receive ping_pay notify");
     // 异步通知
     var notify = req.body;
     
@@ -178,8 +175,6 @@ router.post('/notify', function(req, resp, next) {
     if (money === undefined || money.length === 0) {
         return resp.status(400).send('error:notify charge.amount undefined');
     }
-    console.log("notify amount", charge.amount);
-    console.log("notify money", money);
  
     var paid = charge.paid;
     if (paid != true) {

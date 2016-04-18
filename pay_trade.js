@@ -3,11 +3,11 @@ var JPush = require("./lib_jpush/JPush.js");
 
 //jpush AppKey,MasterSecret
 //release
-//var JPush_client = JPush.buildClient('fa4a60e2a3926c041d9fada8','4dde597eb77d1f3219e793e2');
-//var JPush_production = true;
+var JPush_client = JPush.buildClient('fa4a60e2a3926c041d9fada8','4dde597eb77d1f3219e793e2');
+var JPush_production = true;
 //debug
-var JPush_client = JPush.buildClient('ca9af5e8766e94552a733c1e','9d1c242d31e803e77dbfa8f2');
-var JPush_production = false;
+//var JPush_client = JPush.buildClient('ca9af5e8766e94552a733c1e','9d1c242d31e803e77dbfa8f2');
+//var JPush_production = false;
 
 var ERROR_MSG = {
     'ERR_MODE_MUST_EXIST' : '{"state":"error", "code":12, "error":"停车模式不存在"}',
