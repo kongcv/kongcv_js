@@ -1,0 +1,161 @@
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<meta content="email=no" name="format-detection">
+<title>订单确认</title>
+<link href="js/jquery.datetimepicker.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/xqyem.css" rel="stylesheet" type="text/css" />
+<link href="css/index.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/jquery.js"></script>                       
+<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
+
+
+<script src="https://cdn1.lncld.net/static/js/av-mini-0.6.4.js"></script>
+
+<script src="js/ddqr2.js"></script>
+</head>
+<body >
+<div class="xq_div clearfix" style="position:relative;">
+	<div class="div_fby clearfix">
+    	<div class="fhsy clearfix"><a class="abar" href="wd_xxtz.html"><img class="fhj" src="images/bton.png"/></a></div>
+        <div class="xqql clearfix">
+        	<div class="ma_div clearfix">
+            	<div class="con_div clearfix">
+                	<a class="xqleft tjback" href="#">详情</a>
+                    <a class="qlrigt" href="ddplxsy.html">评论</a>
+                </div>
+            </div>
+        </div>
+        <div class="tpdw clearfix">
+        	
+        </div>
+    </div>
+    <!--内容-->
+    <div class="conxq clearfix" style="background:#FF3;"><!--position:relative;-->
+    	<!--详情-->
+    	<div class="conxqbar">
+        	<div class="xqbar">
+            	<ul id="ul">
+                	<li style="margin-top:12px;">
+                    	<div class="li_div">
+                        	<img class="limig" src="images/icon_dingwei.png"/>
+                            <span class="spanbar" id="dizhi"></span>
+                        </div>
+                    </li>
+                    <li>
+                    	<div class="li_div">
+                    		<div class="div_time">
+                            	
+                        		<strong><div class="xqfz"><img class="timg" src="images/sj1.png"/><h3>起始</h3></div></strong>
+                                <strong style="float:right;"><div class="xqfzbar"><img class="timgbar" src="images/sj2.png"/><h3 class="jsh">结束</h3></div></strong>
+                                
+                        	</div>
+                            <span class="spantime" id="start"></span><span class="spanbor"></span><span class="spantime" id="end"></span>
+                    	</div>
+                    </li>
+                    <li>
+                    	<div class="li_div">
+                        	<h4 class="hfzr" >租用起始时间</h4>
+                        	<input type="text" readonly="readonly" id="hire_s" class="datetimepicker input" value="  年 月 日" />
+                        </div>
+                    </li>
+                    <li style="margin-top:0px;  border-top:none;">
+                    	<div class="li_div">
+                        	<h4 class="hfzr">租用结束时间</h4>
+                        	<input type="text" readonly="readonly"  id="hire_e" class="datetimepicker input" value=" 年 月 日" />
+                        </div>
+                    </li>
+                    <li>
+                    	<div class="li_div">
+                        	<h4 class="hfzr">非出租日/周</h4>
+                        	<span class="span_num" id="no_hire"></span>
+                        </div>
+                    </li>
+                    <li style="margin-top:0px; border-top:none;">
+                    	<div class="li_div">
+                        	<h4 class="hfzr">车位面积</h4>
+                        	<span class="span_num" id="width"></span>
+                        </div>
+                    </li>
+                    <li style="margin-top:0px; border-top:none;">
+                    	<div class="li_div">
+                        	<h4 class="hfzr" >车位限高</h4>
+                        	<span class="span_num"id="height"></span>
+                        </div>
+                    </li>
+                    <li style="margin-top:0px; border-top:none;">
+                    	<div class="li_div">
+                        	<h4 class="hfzr">添加车牌尾号</h4>
+                        	<span class="span_num" id="tail_num"></span>
+                        </div>
+                    </li>
+                    <li>
+                    	<div class="li_div">
+                        	<h4 class="hfzr">是否正规车位</h4>
+                        	<span class="span_num" id="normal"></span>
+                        </div>
+                    </li>
+                    <li style="margin-top:0px; border-top:none;">
+                    	<div class="li_div">
+                        	<h4 class="hfzr">地上地下</h4>
+                        	<span class="span_num" id="struct "></span>
+                        </div>
+                    </li>
+                    <li>
+                    	<div class="li_div">
+                        	<span class="sjspan" id="card">有无门禁卡：</span>
+                        </div>
+                    </li>
+                    <li style="margin-top:0px; border-top:none;">
+                    	<div class="li_div">
+                        	<span class="sjspan" id="descripe">车位描述：</span>
+                        </div>
+                    </li>
+                    <li>
+                    	<div class="li_div">
+                        	<label class="czlx">出租类型</label>
+                        	<label class="czlx">时间</label>
+                            <label class="czlx">价格</label>
+                        </div>
+                    </li>
+                    
+                   </ul>
+                   <div class="dadianhua">
+                    	<div class="dadian_div">
+                        	<h4 class="lianxi lianwei">联系方式</h4>
+                            <span class="sjhxs" id="lxfs"></span>
+                        	<a class="bodaa" href="tel:" id="lian"><img class="tupian" src="images/btn_dianhau.png"/></a>
+                        </div>
+                  </div>
+            </div>
+            
+            
+    		<div class="qrdd"> 
+    			<a class="qrddbar" id="tijiao">定&nbsp;&nbsp;&nbsp;单&nbsp;&nbsp;&nbsp;确&nbsp;&nbsp;&nbsp;认</a>
+      
+   				<div class="footbar fottmar" style="width:100%;">
+  					<li class="footcc"><a class="back1" href="index.html"></a></li>
+        			<li class="footcont"><a class="back2" href="javascript:;" id="fabu"></a></li>
+        			<li class="footcc"><a class="back3 a_backimg3" href="javascript:;" id="wode"></a></li>
+				</div> 
+    		</div>
+            
+        </div>
+		
+        
+       
+        
+    </div>
+      
+</div>
+
+<!-- -->
+</body>
+</html>

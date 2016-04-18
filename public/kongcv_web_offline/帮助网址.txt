@@ -1,0 +1,4 @@
+有出租方法的网址
+
+https://github.com/kongcv/kongcv_js/blob/master/kongcv_interface.txt
+

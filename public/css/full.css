@@ -1,0 +1,306 @@
+@charset "utf-8";
+/*
+ * fullPage 1.4.5
+ * https://github.com/alvarotrigo/fullPage.js
+ * MIT licensed
+ *
+ * Copyright (C) 2013 alvarotrigo.com - A project by Alvaro Trigo
+ */
+ 
+* { margin: 0; padding: 0;}
+body { font: 16px/1.8 "Microsoft Yahei",verdana;}
+ul li{list-style-type:none;}
+a{text-decoration:none;} 
+.logo{float:left; margin-top:10px;}
+.uul{width:50%; height:20%;float:right;  font-size:20px;}
+.uul a{ display:block; float:left; color:#ffffff; width:33%; height:42px; line-height:38px; text-align:center;}
+.iosimg1{ position:absolute; top:0; right:0;}
+.iosimg2{position:absolute; bottom:0; right:0;}
+.dip{width:50%; height:100%;  position:relative; z-index:2; left:25%;}
+.div_1{width:100%; height:21%;}
+.xz_div{width:100%; height:20%; position:relative;}
+.div_b{width:100%; height:auto; position:absolute; top:75%;}
+
+.pa{ font-size:20px; color:#fff; line-height:32px; text-indent:2em;}
+.bah{font-size:20px; color:#fff; line-height:32px; width:100%; text-align:center;}
+.erm1{ position:absolute; right:0;display:none; }
+.erm2{position:absolute; right:0; display:none;}
+.serm{width:100%; position:relative; margin-top:2%;}
+
+
+
+
+
+#superContainer {
+    height: 100%;
+    position: relative;
+}
+.section {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.slide {
+    float: left;
+}
+.slide, .slidesContainer {
+    height: 100%;
+    display: block;
+}
+.slides {
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+.section.table, .slide.table {
+    display: table;
+    width: 100%;
+}
+.tableCell {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+}
+.slidesContainer {
+    float: left;
+    position: relative;
+}
+.controlArrow {
+    position: absolute;
+    top: 50%;
+    cursor: pointer;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    margin-top: -38px;
+}
+.controlArrow.prev {
+    left: 15px;
+    width: 0;
+    border-width: 38.5px 34px 38.5px 0;
+    border-color: transparent #fff transparent transparent;
+}
+.controlArrow.next {
+    right: 15px;
+    border-width: 38.5px 0 38.5px 34px;
+    border-color: transparent transparent transparent #fff;
+}
+.scrollable {
+    overflow: scroll;
+}
+.easing {
+    -webkit-transition: all 0.7s ease-out;
+    -moz-transition: all 0.7s ease-out;
+    -o-transition: all 0.7s ease-out;
+    transition: all 0.7s ease-out;
+}
+
+#fullPage-nav {
+    position: fixed;
+    z-index: 100;
+    top: 60% ;
+	right:0 ; 
+    opacity: 1 ;
+}
+#fullPage-nav.right {
+    right: 0px;
+}
+#fullPage-nav.left {
+    left: 17px;
+}
+.fullPage-slidesNav {
+    position: absolute;
+    z-index: 4;
+    left: 50%;
+    opacity: 1;
+}
+.fullPage-slidesNav.bottom {
+    bottom: 17px;
+}
+.fullPage-slidesNav.top {
+    top: 17px;
+}
+#fullPage-nav ul,
+.fullPage-slidesNav ul {
+  margin: 0;
+  padding: 0;
+}
+#fullPage-nav li,
+.fullPage-slidesNav li {
+    display: block;
+    width: 14px;
+    height: 13px;
+    margin: 7px;
+    position:relative;
+}
+.fullPage-slidesNav li {
+    display: inline-block;
+}
+#fullPage-nav li a,
+.fullPage-slidesNav li a {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none;
+}
+#fullPage-nav li .active span,
+.fullPage-slidesNav .active span {
+    background: #333;
+}
+#fullPage-nav span,
+.fullPage-slidesNav span {
+    top: 2px;
+    left: 2px;
+    width: 8px;
+    height: 8px;
+    border: 1px solid #000;
+    background: rgba(0, 0, 0, 0);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+}
+.fullPage-tooltip {
+    position: absolute;
+    color: #fff;
+    font-size: 14px;
+    font-family: arial, helvetica, sans-serif;
+    top: -2px;
+}
+.fullPage-tooltip.right {
+    right: 20px;
+}
+.fullPage-tooltip.left {
+    left: 20px;
+}
+
+
+/* 圆点导航 */
+#fullPage-nav {
+	_display: none;
+	font-size: 12px;
+	width: 43px;
+	height: 280px;
+}
+
+#fullPage-nav li {
+	width: 40px;
+	height: 21px;
+	margin: 10px 0 0;
+	vertical-align: middle;
+}
+
+#fullPage-nav li a {
+	float: right;
+	width: 21px;
+	height: 21px;
+	color: #8F9DA4;
+	text-decoration: none;
+	text-align: right;
+	background:url(../images/dot.png) 0px -18px no-repeat;
+}
+
+#fullPage-nav li .active {
+	display:none;
+	background-position: 0 6px;
+}
+
+#fullPage-nav span {
+	display: none;
+}
+
+.fullPage-tooltip {
+	float: left;
+	top: 0;
+	margin-right: 5px;
+	font: 12px "Microsoft Yahei";
+	color: #8F9DA4;
+	line-height: 21px;
+}
+/* 圆点导航 */
+
+
+.section { position: relative; overflow: hidden;padding-top:0px; background:url(../images/Bitmap.png) no-repeat center; background-size:auto; height:auto;}
+.section .bg { position: absolute; left: 0; top: 0; width: 100%; height: 100%;}
+.section .bg img { display: block; width: 100%; height: 100%;}
+
+/* for lt ie 10*/
+.ltie10 strong, .ltie10 h3 { opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+
+.ltie10 .bg01 {   bottom:42% ; margin-bottom:-278px ;  transition-delay: 1.2s; }
+.ltie10 .bg02 {   bottom:50% ; margin-bottom:-278px ; opacity: 1; transition-delay: 0.7s;}
+.ltie10 .bg6_02 {   bottom:50% ; margin-bottom:-260px ; opacity: 1; transition-delay: 0.7s;}
+.ltie10 .bg04 {  opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+.ltie10 .bg2_04 {  opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+.ltie10 .bg2_05 {  opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+.ltie10 .bg2_06 {   opacity: 1; margin-left: -483px; transition-delay: 1.2s ; }
+.ltie10 .bg2_07 {   margin-left: -483px; opacity: 1; transition-delay: 1.2s;}
+.ltie10 .bg06_4 {  opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+.ltie10 .bg6_04 {  opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+.ltie10 .bg044 {  opacity: 1; transform:scale(1, 1); transition-delay: 0.7s;}
+.ltie10 .bg03 {   top:55% ; margin-top:-278px ;  transition-delay: 0.7s;}
+.ltie10 .bg033 {   top:59% ; margin-top:-278px ;  transition-delay: 1.2s;}
+.ltie10 .bg05 {    opacity: 1; transition-duration: 1s; transition-delay: 2s;}
+
+.ltie10 .bg5_06 {   opacity: 1; margin-left: -519px; transition-delay: 0.7s ; }
+.ltie10 .bg5_07 {   margin-left: -519px; opacity: 1; transition-delay: 0.7s;}
+.ltie10 .bg5_08 {   bottom:50% ; margin-bottom:-200px ; transition-delay: 0.7s;}
+
+.ltie10 .bg09 {   bottom:50% ;margin-bottom:-303px; opacity: 1; transition-delay: 0.7s;}
+.ltie10 .bg10 {   top:50% ; margin-top:-100px ;  transition-delay: 0.7s;}
+.ltie10 .bg11 {   bottom:50% ; margin-bottom:-10px ;  transition-delay: 0.3s; }
+.ltie10 .bg12 {   bottom:40% ; margin-bottom:-80px ;  transition-delay: 0.5s; }
+.ltie10 .bg13 {   bottom:50% ; margin-bottom:-253px ;  transition-delay: 0.7s; }
+
+
+.ltie10 .bg7_10 {   top:40% ; margin-top:-100px ;  transition-delay: 0.7s;}
+.ltie10 .bg7_11 {   bottom:42% ; margin-bottom:-150px ;  transition-delay: 0.3s; }
+.ltie10 .bg7_12 {   bottom:42% ; margin-bottom:-150px ;  transition-delay: 0.5s; }
+
+.ltie10 .bg14 {   bottom:50% ; margin-bottom:100px ; opacity: 1; transition-delay: 0.7s;}
+.ltie10 .bg15 {   bottom:50% ; margin-bottom:25px ;  transition-delay: 0.3s; }
+.ltie10 .bg16 {    opacity: 1; transition-duration: 1s; transition-delay: 2s;}
+.ltie10 .bg17 {   bottom:50% ; margin-bottom:-268px ;  transition-delay: 0.7s; }
+.ltie10 .bg5_01 {   bottom:50% ; margin-bottom:-250px ;  transition-delay: 0.7s; }
+.ltie10 .bg18 {   bottom:50% ; margin-top:-268px ; opacity: 1; transition-delay: 0.7s;}
+.ltie10 .bg19 {   bottom:50% ; margin-bottom:-268px ;  transition-delay: 0.3s; }
+.ltie10 .bg5_19 {   bottom:50% ; margin-bottom:-251px ;  transition-delay: 0.3s; }
+
+/* CSS Document */
+
+
+
+
+.footer_link{
+    width: 808px;
+    height: 94px;
+    position: absolute;
+    left: 50%;
+    margin-left: -404px;
+    bottom: 5%;
+    z-index: 10000 !important;
+}
+.footer_link a{
+    display: block;
+    width: 384px;
+    height: 94px;
+    margin-right: 40px;
+    float: left;
+
+    cursor: pointer;
+
+}
+.footer_link a:last-child{
+    margin-right: 0 !important;
+}
+

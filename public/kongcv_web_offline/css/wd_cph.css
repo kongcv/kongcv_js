@@ -1,0 +1,46 @@
+.cph{ width:100%; height:736px; background:#f7f7f7; }
+.cph .tjbar{ width:100%; height:68px; border-bottom:1px solid #dedede; }
+.cph .tjbar .div_tj{ width:92%; height:68px; margin:0 auto; }
+.cph .tjbar .div_tj .tjf{ float:left; width:14%; height:68px; line-height:68px; color:#444444; font-size:16px; }
+.cph .tjbar .div_tj .tjyhangk{ float:left; width:68%; height:68px; line-height:68px; text-align:center; color:#444444; font-size:24px;}
+.cph .tjbar .div_tj .fsxx{ float:right; width:18%; height:68px; line-height:68px; font-size:16px; color:#ff9c00; display:block; text-align:right;}
+
+
+.cph .cphbar{ width:100%; height:52px; background:#ffffff; margin-top:20px; border-top:1px solid #dedede; border-bottom:1px solid #dedede;}
+.cph .cphbar .cph_div{ width:92%; height:52px; margin:0 auto;}	
+.cph .cphbar .cph_div .cphtext{ float:left; width:83%; height:52px; line-height:52px;  border:none; font-size:16px; color:#5e5e5e;}
+.cph .cphbar .cph_div .gcphimg{ float:right; width:22px; height:22px; margin-top:15px;}
+.cpfhimg{ float:left; width:15px; height:24px; margin-top:22px;}
+
+@media screen and (max-device-width: 400px) {
+.cph{ width:100%; height:736px; background:#f7f7f7; }
+.cph .tjbar{ width:100%; height:55px; border-bottom:1px solid #dedede; }
+.cph .tjbar .div_tj{ width:94%; height:55px; margin:0 auto; }
+.cph .tjbar .div_tj .tjf{ float:left; width:14%; height:55px; line-height:55px; color:#444444; font-size:14px; }
+.cph .tjbar .div_tj .tjyhangk{ float:left; width:72%; height:55px; line-height:55px; text-align:center; color:#444444; font-size:20px;}
+.cph .tjbar .div_tj .fsxx{ float:right; width:14%; height:55px; line-height:55px; font-size:14px; color:#ff9c00; display:block; text-align:right;}
+
+
+.cph .cphbar{ width:100%; height:46px; background:#ffffff; margin-top:14px; border-top:1px solid #dedede; border-bottom:1px solid #dedede;}
+.cph .cphbar .cph_div{ width:94%; height:46px; margin:0 auto;}	
+.cph .cphbar .cph_div .cphtext{ float:left; width:83%; height:46px; line-height:46px;  border:none; font-size:14px; color:#5e5e5e;}
+.cph .cphbar .cph_div .gcphimg{ float:right; width:20px; height:20px; margin-top:13px;}
+.cpfhimg{ float:left; width:12px; height:20px; margin-top:17px;}	
+}
+
+
+
+@media screen and (min-device-width: 1360px) {
+.cph{ width:100%; height:920px; background:#f7f7f7;}
+.cph .tjbar{ width:100%; height:64px; border-bottom:1px solid #dedede;}
+.cph .tjbar .div_tj{ width:96%; height:64px; margin:0 auto;}
+.cph .tjbar .div_tj .tjf{ float:left; width:10%; height:64px; line-height:64px;color:#5e5e5e;  font-size:22px; }
+.cph .tjbar .div_tj .tjyhangk{ float:left; width:80%; height:64px; line-height:64px;  text-align:center; color:#444444; font-size:28px;}
+.cph .tjbar .div_tj .fsxx{ float:right; width:10%; height:64px; line-height:64px; font-size:22px; color:#ff9c00; display:block; text-align:right;}
+
+.cph .cphbar{ width:100%; height:80px; background:#ffffff; margin-top:20px; border-top:1px solid #dedede; border-bottom:1px solid #dedede;}
+.cph .cphbar .cph_div{ width:96%; height:80px; margin:0 auto;}	
+.cph .cphbar .cph_div .cphtext{ float:left; width:88%; height:80px; line-height:78px; border:none; font-size:28px; color:#5e5e5e;}
+.cph .cphbar .cph_div .gcphimg{ float:right; width:44px; height:44px; margin-top:18px;}
+	
+}

@@ -1,0 +1,99 @@
+html, body, div, p, ul, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, select, button, textarea, iframe, table, th, td,i ,b,a{
+	margin: 0;
+	padding: 0; font-family: 'Microsoft YaHei','宋体';
+}
+ul,li{list-style-type:none;}
+
+body {-webkit-user-select:none;-webkit-text-size-adjust:none;font-family:"宋体" Arial; background:#ffff; }
+a{text-decoration:none;}
+.clear{ clear:both !important;}
+.back{ background:#fff; margin:0; padding:0;}
+.enroll_div{ width:100%; float:left;height:750px; margin: 0; padding: 0; background:#f7f7f7;}
+.enroll_in{ width:100%; height:55px; }
+.enroll_in .div_close{ float:left; display:block; width:8%; height:55px; text-align:center; font-size:30px; line-height:55px; color:#0a0a0a;}
+.enroll_in .log_div{ float:left; width:84%; text-align:center; height:55px; line-height:55px; font-size:26px; }
+.enroll_div .enroll_in .div_close .imgcw{ float:left; width:48%; height:45%; margin-top:15px; margin-left:12px;}
+
+.img_div{ width:100%; height:188px;}
+.img_div .div_logo{ width:78px; height:167px; margin:0 auto;}
+.img_div .div_logo img { float:left; width:78px; height:78px; margin-top:30px;}
+.phone{ width:100%; float:left; height:auto;}
+.phone ul{width:92%; height:46px; margin:0 auto;}
+.phone ul li{ float:left; width:100%; height:46px; background:#e9e9e9; margin-top:8px; border-radius:6px;}
+.phone ul li .plone_span{ float:left; font-size:16px; display:block; line-height:46px; width:25%; text-indent:0.6em;}
+.phone ul li .phonetext{ float:left; width:70%; height:46px;  line-height:46px;  background:#e9e9e9; border:none; color:#959595; font-size:16px; text-indent:0.4em;}
+.yzm{ float:left; font-size:16px; display:block; line-height:46px; width:35%; text-indent:0.6em;}
+.dxyz{ float:left; width:100%; height:46px; line-height:46px; text-align:center; font-size:16px; color:#656565;}
+
+.logon{ float:left; width:100%; height:auto; margin-top:70px;}
+.logon .logon_bar{ width:88%; height:auto;  margin:0 auto;}
+.logon .logon_bar .clause{ float:left; width:100%; height:28px;}
+.logon .logon_bar .clause span{ float:left; display:block; height:28px; line-height:28px; font-size:14px; color:#656565;}
+.logon .logon_bar .clause a{ float:left; display:block; height:28px; line-height:28px; font-size:14px; color:#2ea9d7;}
+.logon .logon_bar .loinfo{ float:left; width:100%; height:50px; margin-top:2px; }
+.logon .logon_bar .loinfo a{ float:left; width:100%; height:46px; line-height:46px; text-align:center; font-size:22px; color:#ffffff; background:#ff9c00; border-radius:6px; }
+.logon .logon_bar .loinfo a:active{float:left; width:100%; height:50px; line-height:50px; text-align:center; font-size:30px; color:#fedb5c; background:#ea9611; border-radius:6px; }
+.img{width:19px; height:31px; margin-top:11px;}
+@media screen and (max-device-width: 400px) {
+	.enroll_div{ width:100%; float:left;height:750px; margin: 0; padding: 0; background:#f7f7f7;}
+.enroll_in{ width:100%; height:55px; }
+.enroll_in .div_close{ float:left; display:block; width:8%; height:55px; text-align:center; font-size:30px; line-height:55px; color:#0a0a0a;}
+.enroll_in .log_div{ float:left; width:84%; text-align:center; height:55px; line-height:55px; font-size:22px; }
+.enroll_div .enroll_in .div_close .imgcw{ float:left; width:48%; height:37%; margin-top:19px; margin-left:12px;}
+
+.img_div{ width:100%; height:167px;}
+.img_div .div_logo{ width:66px; height:167px; margin:0 auto;}
+.img_div .div_logo img { float:left; width:66px; height:66px; margin-top:30px;}
+.phone{ width:100%; float:left; height:auto;}
+.phone ul{width:92%; height:40px; margin:0 auto;}
+.phone ul li{ float:left; width:100%; height:40px; background:#e9e9e9; margin-top:5px; border-radius:6px;}
+.phone ul li .plone_span{ float:left; font-size:14px; display:block; line-height:40px; width:25%; text-indent:0.6em;}
+.phone ul li .phonetext{ float:left; width:70%; height:40px;  line-height:40px;  background:#e9e9e9; border:none; color:#959595; font-size:14px; text-indent:0.4em;}
+.yzm{ float:left; font-size:14px; display:block; line-height:40px; width:35%; text-indent:0.6em;}
+.dxyz{ float:left; width:100%; height:40px; line-height:40px; text-align:center; font-size:14px; color:#656565;}
+
+.logon{ float:left; width:100%; height:auto; margin-top:47px;}
+.logon .logon_bar{ width:88%; height:auto;  margin:0 auto;}
+.logon .logon_bar .clause{ float:left; width:100%; height:28px;}
+.logon .logon_bar .clause span{ float:left; display:block; height:28px; line-height:28px; font-size:12px; color:#656565;}
+.logon .logon_bar .clause a{ float:left; display:block; height:28px; line-height:28px; font-size:12px; color:#2ea9d7;}
+.logon .logon_bar .loinfo{ float:left; width:100%; height:50px; margin-top:0px; }
+.logon .logon_bar .loinfo a{ float:left; width:100%; height:40px; line-height:40px; text-align:center; font-size:18px; color:#ffffff; background:#ff9c00; border-radius:6px; }
+.logon .logon_bar .loinfo a:active{float:left; width:100%; height:50px; line-height:50px; text-align:center; font-size:30px; color:#fedb5c; background:#ea9611; border-radius:6px; }
+.img{width:19px; height:31px; margin-top:11px;}
+	
+}	
+@media screen and (min-device-width: 1360px) {
+.imm{width:21px; height:31px; margin-top:16px;}
+body {width: 640px; margin: 0 auto; background:#ffff;}
+.enroll_div{ width:100%; float:left; height:1000px; background:#f7f7f7;}
+.enroll_in{ width:100%; height:55px; }
+.enroll_in .div_close{ float:left; width:12%; height:55px;text-align:center;  font-size:30px; line-height:55px; color:#0a0a0a;}
+.enroll_in .log_div{ float:left; width:76%; text-align:center; height:55px; line-height:55px; font-size:30px;}
+.enroll_div .enroll_in .div_close .imgcw{ float:left; width:21px; height:31px; margin-top:8px; margin-left:15px;}
+.img_div{ width:100%; height:300px;}
+
+.img_div .div_logo{ width:140px; height:300px; margin:0 auto;}
+.img_div .div_logo img { float:left; width:140px; height:140px; margin-top:63px;}
+
+.phone{ width:100%; float:left; height:auto; }
+.phone ul{width:92%; height:auto;  margin:0 auto;}
+.phone ul li{ float:left; width:100%; height:60px; background:#e9e9e9; margin-top:22px;border-radius:6px;}
+.phone ul li .plone_span{ float:left; font-size:28px; display:block; line-height:60px; width:20%;  text-indent:0.8em;}
+.phone ul li .phonetext{ float:left; width:79%; height:60px; line-height:60px;   border:none; font-size:28px;text-indent:0.4em;}
+.yzm{ float:left; width:28%;font-size:28px; display:block; line-height:60px; text-indent:0.8em;}
+.dxyz{ float:left; width:100%; height:60px; line-height:60px; text-align:center; font-size:28px; color:#656565;}
+
+.logon{ float:left; width:100%; height:auto; margin-top:48px;}
+.logon .logon_bar{ width:84%; height:auto;  margin:0 auto;}
+.logon .logon_bar .clause{ float:left; width:100%; height:28px;}
+.logon .logon_bar .clause span{ float:left; display:block; height:28px; line-height:28px; font-size:14px; color:#656565;}
+.logon .logon_bar .clause a{ float:left; display:block; height:28px; line-height:28px; font-size:14px; color:#2ea9d7;}
+.logon .logon_bar .loinfo{ float:left; width:100%; height:60px; margin-top:12px; }
+.logon .logon_bar .loinfo a{ float:left; width:100%; height:60px; background:#ff9c00; line-height:60px; text-align:center; font-size:35px; color:#ffffff;border-radius:6px; }
+
+.logon .logon_bar .loinfo a:active{float:left; width:100%; height:60px; background:#ea9611; line-height:60px; text-align:center; font-size:35px; color:#f5a62a; border-radius:6px;}
+}	
+
+
+

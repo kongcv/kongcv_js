@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="black" name="apple-mobile-web-app-status-bar-style">
+<meta content="telephone=no" name="format-detection">
+<meta content="email=no" name="format-detection">
+<title>注册</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-mini-0.6.4.js"></script>
+<script type="text/javascript" src="js/httpxy.js"></script>
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+<script>
+function test(){
+var dt = new Date(); 
+dt.setSeconds(dt.getSeconds() + 60); 
+document.cookie = "cookietest=1; expires=" + dt.toGMTString(); 
+var cookiesEnabled = document.cookie.indexOf("cookietest=") != -1; 
+if(!cookiesEnabled) { 
+	//没有启用cookie 
+	alert("没有启用cookie ");
+} else{
+	//已经启用cookie 
+	alert("已经启用cookie ");
+}
+	alert('登录成功');
+			alert('18614033619'+'bbbbbbbb');
+			//赋值
+			$.cookie('key', '18614033619');
+			//取值
+			alert($.cookie('key'));
+
+		
+}
+</script>
+</head>
+
+<body>
+<div class="enroll_div">
+	<div class="enroll_in">
+    	<a class="div_close" href="#"><</a>
+    	<div class="log_div">登录</div>
+        <div class="div_close"></div>
+    </div>
+    <div class="img_div">
+    	<div class="div_logo">
+        	<img src="images/logo.png"/>
+        </div>
+    </div>
+    <div class="phone">
+    	<ul>
+        	<li style="margin-top:0px;">
+            	<span class="plone_span">手机号</span>
+                <input id="test" class="phonetext" type="text"onKeyUp="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')"  name=""placeholder="请输入您的手机号"/>
+            </li>
+            <li style="width:70%;">
+            	<span class="yzm" >验证码</span>
+                <input id="yzm" class="phonetext" style=" width:60%;" type="text"onKeyUp="value=value.replace(/\D/g,'')" onafterpaste="value=value.replace(/\D/g,'')" name=""placeholder="请输入验证码"/>				            </li>
+            <li style=" float:right;width:27%;"><a id="dxyz" class="dxyz" onclick="get_smscode()"  href="#">短信验证</a></li>
+        </ul>
+    </div>
+    <!--登录-->
+    <div class="logon">
+    	<div class="logon_bar">
+        	<div class="clause">
+            	<span>注册代表你同意</span>
+                <a href="#">空车位网络使用协议</a>
+                <span>和</span>
+                <a href="#">隐私条款</a>
+            </div>
+            <div class="loinfo" onclick="logobar()">
+            	<a href="#">登录</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+$(document).ready(function(){
+alert($.cookie('username'))
+  if($.cookie('username')!="undefined"||$.cookie('username')!=null){
+	alert('跳到主页面')
+  }
+});
+
+</script>
+</body>
+</html>
