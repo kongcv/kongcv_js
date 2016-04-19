@@ -1480,8 +1480,9 @@ response:
 kongcv_manage_get_park_data:得到停车位数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_park_data
 request:
-   {"start_date":"2016-01-01 00:00:00","end_date":"2016-02-01 00:00:00","skip":0, "limit":10,"mode":"community", "action":"list"}
+   {"user_id":"xxxx","start_date":"2016-01-01 00:00:00","end_date":"2016-02-01 00:00:00","skip":0, "limit":10,"mode":"community", "action":"list"}
 参数说明:
+   user_id - 出租人objectid
    start_date - 开始时间(选填)
    end_date - 结束时间(选填)
    skip - 跳过记录数
