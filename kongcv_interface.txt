@@ -247,7 +247,7 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_jpush_message_p2p
 request:
 参数说明:
    mobilePhoneNumber - 对方手机号
-   push_type - 发送类型(verify_request-租用请求,verify_accept-接受租用,verify_reject-拒绝租用,trade_charge-交易计费(道边停车管理员发送),charge_info-支付信息(支付后向收款人发通知))
+   push_type - 发送类型(verify_request-租用请求,verify_accept-接受租用,verify_reject-拒绝租用,trade_charge-交易计费(道边停车管理员发送),charge_info-支付信息(支付后向收款人发通知), park_push-预订车位推送)
    device_type - 设备类型ios or android
    device_token - 要发送的对方registrationId
    user_id - 自己的user_id
@@ -278,6 +278,8 @@ request:
    trade_charge类型下格式:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"trade_charge", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17
    18:00:00","push_type":"trade_charge","trade_id":"xxxxx","pay_type":"balance","price":100, "pay_tool":"wx"}} 
+   park_push类型下收到的通知格式:
+   {extras:{"park_id":"xxxxx"}}
 response:
 参数说明:
    result - 返回结果park info
@@ -1015,8 +1017,6 @@ response:
 kongcv_insert_withdraw_deposit:插入提现数据,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_withdraw_deposit
 request:
-特别说明:
-   在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>"
 请求格式:
    {"user_id":"xxxxx", "money":100, "use_token":1}
 参数说明:
@@ -1268,6 +1268,31 @@ response:
         {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"trade_id\":\"xxx\"}"}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_insert_park_autopush:插入车位需求地点数据,use_token
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_park_autopush
+request:
+请求格式:
+{"user_id":"567a43d134f81a1d87870d62","location_info":{"__type": "GeoPoint","latitude":11.1, "longitude":116.4}, "address":"1111", "city":"xxxx"}
+参数说明:
+   user_id - 用户objectid
+   location_info - 坐标， __type:GeoPoint - 数据类型，latitude - 纬度 longitude - 经度
+   city - 城市
+   address - 地址
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+   trade_id - 交易单id
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"trade_id\":\"xxx\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 
 支付接口:(现在接口url均为测试链接)
 url:http://kongcv_test.avosapps.com/pingpp_pay
@@ -1529,9 +1554,10 @@ response:
 kongcv_manage_get_feedback_data:得到反馈数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_feedback_data
 request:
-   {"query_month":"2015-12-01 00:00:00","skip":0, "limit":10, "action":"list"}
+   {"start_date":"2015-12-01 00:00:00","end_date":"2015-12-01 00:00:00","skip":0, "limit":10, "action":"list"}
 参数说明:
-   query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00, 可以不传值)
+   start_date - 开始时间(选填)
+   end_date - 结束时间(选填)
    skip - 跳过记录数
    limit - 限定返回记录数
    action - list(得到列表数据),count(得到列表总数)
@@ -1551,9 +1577,34 @@ response:
 kongcv_manage_get_pushmessage_data:得到通知数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_pushmessage_data
 request:
-   {"query_month":"2015-12-01 00:00:00","skip":0, "limit":10, "action":"list","mode":"xxx"}
+   {"start_date":"2015-12-01 00:00:00","end_date":"2015-12-01 00:00:00","skip":0, "limit":10, "action":"list","mode":"xxx"}
 参数说明:
-   query_month - 查询的月份(例如:8月"2015-08-01 00:00:00", 12月"2015-12-01 00:00:00,可以不传值)
+   start_date - 开始时间(选填)
+   end_date - 结束时间(选填)
+   skip - 跳过记录数
+   limit - 限定返回记录数
+   action - list(得到列表数据),count(得到列表总数)
+   mode - 模式 curb(道边停)community(社区停), 可以不传值
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                  
+        {record json arrray}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_manage_get_search_log:得到搜索日志数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_search_log
+request:
+   {"start_date":"2015-12-01 00:00:00","end_date":"2015-12-01 00:00:00","skip":0, "limit":10, "action":"list","mode":"curb"}
+参数说明:
+   start_date - 开始时间(选填)
+   end_date - 结束时间(选填)
    skip - 跳过记录数
    limit - 限定返回记录数
    action - list(得到列表数据),count(得到列表总数)

@@ -44,7 +44,7 @@ var limit_price = 10;
  *           RET_ERROR - system error
  *           {"code":601,"error":"xxxxxx"}
  */
-exports._kongcv_insert_trade_log = function(bill_id, request, log) {
+exports.kongcv_insert_trade_log = function(bill_id, request, log) {
     var kongcv_log_trade_obj = new kongcv_log_trade_cls();
 
     if (typeof(bill_id) != "undefined" && bill_id.length > 0) {
