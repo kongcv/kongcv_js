@@ -196,7 +196,6 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_get_coupon
 request:
 特别说明:
    在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>",
-   返回结果会返回新的image json数据，需要缓存
 参数说明:
    user_id - 用户objectId
 请求格式:
@@ -208,10 +207,30 @@ response:
    code - 消息编号
    msg - 描述消息
    error - 错误描述
-   image - 头像的json数据
 回应格式:      
    RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
-        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\", "image":"{xxxxx}"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_remove_coupon:删除优惠卷
+url:https://api.leancloud.cn/1.1/functions/kongcv_remove_coupon
+request:
+特别说明:
+   在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>",
+参数说明:
+   user_id - 用户objectId
+   coupon_id - 优惠卷objectId
+请求格式:
+    {"user_id" : "555c28b8e4b0b7e69366b482","coupon_id":"xxxx"}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
@@ -233,14 +252,10 @@ response:
    code - 消息编号
    msg - 描述消息
    error - 错误描述
-   image - 头像的json数据
 回应格式:      
    RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
-        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\", "image":"{xxxxx}"}"}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
-
-
 
 kongcv_jpush_message_p2p:发送JPsh推送通知,use_token
 url:https://api.leancloud.cn/1.1/functions/kongcv_jpush_message_p2p
@@ -1205,12 +1220,13 @@ response:
 
 kongcv_insert_invite_code:输入邀请码
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_invite_code
+特别说明:
+    在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>"
 request:
 请求格式:
-   {"invite_code":"xxx", "mobilePhoneNumber":"xxxxx", "user_id":"xxx"}
+   {"invite_code":"xxx", "mobilePhoneNumber":"xxxxx"}
    invite_code - 邀请码
    mobilePhoneNumber - 电话号码（记录中保持唯一)
-   user_id - 用户objectId
 response:
 参数说明:
    result - 返回结果
@@ -1293,6 +1309,27 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_insert_exception:插入异常数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_exception
+request:
+请求格式:
+{"user_id":"567a43d134f81a1d87870d62","device_type":"ios","version":"1.0.0","exception":"xxxxx"}
+参数说明:
+   user_id - 用户objectid
+   device_type - ios or andriod
+   version - 版本号
+   exception - 异常信息
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
 
 支付接口:(现在接口url均为测试链接)
 url:http://kongcv_test.avosapps.com/pingpp_pay
