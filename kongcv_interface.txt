@@ -196,6 +196,7 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_get_coupon
 request:
 特别说明:
    在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>",
+   now_day - 服务器当前时间,根据hire_end（过期时间）与now_day比较来判断是否过期
 参数说明:
    user_id - 用户objectId
 请求格式:
