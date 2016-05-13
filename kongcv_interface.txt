@@ -1225,9 +1225,10 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_insert_invite_code
     在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>"
 request:
 请求格式:
-   {"invite_code":"xxx", "mobilePhoneNumber":"xxxxx"}
+   {"user_id":"xxxx", "invite_code":"xxx", "mobilePhoneNumber":"xxxxx"}
+   user_id - 用户objectid
    invite_code - 邀请码
-   mobilePhoneNumber - 电话号码（记录中保持唯一)
+   mobilePhoneNumber - 电话号码
 response:
 参数说明:
    result - 返回结果
@@ -1363,6 +1364,14 @@ pay_info - pay_info.cp(coupon) - 优惠卷金额，没有为0
 
 支付回执接口:
 url:http://kongcv_test.avosapps.com/pingpp_pay/notify
+
+优惠卷使用说明:
+type - coupon_money下:
+number - 优惠卷金额
+limit_number - 限制金额(及满xx元减yy元)
+type - coupon_day下:
+number - 优惠天数
+limit_number - 限制天数(及满xx天减yy天)
 
 push通知逻辑：
 1：求租人发通知给出租人，通知类型verify_request
