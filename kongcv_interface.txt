@@ -1286,16 +1286,81 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_insert_park_autopush:插入车位需求地点数据,use_token
+kongcv_insert_park_autopush:插入车位需求地点数据
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_park_autopush
 request:
 请求格式:
-{"user_id":"567a43d134f81a1d87870d62","location_info":{"__type": "GeoPoint","latitude":11.1, "longitude":116.4}, "address":"1111", "city":"xxxx"}
+{"user_id":"567a43d134f81a1d87870d62","location_info":{"__type": "GeoPoint","latitude":11.1, "longitude":116.4}, "address":"1111", "city":"xxxx", "use_token":1}
 参数说明:
    user_id - 用户objectid
    location_info - 坐标， __type:GeoPoint - 数据类型，latitude - 纬度 longitude - 经度
    city - 城市
    address - 地址
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+   trade_id - 交易单id
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"trade_id\":\"xxx\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_get_park_autopush:得到车位需求地点数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_park_autopush
+request:
+请求格式:
+{"user_id":"567a43d134f81a1d87870d62","use_token":1}
+参数说明:
+   user_id - 用户objectid
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+   trade_id - 交易单id
+回应格式:      
+   RET_OK - success  
+        {record json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_remove_park_autopush:删除车位需求地点数据
+url:https://api.leancloud.cn/1.1/functions/kongcv_remove_park_autopush
+request:
+请求格式:
+   {"autopush_id":"567a43d134f81a1d87870d62"}
+参数说明:
+   autopush_id - 推送记录objectid
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+   trade_id - 交易单id
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\",\"trade_id\":\"xxx\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_change_park_autopush:改变车位需求地点数据推送状态
+url:https://api.leancloud.cn/1.1/functions/kongcv_change_park_autopush
+request:
+请求格式:
+   {"autopush_id":"567a43d134f81a1d87870d62", "open":1}
+参数说明:
+   autopush_id - 推送记录objectid
+   open - 推送状态(1:推送,0:不推送)
 response:
 参数说明:
    result - 返回结果
