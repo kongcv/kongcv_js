@@ -277,6 +277,7 @@ request:
    own_device_token - 自己手机的registrationdId(只在verify_request类型下需要,其他类型可以为空或没有)
    own_device_type - 自己手机类型ios or android(只在verify_request类型下需要,其他类型可以为空或没有)
    own_mobile - 自己手机号(只在verify_request, verify_accept类型下需要,其他类型可以为空或没有)
+   own_license_plate - 自己的车牌号(只在verify_request类型下需要,其他类型可以为空或没有)
    price - 停车计费价格,道边计费模式下为扣除定金价格(只在verify_request和trade_charge类型下需要,其他类型可以为空或没有)
    trade_id - 交易单id(只在trade_charge类型下需要,其他类型可以为空或没有)
    pay_type - 支付类型, money(全款),handsel(定金),balance(差额)(只在trade_charge类型下需要,其他类型可以为空或没有)
@@ -285,7 +286,7 @@ request:
 请求格式:
    verify_request类型下格式:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_request", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community","address":"xxxx", "hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17
-   18:00:00","own_device_token":"021a12c5dc4","own_device_type":"ios","own_mobile":"1xxxxx","push_type":"verify_request","price":100}}
+   18:00:00","own_device_token":"021a12c5dc4","own_device_type":"ios","own_mobile":"1xxxxx","own_license_plate":"xxxx","push_type":"verify_request","price":100}}
    verify_accept类型下格式:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"verify_accept", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","push_type":"verify_accept", "price":100, "own_mobile":"xxxxx"}}
    verify_reject类型下格式:
@@ -1407,7 +1408,7 @@ request:
     "amount":100,
     "open_id":"654321", 
     "subject":"test pay",
-    "pay_info":"{'cp':0,'pt':'handsel', 'md':'curb','tk':'xx','tp':'ios','mb':'1xxxxx'}"
+    "pay_info":"{'cp':0,'cpid':'xxxxx','pt':'handsel', 'md':'curb','tk':'xx','tp':'ios','mb':'1xxxxx'}"
 }
 参数说明:
 order_no - bill_id(kongcv_trade_bill objectId, kongcv_insert_trade_billdata接口获得);
@@ -1416,6 +1417,7 @@ amount - 支付钱数(ping++这里单位是分,现在这里用元，由后台统
 open_id - 微信支付，自己账户的open_id
 subject - 产品名称，先传车位地址
 pay_info - pay_info.cp(coupon) - 优惠卷金额，没有为0
+           pay_info.cpid(coupon_id) - 优惠卷id
            pay_info.pt(pay_type) - 支付类型,money(全款),handsel(定金),balance(差额)
            pay_info.md(mode) - 模式 curb(道边停)community(社区停)
            pay_info.tk(device_token) - 是你从jpush获得的收款人registionId,如不更新此参数可以不传值或没有
