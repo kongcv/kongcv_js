@@ -278,6 +278,7 @@ request:
    own_device_type - 自己手机类型ios or android(只在verify_request类型下需要,其他类型可以为空或没有)
    own_mobile - 自己手机号(只在verify_request, verify_accept类型下需要,其他类型可以为空或没有)
    own_license_plate - 自己的车牌号(只在verify_request类型下需要,其他类型可以为空或没有)
+   proxy_mobile - 委托手机号(在curb模式下,如果车位有委托手机需填写)
    price - 停车计费价格,道边计费模式下为扣除定金价格(只在verify_request和trade_charge类型下需要,其他类型可以为空或没有)
    trade_id - 交易单id(只在trade_charge类型下需要,其他类型可以为空或没有)
    pay_type - 支付类型, money(全款),handsel(定金),balance(差额)(只在trade_charge类型下需要,其他类型可以为空或没有)
