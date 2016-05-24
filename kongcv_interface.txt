@@ -559,6 +559,7 @@ request:
 参数说明:
    user_id - curb(道边停)模式下,传入地推人员objectid,community(社区模式)用户的objectId
    worker_id - curb(道边停)模式下,传入管理员手机号,community(社区停)模式下可以不传值or没有这个参数
+   proxy_mobile - 委托手机号(curb模式下,不是必填项)
    address - 停车位地址
    park_detail - 停车位地址的补充描述(数据必须有)
    park_description - 车位描述(车位格式化信息,数据可以为空)
@@ -581,7 +582,7 @@ request:
    mode - 模式 curb(道边停)community(社区停)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 curb请求格式：也适用与community
-   {"user_id":"5621f1bf60b27db44ed6d6fd"","worker_id":"13xxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5,
+   {"user_id":"5621f1bf60b27db44ed6d6fd"","worker_id":"13xxxxxx","proxy_mobile":"13xxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5,
    "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_field":["all_time_day"],"hire_price":["10"],"hire_time":["9:00 - 20:00"],"park_struct":0,"personal":1,"mode":"curb","use_token":1}
 response:
 参数说明:
