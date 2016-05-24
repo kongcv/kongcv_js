@@ -602,7 +602,8 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_put_parkdata
 request:
 参数说明:
    user_id - 车位用户objectid
-   park_id - 停车位的objectId
+   park_id - 停车位的objectId 
+   proxy_mobile - 委托手机号(在curb模式下,如果车位有委托手机需填写)
    address - 停车位地址
    park_detail - 停车位地址的补充描述(数据必须有)
    park_description - 车位描述(车位格式化信息,数据可以为空)
@@ -623,7 +624,7 @@ request:
    mode - 模式 curb(道边停)community(社区停)
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
 curb请求格式：也适用与community
-   {"user_id":"13xxxxxx","park_id":"xxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"hire_time":["9:00 -
+   {"user_id":"13xxxxxx","proxy_mobile":"13xxxx","park_id":"xxxxxx","address":"xxxxx","park_detail":"xxxx","park_description":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4}, "hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17 18:00:00","no_hire":["1","2"],"tail_num":"5","city":"beijing", "normal":true, "park_area":10,"park_height":5, "gate_card":"xxxxx","hire_method_id":["5620a6dc60b27457e84bb21d"],"hire_price":["10"],"hire_time":["9:00 -
    20:00"],"park_struct":0,"mode":"curb","use_token":1}
 response:
 参数说明:
