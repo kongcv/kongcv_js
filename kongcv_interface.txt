@@ -296,7 +296,7 @@ request:
    {"mobilePhoneNumber":"1xxxxxxx", "push_type":"trade_charge", "device_token":"021a12c5dc4", "device_type":"ios", "user_id":"5629973860b28da5c9b6ca16","extras":{"park_id":"56443f7b00b07eb0181283bb","mode":"community", "address":"xxxx","hire_method_id":"561f4cb460b22ed7ca73ab6c","hire_method_field":"hour_meter","hire_start":"2015-10-17 08:00:00", "hire_end":"2015-10-17
    18:00:00","push_type":"trade_charge","trade_id":"xxxxx","pay_type":"balance","price":100, "pay_tool":"wx"}} 
    park_push类型下收到的通知格式:
-   {extras:{"park_id":"xxxxx"}}
+   {extras:{"push_type":"park_push", "park_id":"xxxxx", "mode":"curb"}}
 response:
 参数说明:
    result - 返回结果park info
