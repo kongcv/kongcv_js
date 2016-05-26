@@ -1456,7 +1456,7 @@ request:
     "amount":100,
     "open_id":"654321", 
     "subject":"test pay",
-    "pay_info":"{'cp':0,'cpid':'xxxxx','pt':'handsel', 'md':'curb','tk':'xx','tp':'ios','mb':'1xxxxx'}"
+    "pay_info":"{'cp':0,'cd':'xxxxx','pt':'handsel', 'md':'curb','tk':'xx','tp':'ios','mb':'1xxxxx'}"
 }
 参数说明:
 order_no - bill_id(kongcv_trade_bill objectId, kongcv_insert_trade_billdata接口获得);
@@ -1465,11 +1465,11 @@ amount - 支付钱数(ping++这里单位是分,现在这里用元，由后台统
 open_id - 微信支付，自己账户的open_id
 subject - 产品名称，先传车位地址
 pay_info - pay_info.cp(coupon) - 优惠卷金额，没有为0
-           pay_info.cpid(coupon_id) - 优惠卷id
+           pay_info.cd(coupon_id) - 优惠卷id
            pay_info.pt(pay_type) - 支付类型,money(全款),handsel(定金),balance(差额)
-           pay_info.md(mode) - 模式 curb(道边停)community(社区停)
+           pay_info.md(mode) - 模式 cb(道边停-curb)cm(社区停-community)
            pay_info.tk(device_token) - 是你从jpush获得的收款人registionId,如不更新此参数可以不传值或没有
-           pay_info.tp(device_type) - ios or andriod,如不更新此参数可以不传值或没有
+           pay_info.tp(device_type) - ios or (ad-v1.0.3之后版本都用这个表示andriod, andriod),如不更新此参数可以不传值或没有
            pay_info.mb(mobile) - 手机号
 计时支付：
 1：定金支付，在计时方式下，handsel_state == 0表示要支付定金
