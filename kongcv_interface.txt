@@ -191,8 +191,8 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_get_coupon:得到优惠卷
-url:https://api.leancloud.cn/1.1/functions/kongcv_get_coupon
+kongcv_get_coupon_list:得到优惠卷
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_coupon_list
 request:
 特别说明:
    now_day - 服务器当前时间,根据hire_end（过期时间）与now_day比较来判断是否过期
@@ -1486,6 +1486,9 @@ limit_number - 限制金额(及满xx元减yy元)
 type - coupon_day下:
 number - 优惠天数
 limit_number - 限制天数(及满xx天减yy天)
+type - coupon_discount下:
+number - 折扣数
+limit_number - 限制金额(及满xx元打折)
 
 push通知逻辑：
 1：求租人发通知给出租人，通知类型verify_request
@@ -1770,6 +1773,96 @@ request:
    limit - 限定返回记录数
    action - list(得到列表数据),count(得到列表总数)
    mode - 模式 curb(道边停)community(社区停), 可以不传值
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                  
+        {record json arrray}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_manage_create_coupon:创建优惠卷
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_create_coupon
+request:
+    {"description" : "xxxx", "number":5, "limit_number":5,"name":"xxxx", "use_days":"5","type":"coupon_money"}
+参数说明:
+    description - 优惠卷描述
+    type - coupon_money下:
+        number - 优惠卷金额
+        limit_number - 限制金额(及满xx元减yy元)
+    type - coupon_day下:
+        number - 优惠天数
+        limit_number - 限制天数(及满xx天减yy天)
+    type - coupon_discount下:
+        number - 折扣数
+        limit_number - 限制金额(及满xx元打折)
+    use_days - 限制使用天数
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_manage_insert_market_coupon:插入市场人员优惠卷
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_insert_market_coupon
+request:
+    {"invite_code":"xxxx","coupon_id":"xxx"}
+参数说明: 
+   invite_code - 邀请码
+   coupon_id - 优惠卷objectId
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_manage_get_user_coupon_list:得到用户优惠卷列表
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_user_coupon_list
+request:
+    {"coupon_id" : "555c28b8e4b0b7e69366b482","skip":0,"limit":10}
+参数说明: 
+   coupon_id - 优惠卷objectId(可以不填写, 填写为看某个固定优惠卷)
+   skip - 跳过记录数
+   limit - 限定返回记录数
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                  
+        {record json arrray}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_manage_get_market_coupon_list:得到市场人员优惠卷列表
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_market_coupon_list
+request:
+    {"skip":0,"limit":10}
+参数说明: 
+   skip - 跳过记录数
+   limit - 限定返回记录数
 response:
 参数说明:
    result - 返回结果
