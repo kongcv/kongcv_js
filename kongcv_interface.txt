@@ -191,11 +191,11 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_get_coupon_list:得到优惠卷
-url:https://api.leancloud.cn/1.1/functions/kongcv_get_coupon_list
+kongcv_get_user_coupon_list:得到优惠卷
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_user_coupon_list
 request:
 特别说明:
-   now_day - 服务器当前时间,根据hire_end（过期时间）与now_day比较来判断是否过期
+   now_day - 服务器当前时间,根据end_date（过期时间）与now_day比较来判断是否过期
 参数说明:
    user_id - 用户objectId
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
@@ -209,7 +209,8 @@ response:
    msg - 描述消息
    error - 错误描述
 回应格式:      
-   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+   RET_OK - 返回结果集                  
+        {record json arrray}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
@@ -234,12 +235,9 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
-kongcv_insert_coupon:插入优惠卷
-url:https://api.leancloud.cn/1.1/functions/kongcv_insert_coupon
+kongcv_insert_user_coupon:插入优惠卷
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_user_coupon
 request:
-特别说明:
-   在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>",
-   返回结果会返回新的image json数据，需要缓存
 参数说明:
    user_id - 用户objectId
    coupon_id - 优惠卷objectId
@@ -1269,8 +1267,6 @@ response:
 
 kongcv_insert_invite_code:输入邀请码
 url:https://api.leancloud.cn/1.1/functions/kongcv_insert_invite_code
-特别说明:
-    在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>"
 request:
 请求格式:
    {"user_id":"xxxx", "invite_code":"xxx", "mobilePhoneNumber":"xxxxx"}
@@ -1858,6 +1854,26 @@ response:
 
 kongcv_manage_get_market_coupon_list:得到市场人员优惠卷列表
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_market_coupon_list
+request:
+    {"skip":0,"limit":10}
+参数说明: 
+   skip - 跳过记录数
+   limit - 限定返回记录数
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - 返回结果集                  
+        {record json arrray}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_manage_get_coupon_template_list:得到优惠卷模板列表
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_coupon_template_list
 request:
     {"skip":0,"limit":10}
 参数说明: 
