@@ -196,6 +196,7 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_get_user_coupon_list
 request:
 特别说明:
    now_day - 服务器当前时间,根据end_date（过期时间）与now_day比较来判断是否过期
+   use_type - curb,community
 参数说明:
    user_id - 用户objectId
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
@@ -1212,6 +1213,56 @@ response:
         {"result":"{\"state\":\"ok\",\"code\":0,\"msg\":\"成功\"}"}
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_put_user_group:道边数据更新辅助管理人员(管理员版本)
+url:https://api.leancloud.cn/1.1/functions/kongcv_put_user_group
+request:
+请求格式:
+   {"park_id":"xxxx","user_group":["user_id"], "mode":"curb"}
+参数说明:
+   park_id - 车位objectId
+   user_group - 辅助人员objectid(user_id)
+   mode - 模式 curb(道边停)community(社区停)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":0,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+kongcv_put_trade_charge:道边计时交易价格,时间更新(管理员版本)
+url:https://api.leancloud.cn/1.1/functions/kongcv_put_trade_charge
+特别说明:
+trade_id的交易单中check_state是点击状态,0(未点击),1(开始计费),2(结束计费)
+request:
+请求格式:
+   {"trade_id":"xxxx","mode":"curb","action":"start"}
+参数说明:
+   trade_id - 交易单objectId
+   mode - 模式 curb(道边停),只在道边使用
+   action - start(更新hire_start时间),end(更新hire_end时间,并更新价格)
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+   hire_start - 出租起始时间,在道边计时模式下不传值
+   hire_end - 出租结束时间,在道边计时模式下不传值
+   price - 停车计费价格,道边计费模式下为总价格,发送计费通知需要减去定金,差价为0也需要发送通知
+回应格式:
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":0,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 
 kongcv_put_trade_charge:道边计时交易价格,时间更新(管理员版本)
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_trade_charge
