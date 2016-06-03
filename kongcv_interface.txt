@@ -1236,6 +1236,30 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_insert_attach_user:插入隶属与那个主管理员(辅助管理人员要表明从属于那个主管理员)
+url:https://api.leancloud.cn/1.1/functions/kongcv_insert_attach_user
+request:
+特别说明:
+   在https的请求header中加入"X-AVOSCloud-Session-Token:<own sessionToken>"
+参数说明:
+   mobilePhoneNumber - 主管理员手机号
+   mode - 模式 curb(道边停)community(社区停)
+请求格式:
+   {"mobilePhoneNumber":"13xxxxxx", "mode":"curb"}
+response:
+参数说明:
+   result - 返回结果park info
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+
 kongcv_put_trade_charge:道边计时交易价格,时间更新(管理员版本)
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_trade_charge
 特别说明:
