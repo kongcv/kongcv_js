@@ -215,6 +215,24 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_get_share_coupon:得到分享优惠信息
+url:https://api.leancloud.cn/1.1/functions/kongcv_get_share_coupon
+request:
+请求格式:
+   {}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - 返回结果集                 
+        {recordset json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
 kongcv_remove_coupon:删除优惠卷
 url:https://api.leancloud.cn/1.1/functions/kongcv_remove_coupon
 request:
@@ -1571,6 +1589,10 @@ push通知逻辑：
 rule逻辑:
 1：00 - 0（1）不显示电话,订单确认后可见电话,0（2）默认订单确认可点
         1（1）显示电话(最高优先),1(2)订单确认不可见
+
+分享逻辑:
+1:从kongcv_get_share_coupon得到分享信息,coupon为优惠卷,url为分享链接
+2:如果有coupon则调用kongcv_insert_user_coupon接口把user_id, coupon_id传入创建用户优惠卷
 
 manager systerm interface:
 kongcv_manage_mobile_2_user:得到手机号用户信息
