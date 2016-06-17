@@ -837,6 +837,7 @@ kongcv_location_search:车位搜索
 url:https://api.leancloud.cn/1.1/functions/kongcv_location_search
 备注:
 在出租方法中新加了停车场(parking)方法，在走kongcv_location_search接口时hire_method_id为所有类型搜索此项可以不传值或没有这个参数
+免费车位搜索,mode传share，hire_methond_id,hire_field,sort字段不传值就Ok
 request:
 参数说明:
    address - 地点名称
@@ -1592,7 +1593,7 @@ rule逻辑:
 
 分享逻辑:
 1:从kongcv_get_share_coupon得到分享信息,coupon为优惠卷,url为分享链接
-2:如果有coupon则调用kongcv_insert_user_coupon接口把user_id, coupon_id传入创建用户优惠卷
+2:分享成功，如果有coupon则调用kongcv_insert_user_coupon接口把user_id, coupon_id传入创建用户优惠卷
 
 免费车位逻辑：
 1:添加免费车位调用 kongcv_insert_parkdata_share接口
