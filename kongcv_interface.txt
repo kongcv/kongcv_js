@@ -913,7 +913,7 @@ request:
    {"park_id":"xxxx", "mode":"community"}
 参数说明:
    park_id - 停车位的objectId
-   mode - 模式 curb(道边停)community(社区停)
+   mode - 模式 curb(道边停)community(社区停)share(免费停)
 response:
 参数说明:
    result - 返回结果
@@ -1593,6 +1593,12 @@ rule逻辑:
 分享逻辑:
 1:从kongcv_get_share_coupon得到分享信息,coupon为优惠卷,url为分享链接
 2:如果有coupon则调用kongcv_insert_user_coupon接口把user_id, coupon_id传入创建用户优惠卷
+
+免费车位逻辑：
+1:添加免费车位调用 kongcv_insert_parkdata_share接口
+2:搜索免费车位调用 kongcv_location_search接口，mode传share
+  2.1:调用kongcv_get_park_info得到详情数据,well_repute是好评个数，bad_repute是差评个数，new_repute是最新评论(well-好评,bad-差评)
+3:更新免费车位评论 kongcv_put_share_repute接口
 
 manager systerm interface:
 kongcv_manage_mobile_2_user:得到手机号用户信息
