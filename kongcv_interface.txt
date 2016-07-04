@@ -553,6 +553,7 @@ response:
 kongcv_put_share_repute:更新免费车位评价
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_share_repute
 request:
+   {"park_id":"xxxxx", "repute":"well"}
 参数说明:
    user_id - 用户的objectId
    repute - 用户评价well(好评),bad(差评)
