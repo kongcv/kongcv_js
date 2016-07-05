@@ -550,6 +550,32 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_put_parkdata_share:更新免费停车位数据, use_token
+url:https://api.leancloud.cn/1.1/functions/kongcv_put_parkdata_share
+request:
+参数说明:
+   park_id - 车位的objectId
+   address - 停车位地址
+   park_detail - 停车位地址的补充描述(数据必须有)
+   location_info - 坐标， __type:GeoPoint - 数据类型，latitude - 纬度 longitude - 经度
+   city - 城市
+   use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
+curb请求格式：也适用与community
+   {"park_id":"5621f1bf60b27db44ed6d6fd"","address":"xxxxx","park_detail":"xxxx","location_info":{"__type":"GeoPoint","latitude":11.1,"longitude":116.4},"city":"beijing","use_token":1}
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:      
+   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+        {"result":"{\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}"}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+
 kongcv_put_share_repute:更新免费车位评价
 url:https://api.leancloud.cn/1.1/functions/kongcv_put_share_repute
 request:
