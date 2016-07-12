@@ -37,12 +37,20 @@ $(document).ready(function(){
 	
 }
 function aaa(){
-	var oUl=document.getElementById('uul')
+var oUl=document.getElementById('uul')
+var zongjia=document.getElementById('zongjia')
 var objectid=localStorage.getItem("message_id")
 var extras=localStorage.getItem("extras")
 var extras=JSON.parse(extras)
 console.log(extras)
 var mode=extras.mode
+if(extras.hire_method_id=="hour_meter"){
+	zongjia.innerHTML=extras.price/4	
+}else{
+	zongjia.innerHTML=extras.price	
+}
+
+
 var objectid=extras.park_id
 var lxfs=document.getElementById('lxfs')
 var lian=document.getElementById('lian')
@@ -105,8 +113,59 @@ AV.Cloud.run('kongcv_get_park_info',  {"park_id":objectid, "mode":mode}, {
 						 hire_id=this.hire_id /*车位出租方式id*/	
 						 field=this.field	
 						var price=this.price
-						qian=Number(price.split('/')[0])	
-						//alert(qian)
+						
+						if(this.field=="all_time_day"||this.field=="interval_light_day"||this.field=="interval_night_day"){
+							if(hire_s.value==''||hire_s.value=='  年 月 日'){
+							alert('起始时间不能为空')
+							return;	
+							};
+							if(hire_e.value==''||hire_e.value==' 年 月 日'){
+								alert('结束时间不能为空')	
+								return;	
+							}
+							var hs=new Date(hire_s.value)
+							var he=new Date(hire_e.value)
+							var start_day = hs.getDay();
+							number = 0;
+							days = 0;
+							days = (he - hs) / 86400000 + 1;
+							
+							
+							var qq=Number(price.split('/')[0])
+							
+							qian=qq*days
+							zongjia.innerHTML=qian	
+						}
+						
+						if(this.field=="all_time_month"||this.field=="interval_night_month"||this.field=="interval_light_month"){
+							if(hire_s.value==''||hire_s.value=='  年 月 日'){
+							alert('起始时间不能为空')
+							return;	
+							};
+							if(hire_e.value==''||hire_e.value==' 年 月 日'){
+								alert('结束时间不能为空')	
+								return;	
+							}
+							var hs=new Date(hire_s.value)
+							var he=new Date(hire_e.value)
+							var start_day = hs.getDay();
+							number = 0;
+							days = 0;
+							days = (he - hs) / 86400000 + 1;
+							if(days<30){
+								alert('租用时间必须大于30天')	
+								return;
+							}
+							var qq=Number(price.split('/')[0])
+							
+							qian=qq*days
+							zongjia.innerHTML=qian	
+						}
+						if(this.field=="hour_meter"){
+							var qq=Number(price.split('/')[0])
+							qian=qq/4
+							zongjia.innerHTML=qian		
+						}
 					}
 					
 					
@@ -207,6 +266,7 @@ function bbb(){
 						}
 					}else{
 						var name=' '
+						var url='images/Bitmap Copy.png'	
 					};
 					
 					
@@ -303,6 +363,7 @@ function pullDownAction () {
 							}
 						}else{
 							var name=' '
+							var url='images/Bitmap Copy.png'	
 						};
 						var grade=Math.floor(data[i].grade);
 						var comment=data[i].comment
@@ -348,6 +409,7 @@ function pullUpAction () {
 							}
 						}else{
 							var name=' '
+							var url='images/Bitmap Copy.png'	
 						};
 					var grade=Math.floor(data[i].grade);
 					var comment=data[i].comment

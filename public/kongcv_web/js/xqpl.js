@@ -37,7 +37,7 @@ function clikback(){
 	
 }
 function aaa(){
-	var oUl=document.getElementById('uul')
+var oUl=document.getElementById('uul')
 	
 var objectid=localStorage.getItem("f")
 var mode=localStorage.getItem("a")
@@ -57,6 +57,10 @@ AV.Cloud.run('kongcv_get_park_info',  {"park_id":objectid, "mode":mode}, {
 				
 				var hire_id=''
 				var qian=0
+				var number = 0;
+    			var days = 0;
+				var nolet=[]
+				var zongjia=document.getElementById('zongjia')
 				var dizhi=document.getElementById('dizhi')
 				var start=document.getElementById('start')
 				var end=document.getElementById('end')
@@ -90,6 +94,30 @@ AV.Cloud.run('kongcv_get_park_info',  {"park_id":objectid, "mode":mode}, {
 				width.innerHTML=result.park_area||'';
 				if(result.no_hire){
 					no_hire.innerHTML=result.no_hire	
+					for(var i=0;i<result.no_hire.length;i++){
+						if(result.no_hire[i]=='一'){
+							nolet.push(1)	
+						}
+						if(result.no_hire[i]=='二'){
+							nolet.push(2)	
+						}	
+						if(result.no_hire[i]=='三'){
+							nolet.push(3)
+						}	
+						if(result.no_hire[i]=='四'){
+							nolet.push(4)	
+						}	
+						if(result.no_hire[i]=='五'){
+							nolet.push(5)	
+						}	
+						if(result.no_hire[i]=='六'){
+							nolet.push(6)	
+						}	
+						if(result.no_hire[i]=='七'){
+							nolet.push(7)
+						}		
+					}
+					
 				}else{
 					no_hire.innerHTML=''	
 				};
@@ -124,8 +152,89 @@ AV.Cloud.run('kongcv_get_park_info',  {"park_id":objectid, "mode":mode}, {
 					oLi.onclick=function(){
 						 hire_id=this.hire_id /*车位出租方式id*/	
 						 field=this.field	
-						var price=this.price
-						qian=Number(price.split('/')[0]);	
+						 var price=this.price
+						
+						if(this.field=="all_time_day"||this.field=="interval_light_day"||this.field=="interval_night_day"){
+							if(hire_s.value==''||hire_s.value=='  年 月 日'){
+							alert('起始时间不能为空')
+							return;	
+							};
+							if(hire_e.value==''||hire_e.value==' 年 月 日'){
+								alert('结束时间不能为空')	
+								return;	
+							}
+							var hs=new Date(hire_s.value)
+							var he=new Date(hire_e.value)
+							var start_day = hs.getDay();
+							number = 0;
+							days = 0;
+							days = (he - hs) / 86400000 + 1;
+							
+							for (var i = 1; i <= days; i++) {
+								if (start_day == 7) {
+									start_day = 0;
+								}
+							for (var j = 0; j < nolet.length; j++) {
+								if(nolet[j]==7){
+								  nolet[j]=0;
+								}
+								if (start_day == nolet[j]) {
+								  number += 1;
+								}
+							  }
+							  start_day++;
+							}
+							
+							var result = days-number;
+							
+							var qq=Number(price.split('/')[0])
+							
+							qian=qq*result
+							zongjia.innerHTML=qian	
+						}
+						
+						if(this.field=="all_time_month"||this.field=="interval_night_month"||this.field=="interval_light_month"){
+							if(hire_s.value==''||hire_s.value=='  年 月 日'){
+							alert('起始时间不能为空')
+							return;	
+							};
+							if(hire_e.value==''||hire_e.value==' 年 月 日'){
+								alert('结束时间不能为空')	
+								return;	
+							}
+							var hs=new Date(hire_s.value)
+							var he=new Date(hire_e.value)
+							var start_day = hs.getDay();
+							number = 0;
+							days = 0;
+							days = (he - hs) / 86400000 + 1;
+							if(days<30){
+								alert('租用时间必须大于30天')	
+								return;
+							}
+							for (var i = 1; i <= days; i++) {
+								if (start_day == 7) {
+									start_day = 0;
+								}
+							for (var j = 0; j < nolet.length; j++) {
+								if(nolet[j]==7){
+								  nolet[j]=0;
+								}
+								if (start_day == nolet[j]) {
+								  number += 1;
+								}
+							  }
+							  start_day++;
+							}
+							
+							var result = days-number;
+							
+							var qq=Number(price.split('/')[0])
+							
+							qian=qq*result
+							zongjia.innerHTML=qian	
+						}
+						
 						
 					}
 					
@@ -173,16 +282,8 @@ AV.Cloud.run('kongcv_get_park_info',  {"park_id":objectid, "mode":mode}, {
 					var hire_s=document.getElementById('hire_s')
 					var hire_e=document.getElementById('hire_e')
 					
-					if(hire_s.value==''||hire_s.value=='  年 月 日'){
-						alert('起始时间不能为空')
-						return;	
-					};
-					if(hire_e.value==''||hire_e.value==' 年 月 日'){
-						alert('结束时间不能为空')	
-						return;	
-					}
 					hire_start=hire_s.value+' '+'00:00:00'
-					hire_end=hire_e.value+' '+'00:00:00';
+					hire_end=hire_e.value+' '+'23:59:00';
 					
 					if(user_id==null){
 						alert('用户未登录')
@@ -232,6 +333,7 @@ function bbb(){
 							}
 						}else{
 							var name=' '
+							var url='images/Bitmap Copy.png'	
 						};
 					var grade=Math.floor(data[i].grade);
 					var comment=data[i].comment
@@ -318,6 +420,7 @@ function pullDownAction () {
 							}
 						}else{
 							var name=' '
+							var url='images/Bitmap Copy.png'	
 						};
 					var grade=Math.floor(data[i].grade);
 					var comment=data[i].comment
@@ -359,6 +462,7 @@ function pullUpAction () {
 							}
 						}else{
 							var name=' '
+							var url='images/Bitmap Copy.png'	
 						};
 					var grade=Math.floor(data[i].grade);
 					var comment=data[i].comment

@@ -1,0 +1,35 @@
+*{ margin:0; padding:0; text-decoration: none; list-style: none;}
+body{width:100%; height:100%;}
+html,body{ height:100%;}
+.yw{width:100%; height:100%;  border:1px solid #000; background:#ededed;}
+.ywtite{ width:100%; height:80px; line-height:80px; font-size:34px; text-align:center; border-bottom:1px solid #000; background:#479cf3; color:#fff;}
+.lmimg{ width:125px; height:42px; position:absolute; left:10px; top:18px;}
+.ywleft{ float:left; width:19.7%; height:87.4%; border-right:1px solid #000;}
+
+.ywleft a{ width:100%; height:48px; line-height:48px; font-size:20px; text-align:center; border-bottom:1px solid #000; display:block; color:#000;}
+.ywright{ float:left; width:80%; height:87%;}
+.usename{width:100%; height:100%; }
+.user_div{ width:100%; height:48px;}
+
+/*时间*/
+.datetimepicker{ float:left; width:106px; height:34px; font-size:20px; margin-top:5px; margin-left:8px;}
+
+.user_div  label{ float:left; font-size:20px; color:#000; height:48px; line-height:48px; display:block; text-align:right; margin-left:10px;}
+.cith{ float:left; width:75px; height:34px; font-size:20px; margin-top:5px; margin-left:10px;}
+
+#parenDiv2{ position:absolute; z-index:999; width:800px; border:0px solid #c3c3c3; margin-top:44px; margin-left:245px; background:#0FF;}
+.cxa{ float:left; width:96px; height:36px; line-height:36px; background:#166cc3; border-radius:10px; display:block; text-align:center; font-size:20px; margin-top:6px; color:#fff; margin-left:10px;}
+.usercon{width:100%; height:91%;overflow-y:scroll; white-space:nowrap; position:relative;}
+.con_div{ width:100%; height:48px; white-space:nowrap; font-size:0px; background:#479cf3;}
+.con_div span{ width:110px; height:48px; line-height:48px;font-size:18px; display:inline-block; text-align:center; background:#479cf3; overflow:hidden;}
+.userin{ width:100%; height:84%;}
+.userin ul{ height:100%;}
+.userin ul li{ width:100%; height:38px; line-height:38px;  font-size:20px;white-space:nowrap; font-size:0px;}
+.userin ul li span{ width:110px; height:38px; line-height:38px;font-size:18px; display:inline-block; text-align:center; overflow:hidden; }
+.pae_div{idth:215px; height:auto; position:absolute; left:40%; bottom:18px;}
+.pae{ float:left;width:100px; height:36px; line-height:36px; background:#166cc3; font-size:20px; color:#fff; display:block; text-align:center; border-radius:10px;}
+.phoin{ float:left; width:140px; height:34px; font-size:20px; margin-top:5px; margin-left:10px;}
+
+.datebar{float:left; font-size:22px; margin-top:5px; width:180px;}
+
+.mhin{ float:left; width:180px; height:34px; font-size:20px; margin-top:5px;}

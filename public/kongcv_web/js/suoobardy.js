@@ -81,7 +81,7 @@ window.onload=function(){
 				};
 			var j=wei[1]
 			var w=jing[1]
-			
+			localStorage.setItem("add","web")
 			localStorage.setItem("c",j)
 			localStorage.setItem("d",w);
 			location='ditu.html'

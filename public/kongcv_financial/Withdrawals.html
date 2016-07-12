@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>管理系统</title>
+<link href="css/guanli.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/selectMonth.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-mini-0.6.4.js"></script>
+<script type="text/javascript" src="js/av.js"></script>
+<script type="text/javascript" src="js/cookie.js"></script>
+<script  type="text/javascript" src="js/guanli.js"></script>
+<script  type="text/javascript" src="js/move10.js"></script>
+</head>
+<body>
+<div style="position:absolute; top:50%; left:0; width:20px; height:100px; line-height:100px;background:url(img/2.jpg) no-repeat center; background-size:20px 100px; opacity:0;z-index:2;" id="hui"></div>
+<div style="position:absolute; top:50%; left:14.2%; width:10%; height:15%; z-index:2;  background:url(img/1.jpg) no-repeat center; background-size:20px 100px;" id="qu"></div>
+<div class="guanli">
+	
+	<div class="guanlitop"><img class="loimg" src="img/lgo.png"/>财务管理系统</div>
+		<!--左-->
+		<div class="guanlileft" id="zuo" style="position:relative;">
+    		<div class="guanli_div">
+        	<ul>
+            	<li class="tix" id="tixian" style="background:#166cc3;"><a class="awbar" href="Withdrawals.html">提现</a></li>
+                <li class="dingd"><a class="awbar" href="order.html">订单</a></li>
+            </ul>
+        </div>
+   		</div>
+    	<!--右-->
+    	<div class="guanliright" id="you" style="position:relative;">
+            <!--提现-->
+           
+                <div class="tixianbar"  id="you2">
+                 <div class="tixian" id="ti">
+                    <div class="tixian_div" >
+                        <span class="span_s">手机号:</span>
+                        <input class="text_bar" type="text" id="shou"/>
+                        <span class="span_s">金额:</span>
+                        <input class="text_bar" type="text" id="mon"/>
+                        <a class="cr_a" href="#" id="cha">插入</a>                     
+                    </div> 
+                <div class="tixian_in">
+                   		<span style="width:60px;">序号</span>
+                    	<span style="width:292px;">订单号</span>
+                    	<span style="width:140px;">手机号</span>
+                        <span style="width:150px;">创建时间</span>
+                        <span style="width:150px;">更新时间</span>
+                        <span>提现金额</span>
+                        <span>状态</span>
+                    </div>
+                    <div class="tx_info">
+                    	<ul id="ul">
+                        	
+                        </ul>
+                    </div>
+                </div>
+                  <div class="pae_div" ><a href="#" class="pae" id="shang">上一页</a><a href="#" style="margin-left:15px;" class="pae" id="xia">下一页</a></div>
+                
+            </div>
+            <!--钱包-->
+            <div class="qianbao" id="qianbao">
+                <div class="qb_in">
+                	<ul id="bank">
+                    	<li></li><a class="gba" href="#" id="guan">关闭</a>
+                    	<li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+            
+    	</div>
+    </div>
+</div>
+</body>
+</html>
+ 

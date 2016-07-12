@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>管理系统</title>
+<link href="css/guanli.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/selectMonth.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-mini-0.6.4.js"></script>
+<script type="text/javascript" src="js/av.js"></script>
+<script type="text/javascript" src="js/cookie.js"></script>
+<script  type="text/javascript" src="js/dingdan.js"></script>
+<script  type="text/javascript" src="js/move10.js"></script>
+</head>
+<body>
+<div style="position:absolute; top:50%; left:0; width:20px; height:100px; line-height:100px;background:url(img/2.jpg) no-repeat center; background-size:20px 100px; opacity:0;z-index:2;" id="hui"></div>
+<div style="position:absolute; top:50%; left:18.2%; width:20px; height:100px; z-index:2;  background:url(img/1.jpg) no-repeat center; background-size:20px 100px;" id="qu"></div>
+<div class="guanli">
+	
+	<div class="guanlitop"><img class="loimg" src="img/lgo.png"/>财务管理系统</div>
+		<!--左-->
+		<div class="guanlileft" id="zuo" style="position:relative;">
+    		<div class="guanli_div">
+        	<ul>
+            	<li><a class="awbar" href="Withdrawals.html">提现</a></li>
+                <li class="dingd" style="background:#166cc3;" ><a class="awbar" href="order.html">订单</a></li>
+            </ul>
+        </div>
+   		</div>
+    	<!--右-->
+    	<div class="guanliright" id="you" style="position:relative;">
+    		<div class="guanlidivbar" id="you2">
+        		<div class="dingdan">
+            		<select class="datebar" >
+                        <option value="出租人">出租人手机号</option>
+                        <option value="租用人手机号">租用人手机号</option>	
+                    </select>
+                	<input class="text_bar" type="text" id="phone"/>
+                	<span class="span_s">起始时间:</span>
+					<input class="datebar" type="date" id="start">
+                    <span class="span_s">结束时间:</span>
+					<input class="datebar" type="date" id="end">
+                	<a class="shequ" href="javascript:;" id="comm">个人</a>
+                	<a class="daolu" href="javascript:;" id="curb">商业</a>
+                    <label id="zong" class="zongshu">总数：</label>
+            	</div>
+           	 	<div class="shequ_div">
+                    <div class="shequtite">
+                   		<span style="width:60px;">序号</span>
+                        <span style="width:140px;">出租方手机号</span>
+                   		<span style="width:140px;">租用方手机号</span>
+                    	<span style="width:292px;">订单号</span>
+                        <span style="width:140px;">支付工具</span>
+                        <span>用户</span>
+                        <span style="width:100px;">金额</span>
+                        <span>状态</span>
+                        <span>出租方式价格</span>
+                        <span>动作</span>
+                        <span>开始</span>
+                        <span>结束</span>
+                        <span>创建</span>
+                        <span>更新</span>
+                       
+                    </div>
+                   	 <div class="shequshuju" >
+                        <ul id="ul">
+                            
+                        </ul>
+                    	</div> 
+                   	
+            	</div>
+                <div class="pae_div" ><a href="#" class="pae" id="shang">上一页</a><a href="#" style="margin-left:15px;" class="pae" id="xia">下一页</a></div>
+        	</div>
+           
+            
+            
+            
+    	</div>
+    </div>
+</div>
+</body>
+</html>
+ 

@@ -196,7 +196,7 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_get_user_coupon_list
 request:
 特别说明:
    now_day - 服务器当前时间,根据end_date（过期时间）与now_day比较来判断是否过期
-   use_type - curb,community
+   use_type - curb(商业车位专用),community(社区车位专用)或为空值
 参数说明:
    user_id - 用户objectId
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
@@ -1607,6 +1607,11 @@ type - coupon_discount下:
 number - 折扣数
 limit_number - 限制金额(及满xx元打折)
 
+如果优惠卷金额(20元)>=实际支付金额(12元)
+1：实际支付0.01元
+2：优惠卷coupon=12 - 0.01=11.99元
+3：支付信息里pay_info.cp写11.99不是20
+
 push通知逻辑：
 1：求租人发通知给出租人，通知类型verify_request
 2：出租人接收通知并处理，点击通知到详情页(具体数据见通知extras字段)，可见电话，可以接受(verify_accept)和拒绝(verify_reject)
@@ -1929,6 +1934,7 @@ request:
         number - 折扣数
         limit_number - 限制金额(及满xx元打折)
     use_days - 限制使用天数
+    use_type - curb(商业车位专用),community(社区车位专用)或为空值没有限制
 response:
 参数说明:
    result - 返回结果

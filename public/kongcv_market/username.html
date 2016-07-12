@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset=UTF-8>
+<title>运维管理系统</title>
+<link type="text/css" rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css">
+<script src="https://cdn1.lncld.net/static/js/av-mini-0.6.4.js"></script>
+<script type="text/javascript" src="js/av.js"></script>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script src="js/Popt.js"></script>
+<script src="js/cityJson.js"></script>
+<script src="js/citySet.js"></script>
+<script src="js/jquery.datetimepicker.js"></script>
+<script type="text/javascript" src="js/cookie.js"></script>
+<script  type="text/javascript" src="js/username.js"></script>
+<script  type="text/javascript" src="js/move10.js"></script>
+</head>
+<body>
+<div style="position:absolute; top:50%; left:0; width:20px; height:100px; line-height:100px;background:url(img/2.jpg) no-repeat center; background-size:20px 100px; opacity:0;z-index:2;" id="hui"></div>
+<div style="position:absolute; top:50%; left:18.2%; width:20px; height:100px; z-index:2;  background:url(img/1.jpg) no-repeat center; background-size:20px 100px;" id="qu"></div>
+<div class="yw">
+	<div class="ywtite">
+    	<img class="lmimg" src="img/lgo.png"/>
+    	运营管理系统
+    </div>
+	<div class="ywleft" id="zuo" style="position:relative;">
+    	<a href="username.html" style="background:#166cc3;">用户</a>
+        <a href="dingdan.html">订单</a>
+        <a href="chewei.html">车位</a>
+        <a href="yaoqingma.html">邀请码</a>
+        <a href="xinxifankui.html">信息反馈</a>
+        <a href="pushxxtz.html">push消息通知</a>
+        <a href="rizhisousuo.html">搜索日志</a>
+    </div>
+	<div class="ywright" id="you" style="position:relative;">
+    	<div class="usename"  id="you2">
+        	<div class="user_div">
+           		<label>城市:</label>
+                <input class="cith" type="text" id="cheng" style="width:150px;"/>
+                <label>结束时间:</label>
+                <input class="cith" type="date" id="start" style="width:170px;">
+            	<label>起始时间:</label>
+				<input class="cith" type="date" id="end" style="width:170px;">
+                <label>手机系统:</label>
+                <input class="cith" type="text" id="type"/>
+                <a class="cxa" href="javascript:;" id="cha">查询</a>
+                <label id="zong">总数:</label>
+            </div>
+            <div class="usercon">
+            	<div class="con_div">
+               		<span style="width:60px;">序号</span>
+                	<span style="width:115px;">手机号</span>
+                    <span style="width:108px;">城市</span>
+                    <span style="width:100px;">版本号</span>
+                	<span style="width:100px;">手机系统</span>
+                    <span style="width:150px;">创建时间</span>
+                    <span style="width:150px;">更新时间</span>
+                </div> 
+            	<div class="userin">
+                	<ul id="ul">
+                    
+                    </ul>
+                </div>
+            </div>	
+        </div>
+        
+        <div class="pae_div clearfix" ><a href="javascript:;" class="pae" id="shang">上一页</a><a href="javascript:;" style="margin-left:15px;" class="pae" id="xia">下一页</a></div>
+    </div>
+</div>  
+</body>
+</html>

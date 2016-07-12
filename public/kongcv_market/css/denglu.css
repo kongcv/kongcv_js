@@ -1,0 +1,11 @@
+*{text-decoration: none; list-style: none; margin:0; padding:0; font-family:"微软雅黑"; }	
+html,body{ height:100%;}
+
+.denglu{ width:100%; height:100%; background:#ededed;}
+.dl_div{ width:20%; height:100%; margin:0 auto; }
+.imglo{width:125px; height:42px; position:absolute; left:0; top:10px;}
+.deng{ float:left; width:100%; height:30%;  margin-top:90%; }
+.deng ul{ float:left; width:100%; height:100%; }
+.deng ul li{ float:left; width:100%; font-size:20px; height:60px; line-height:60px;}
+.deng ul li input{width:70%; height:48px; line-height:48px; font-size:20px;}
+.deng ul li .dea{ width:100%; height:40px; line-height:40px; display:block; font-size:20px; text-align:center; background:#166cc3; border-radius:10px; color:#fff; margin-top:20px;}

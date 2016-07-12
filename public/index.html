@@ -1,104 +1,275 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name=”description” content="空车位是一款提供车位出租和车位预约的APP平台，主要针对停车难问题优化车位的利用率。出租方在空车位平台发布车位信息，求租方通过空车位平台找到合适类型的出租车位，通过线上预先支付费用来租用车位.">
-	<meta name=”keyword” content="空车位,车位出租,车位分享,互联网停车,智慧停车,智能停车">
-    <title>空车位-专业出租平台</title>
-    <link rel="stylesheet" type="text/css" href="css/animate.min.css"/>
-    <link rel="stylesheet" type="text/css" href="css/full.css"/>
-    <!--<script type="text/javascript" src="js/monitor-pub-min.js"></script>-->
-    <link rel="stylesheet" type="text/css" href="css/base.css" />
-    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/jquery.fullPage.min.js"></script>
-    <script type="text/javascript" src="js/index1.js"></script>
-    <script type="text/javascript" src="js/indexdy1.js"></script>
+    <meta charset="utf-8">
+    <title>空车位</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Demo styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+			list-style:none;
+        }
+
+        html, body {
+            position: relative;
+            height: 100%;
+			background: #fff;
+        }
+
+        body {
+            background: #fff;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            /*font-size: 14px;*/
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+			background:#fff;
+            margin-left: auto;
+            margin-right: auto;
+			
+        }
+
+        .swiper-slide {
+            /*font-size: 18px;*/
+            background: #fff;
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+			/*margin-bottom:1px !important;*/
+        }
+
+        .navbar-default .navbar-nav {
+            margin: 0 -15px;
+        }
+
+        body .all-doc {
+            height: 100%;
+        }
+
+        .navbar-bg {
+            border-bottom:none !important;width:100%; height:57px;
+			position:fixed; top:0; left:0; background:none;
+			
+			
+        }
+
+        .navbar-default .navbar-toggle .icon-bar {
+            background-color: #fff;
+        }
+    </style>
     <script>
-        $(function(){
-            if($.browser.msie && $.browser.version < 10){
-                $('body').addClass('ltie10');
-            }
-            $.fn.fullpage({
-                verticalCentered: false,
-                anchors: ['page1', 'page2', 'page3', 'page4', 'page5', 'page6', 'page7'],
-                navigation: true,
-                navigationTooltips: ['', '', '', '', '', '', '']
-            });
-        });
+    	window.onload=function(){
+			var onc=document.getElementById('onc');
+			var onc2=document.getElementById('onc2');
+			var a=document.body.clientWidth;
+			//alert(a)
+			onc.onclick=function(){
+				
+					onc.href='https://itunes.apple.com/cn/app/id1090618909'
+							
+			}
+			onc2.onclick=function(){
+				
+					onc2.href='http://android.app.qq.com/myapp/detail.htm?apkName=com.kongcv'
+						
+			}
+			
+		}
     </script>
 </head>
+<body>
+    <!-- Swiper -->
+    <div class="all-doc">
+        	
+        <div class="swiper-container">
+        
+            <div class="swiper-wrapper">
+            
+                <div class="swiper-slide" style="background:url(images/7.png) no-repeat center; width:100%; height:100%;">
+                	<header style="">
+            <nav role="navigation" class="navbar navbar-default navbar-fixed-top navbar-bg">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" data-toggle="collapse" data-target="#top-bar" aria-expanded="true" class="navbar-toggle">
+                            <span class="sr-only">kToggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
 
-<body style="overflow: hidden; height: 100%;">
-
-<div id="superContainer" style="top: 0px;">
-
-
-
-    <div class="section section1" data-anchor="page1" style="height: 755px;">
-    	<div class="bg"><img src="images/Bitmap.jpg" alt="第一屏背景" /></div>
-			<div id="box" class="dip">
-            	<div class="div_1 clearfix" id="nav">
-                	<a href="http://www.kongcv.com/" id="logo" class="logo"><img src="images/logo.png" /></a>
-                    <div class="uul clearfix">
-                    	<a href="#">首页</a>
-                        <a href="#">功能介绍</a>
-                        <a href="#">关于我们</a>
+                        <a href="#" class="navbar-brand"><img src="images/1.png" alt="logo" class="logimg"></a>
+                    </div>
+                    <div id="top-bar" class="navbar-collapse collapse" aria-expanded="true" style="border:none">
+                        <ul class="nav navbar-nav navbar-right xlul">
+                            <li><a class="hied" href="#">首页</a></li>
+                            <!--<li><a class="hied" href="#">功能介绍</a></li>-->
+                            <li><a class="hied" href="#">功能介绍</a></li>
+                            <li><a class="hied" href="#">关于我们</a></li>
+                        </ul>
                     </div>
                 </div>
-                <div class="xz_div">
-                	<img src="images/kcw.png" width="100%;" height="100%;" />
-                    <!--<img class="iosimg1" src="images/ios.png"/>-->
-                    <img class="iosimg2" src="images/ios.png"/>
+            </nav>
+        </header>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-lg-4 col-lg-offset-1">
+                                <div class="row">
+                                    <div class="col-lg-12 col-xs-12 tcon">
+                                        <img class="dibar" src="images/2.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-xs-12 tcon">
+                                <img class="rightimg" src="images/3.png" />
+                                <div class="row" >
+                                    <div class="img-content">
+                                        <div class="col-lg-5 col-xs-12 tcon" >
+                                            <a class="ays" href="javascript:;" id="onc"><img class="imga" src="images/6.png" /></a>
+                                        </div>
+                                        <div class="col-lg-5 col-xs-12 tcon">
+                                            <a class="ays1" href="javascript:;" id="onc2"><img class="imga1 imgtu col-1g-offset-2 col-xs-0" src="images/anz1.png" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+							<!--<div class="col-lg-1"></div>-->	
+                        </div>
+                    </div>
                 </div>
-                <div class="serm">
-                	<!--<img class="erm1" src="images/kcwerw.jpg"/>-->
-                    <img class="erm2" src="images/kcwerw.jpg"/>
+                <div class="swiper-slide" style="background:#fefab3;">
+                    <div class="container-fluid" style="height:100%; width:100%;">
+                    	<div class="row">
+                        	<div class="col-lg-7 col-xs-12 tcon">
+                            	<img class="erpimg" src="images/ww.png"/>
+                            </div>
+                            <div class="col-lg-5 col-xs-12 tcon">
+                            	<img class="erpimg2" src="images/11.png"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="div_b" >
-                	<p class="pa">空车位是一款提供车位出租和车位预约的APP平台，主要针对停车难问题优化车位的利用率。出租方在空车位平台发布车位信息，求租方通过空车位平台找到合适类型的出租车位，通过线上预先支付费用来租用车位。</p>
-                    <p class="bah">2016 空车位 京ICP备15057954号-1</p>
+                <div class="swiper-slide" style=" background:url(images/3p1.png) no-repeat; width:100%; height:100%;">
+               		<div class=" container-fluid" style=" width:100%; height:100%;">
+                    	<div class="row">
+                        	<div class="col-lg-7 col-xs-12 tcon">
+                            	<img class="spimg" src="images/3p2.png"/>
+                            </div>
+                            <div class="col-lg-5 col-xs-12 tcon">
+                            	<img class="spimgbar" src="images/3p3.png"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>	
-     </div>
+                <div class="swiper-slide" style="background:#f3f8fe;">
+                	<div class="container foot_div">
+                    	<div class="row">
+                        	<div class="col-lg-12 col-xs-12 tcon">
+                            	<img class="footimg" src="images/js.png"/>
+                            </div>
+                        </div> 
+                        <div class="row">
+                        	<div class="col-lg-12 col-xs-12 tcon">
+                            	<img class="wximg" src="images/wx.png"/>
+                                <img class="wbimg" src="images/wb.png"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                        	<div class="col-lg-12 col-xs-12 tcon" style="background:#ff6a6a; position:absolute; bottom:0;">
+                            	
+                            		<img class="dzimg" src="images/ddy.png"  />
+                               
+                            </div>
+                        </div> 
+                    </div>
 
-    <!--<div class="section section2" data-anchor="page2" style="height: 755px; background:#CCC;">
-
+                </div>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
     </div>
 
-    <div class="section section3" data-anchor="page3" style="height: 755px; background: #5dcdd1;">
+    <!-- Swiper JS -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/swiper.min.js"></script>
 
-    </div>
+    <!-- Initialize Swiper -->
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            /*pagination: '.swiper-pagination',*/
+            direction: 'vertical',
+            slidesPerView: 1,
+            paginationClickable: true,
+            
+            mousewheelControl: true,
+			speed:1000,
+			
+		});
+    	$(function () {
+            $(".navbar-nav li").click(function () {
+				
+                $(this).children('a').addClass('current').end().siblings().children().removeClass('current');
+                var index = $(this).index();
+				if(index==2){
+					index=3;	
+				}
+                swiper.slideTo(index, 1000, false);
+				$(".navbar-collaspse").remove("in");
+         	}); 
+		});
+    </script>
+	<script>
+	
+	$(".ays").mouseover(function(){
+		//alert("ok");
+		$(".dibar").attr("src", "images/ios.png");
+		$(".img2").fadeIn();
+		$(".imga").attr("src", "images/yi.png");
+	}).mouseout(function () {
+	    $(".dibar").attr("src", "images/2.png");
+	    $(".img2").fadeIn();
+		$(".imga").attr("src", "images/6.png");
 
-    <div class="section section4" data-anchor="page4" style="height: 755px; background:#F60;">
+	});
+	
+	$(".ays1").mouseover(function(){
+		//alert("ok");
+		$(".dibar").attr("src", "images/anz3.png");
+		$(".img2").fadeIn();
+		$(".imga1").attr("src", "images/anz2.png");
+	}).mouseout(function () {
+	    $(".dibar").attr("src", "images/2.png");
+	    $(".img2").fadeIn();
+		$(".imga1").attr("src", "images/anz1.png");
 
-    </div>
-
-    <div class="section section5" data-anchor="page5" style="height: 755px;background:#F3F;">
-
-
-    </div>
-
-    <div class="section section6" data-anchor="page3" style="height: 755px; background:#0CF;">
-
-    
-    </div>
-
-
-
-    <div class="section section7" data-anchor="page1" style="height: 755px;background: #fcb128;">
-
-    </div>-->
-
-</div>
+	});	
+	
+	
 
 
-
-
-
-</div>
-
-
+</script>
 </body>
 </html>

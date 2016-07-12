@@ -1,0 +1,78 @@
+*{text-decoration: none; list-style: none; margin:0; padding:0; font-family:"微软雅黑"; }	
+html,body{ height:100%;}
+.guanli{ width:100%; height:100%; border:1px solid #000; background:#ededed;}
+.loimg{ width:125px; height:42px; position:absolute; left:10px; top:18px;}
+.guanlitop{ width:100%; height:80px; line-height:80px; text-align:center; font-size:34px; border-bottom:1px solid #000; background:#479cf3; color:#fff;}
+
+.guanlileft{ float:left; width:19.7%; height:87%;    border-right:1px solid #000;}
+.guanliright{float:left; width:80%; height:87%; }
+
+
+.guanlileft .guanli_div{ float:left; width:100%; height:100%;  }
+.guanlileft .guanli_div ul{ float:left; width:100%; height:100%;}
+.guanlileft .guanli_div ul li{ width:100%; height:48px; line-height:48px; font-size:20px; text-align:center;  border-bottom:1px solid #000;}
+
+
+.guanliright .guanlidivbar{width:100%; height:100%;overflow-y:scroll; white-space:nowrap;}
+.guanliright .guanlidivbar .dingdan{ height:48px; width:150%; margin-left:2%; }
+.guanliright .guanlidivbar .dingdan .span_s{ float:left; display:block; height:48px; line-height:48px; font-size:18px;}
+.guanliright .guanlidivbar .dingdan .text_bar{ float:left; height:34px; line-height:34px; font-size:18px; margin-top:6px; width:210px !important; margin-left:6px;}
+.pae_div{idth: 215px;
+    height: auto;
+    position: absolute;
+    left: 40%;
+    bottom: 18px;}
+.pae{ float:left;width:100px; height:36px; line-height:36px; background:#166cc3; font-size:20px; color:#fff; display:block; text-align:center; border-radius:10px;}
+
+
+/*时间的样式*/
+#parenDiv{position:absolute; z-index:999; width:800px; border:0px solid #c3c3c3; margin-top:60px; margin-left:370px;}
+.div1{width:150px; height:0px; background:#ffffff;font-size:11px; margin:0px auto; z-index:999;}
+.div1 table{background:#ffffff; width:166px; border-collapse:collapse; border:1px solid #dedede; }
+.div1 table td.th1{background:#ffffff; height:44px; z-index:999;}
+.div1 table td.th1 button{width:45px; background:#ffffff; text-align:center; border:0px;  height:24px; font-size:20px;}
+.div1 table td.th2{background:#ffffff; text-align:center; width:auto; font-size:24px; z-index:999;}
+.div1 table td.th3{background:#ffffff; height:26px;  z-index:999;}
+.div1 table td.th3 button{width:45px; background:#ffffff; text-align:center;font-size:20px; border:0px;  height:24px; }
+.div1 table td{background:#ffffff; z-index:999;}
+.div1 table td button{width:45px; background:#ffffff; text-align:center; border:0px; z-index:999; font-size:20px;}	
+
+.guanlidivbar .dingdan .shequ{ float:left; height:34px; line-height:34px; background:#166cc3; border-radius:15px; font-size:18px; color:#ffffff; display:block; width:100px; text-align:center; margin-top:6px; margin-left:10px; }
+.guanlidivbar .dingdan .daolu{ float:left; height:34px; line-height:34px; background:#166cc3; border-radius:15px; font-size:18px; color:#ffffff; display:block; width:100px; text-align:center; margin-top:6px; margin-left:10px; }
+/*社区*/
+.guanliright .guanlidivbar .shequ_div{ width:180%; height:91%; position:relative;}
+.guanliright .guanlidivbar .shequ_div .shequtite{ width:110%; height:48px; white-space:nowrap; background:#479cf3; font-size:0px;}
+.guanliright .guanlidivbar .shequ_div .shequtite span{  width:150px; background:#479cf3; height:48px; line-height:48px; text-align:center; font-size:18px; display:inline-block; color:#fff; overflow:hidden;}
+.shequshuju{ width:100%; height:84%;}
+
+.shequshuju ul{ width:100%; height:100%;}
+.shequshuju ul li{ width:100%; height:38px; line-height:38px; font-size:20px;white-space:nowrap;}
+.shequshuju ul li span{width:150px; height:38px; line-height:38px; text-align:center; display:block; display:inline-block;  font-size:16px; overflow:hidden; }
+
+/*提现样式*/
+.guanliright .tixian{width:100%; height:100%;overflow-y:scroll; white-space:nowrap;}
+.guanliright .tixian_div{ width:98%; height:48px; margin-left:2%; }
+.guanliright .tixian_div .span_s{ float:left; display:block; height:48px; line-height:48px; font-size:18px;}
+.guanliright .tixian_div .text_bar{ float:left; height:34px; line-height:34px; font-size:18px; margin-top:6px; width:210px !important; margin-left:6px;}
+.cr_a{float:left; height:34px; line-height:34px; background:#166cc3; border-radius:15px; font-size:18px; color:#ffffff; display:block; width:100px; text-align:center; margin-top:6px; margin-left:10px;}
+.tixianbar{width:100%; height:100%; position:relative; }
+.tixian_in{width:100%; height:48px; white-space:nowrap; background:#479cf3;  font-size:0px;}
+.tixian_in span{width:160px; background:#479cf3; height:48px; line-height:48px; text-align:center; font-size:18px; display:inline-block; color:#fff;overflow:hidden;} 
+.tx_info{ width:100%; height:84%;  }
+.tx_info ul{width:100%;  height:100%; }
+.tx_info ul li{width:100%; height:38px; line-height:38px; font-size:20px;white-space:nowrap;  margin-top:0px;}
+.tx_info ul li span{width:160px; height:38px; line-height:38px; text-align:center; display:block; display:inline-block; font-size:16px;overflow:hidden; }
+.tx_info ul li .wca{  width:80px; height:30px; line-height:30px; font-size:20px; background:#166cc3; display:block; border-radius:10px; color:#ffffff; margin-top:8px; margin-right:10px; text-align:center; display:inline-block;}
+.tx_info ul li .qba{ width:80px; height:30px; line-height:30px; font-size:20px; background:#166cc3; display:block; border-radius:10px; color:#ffffff; margin-top:8px;margin-right:10px; text-align:center; text-indent:0em; display:inline-block;}
+/*钱包*/
+.qianbao{width:28%; height:28%; background:#479cf3; white-space:nowrap; position:fixed; left:40%; top:45%; display:none; border:1px solid #000; }
+.qb_in{width:100%; height:20%;} 
+.qb_in ul{width:100%; height:100%;}
+.qb_in ul li{width:100%; height:44px; line-height:44px; font-size:20px;white-space:nowrap; margin-top:0px; color:#fff; }
+.qb_in ul li span{width:23%; height:44px; line-height:44px; text-align:center; display:block; display:inline-block; display:inline-block; background:#9CC;}
+.gba{ position:absolute; width:11%; display:block; right:0; top:9px; color:#fff;}
+
+.awbar{ width:100%; height:48px; line-height:48px; color:#000; display:block;}
+.datebar{float:left; font-size:22px; margin-top:5px; width:190px;}
+
+.zongshu{ float:left; width:5%; font-size:20px; color:#000; height:48px; line-height:48px; display:block; text-align:right; margin-left:10px;}

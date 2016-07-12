@@ -1,0 +1,71 @@
+@media screen and (max-width: 800px) {
+.navbar-nav a{ color:#fff !important; height:57px; line-height:57px;}
+.navbar-collapse .navbar-nav a:hover{ background-color:#61bffd !important; height:55px; line-height:16px; border-top:2px solid #eab248; color:#fff !important;}
+.navbar-collapse .navbar-nav a.current{ height:57px; line-height:16px;color:#fff !important;}
+.navbar-brand .logimg{ width:62%; height:94%; margin-top:3%;}	
+.navbar-brand{ padding-top:6px; height:57px;}
+.dibar{ width:54%; height:50%; margin-top:20px;}
+.rightimg{ width:70%; height:50%; margin-top:-44px;}
+.imga{ width:40%; height:50%; margin-left:0px;}
+.imga1{width:40%; height:50%; margin-left:0px;}
+.img-content{margin-top:14px;}
+.imgtu{ margin-top:5px;}
+.tcon{ text-align:center;}	
+.xlul{ background:#000; opacity:0.5; border-top:none !important;}
+.img2{display:none; width:70%; margin-top:35%; margin-left:25%;}
+.ays{ background:none;}
+.hied{ color:#fff !important;}
+.ays{width:100%; height:50%; display:block;}
+
+.ays1{width:100%; height:50%; display:block;}
+/*第二屏*/
+.erpimg{ width:95%; margin-top:18%; /*margin-left:15%;*/}
+.erpimg2{  width:88%; margin-top:18%; /*margin-left:5%;*/} 
+/*第三屏*/
+.spimg{ width:74%;  margin-top:23%; /*margin-left:15%;*/}
+.spimgbar{ width:95%; margin-top:31%;/* margin-left:5%;*/}  
+/*第四屏*/
+.foot_div{ width:100%; height:100%;}
+.footimg{ width:100%; margin-top:28%;}
+.tcon{ text-align:center;}
+.wximg{ width:40%; margin-top:24%;margin-bottom:13%; margin-left:1%;}	
+.wbimg{ width:40%; margin-top:24%; margin-bottom:13%; margin-left:10%;}
+.dzimg{ width:100%;}
+}
+
+@media screen and (min-width:1360px){
+.navbar-nav a{ color:#fff !important; height:57px; line-height:57px;}
+.navbar-collapse .navbar-nav a:hover{ background-color:#61bffd !important; height:55px; line-height:16px; border-top:2px solid #eab248; color:#fff !important;}
+.navbar-collapse .navbar-nav a.current{ height:57px; line-height:16px;color:#fff !important;}
+
+.navbar-brand .logimg{ width:100%; height:57px; margin-top:0px;}
+.navbar-brand{ padding-top:0px; height:57px;}
+.leftimg{ width:412px; height:650px;}
+.rightimg{ margin-top:20%; width:74%;}
+.dibar{ margin-top:28%; width:106%;}
+.imga{ margin-left:4px; width:69%;}
+.imga1{margin-left:4px; width:69%;}
+.ml{
+    margin-left:30px;
+}
+.img-content{margin-top:56px;}
+
+.img2{display:none; width:70%; margin-top:8%; margin-left:25%;}
+  
+.ays{width:100%; height:50%; display:block; margin-left:18%;}
+
+.ays1{width:100%; height:50%; display:block;}
+/*第二屏*/
+.erpimg{ width:52%; margin-top:26%; margin-left:4%;}
+.erpimg2{  width:62%; margin-top:36%; margin-left:-2%;}
+/*第三屏*/
+.spimg{ width:50%;  margin-top:24%; margin-left:-9%; }
+.spimgbar{ width:60%; margin-top:47%; margin-left:-20%;}
+/*第四屏*/
+.foot_div{ width:100%; height:100%;}
+.footimg{ width:40%; margin-top:5%;}
+.tcon{ text-align:center;}
+.wximg{ width:10%; margin-top:5%; margin-bottom:2%; margin-left:1%;}	
+.wbimg{ width:10%; margin-top:5%; margin-bottom:2%; margin-left:20%;}
+.dzimg{ width:44%;}
+}

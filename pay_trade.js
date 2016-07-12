@@ -105,6 +105,8 @@ var _kongcv_insert_trade_log = function(bill_id, request, log) {
  *           {"code":601,"error":"xxxxxx"}
  */
 exports.kongcv_put_trade_billdata = function(request) {
+    console.log("invoke put trade_billdata");
+
     var bill_id = request.bill_id;
     if (typeof(bill_id) == "undefined" || bill_id.length === 0) {
         _kongcv_insert_trade_log(bill_id, request, ERROR_MSG.ERR_BILL_ID_MUST_EXIST);
@@ -240,8 +242,12 @@ exports.kongcv_put_trade_billdata = function(request) {
 
                     trade_obj.save().then(
                         function(trade_obj) {
+                            console.log("trade save");
+                            var purse_query = new AV.Query(kongcv_purse_cls);
+                            var trade_money = trade_obj.get("money");
                             var verify_trade_money = trade_obj.get("money");
                             var verify_trade_price = trade_obj.get("price");
+                            
                             if ("money" === pay_type || "balance" === pay_type) { 
                                 if (verify_trade_money != verify_trade_price) {
                                     _kongcv_insert_trade_log(bill_id, request, "verify_price");
@@ -263,23 +269,23 @@ exports.kongcv_put_trade_billdata = function(request) {
                                 );
                             }
                             else if ("balance" === pay_type && "curb" === mode) {
+                            //else if (("balance" === pay_type && "curb" === mode) || ("money" === pay_type && "curb" === mode)) {
                                 var curb_rate = trade_obj.get("curb_rate");
-                                var trade_money = trade_obj.get("money");
                                 var hirer_obj = trade_obj.get("hirer");
+                                var user_obj = trade_obj.get("user");
 
-                                var purse_query = new AV.Query(kongcv_purse_cls);
                                 purse_query.equalTo("user", hirer_obj);
                                 purse_query.limit(1);
                                 purse_query.find({
                                     success : function(results) {
-                                        var purse_obj;
+                                        var hirer_purse_obj;
                                 
                                         if (1 === results.length) {
-                                            purse_obj = results[0];
+                                            hirer_purse_obj = results[0];
                                         }
                                         else if (0 === results.length) {
-                                            purse_obj = new kongcv_purse_cls();
-                                            purse_obj.set("user", hirer_obj);
+                                            hirer_purse_obj = new kongcv_purse_cls();
+                                            hirer_purse_obj.set("user", hirer_obj);
                                         }
 
                                         var own_trade_money;
@@ -299,21 +305,54 @@ exports.kongcv_put_trade_billdata = function(request) {
                                         else {
                                             own_trade_money = Number(own_trade_money.toFixed(2));
                                         }
-                                        purse_obj.increment("amount", own_trade_money);
-                                        purse_obj.increment("money", own_trade_money);
+                                        hirer_purse_obj.increment("amount", own_trade_money);
+                                        hirer_purse_obj.increment("money", own_trade_money);
 
-                                        purse_obj.save().then(
-                                            function(purse_obj) {
+                                        hirer_purse_obj.save().then(
+                                            function(hirer_purse_obj) {
                                             },
                                             function(error) {
-                                                _kongcv_insert_trade_log(bill_id, request, "purse_save" + error);
+                                                _kongcv_insert_trade_log(bill_id, request, "hirer_purse_save" + error);
                                             }
                                         );
                                     },
                                     error : function(error) {
-                                        _kongcv_insert_trade_log(bill_id, request, "purse_query" + error);
+                                        _kongcv_insert_trade_log(bill_id, request, "hirer_purse_query" + error);
                                     }
                                 }); 
+                            }
+                           
+                            console.log("expense start");
+                            if ("handsel" != pay_type) {
+                                purse_query.equalTo("user", user_obj);
+                                purse_query.limit(1);
+                                purse_query.find({
+                                    success : function(results) {
+                                        var user_purse_obj;
+
+                                        if (1 === results.length) {
+                                            user_purse_obj = results[0];
+                                        }
+                                        else if (0 === results.length) {
+                                            user_purse_obj = new kongcv_purse_cls();
+                                            user_purse_obj.set("user", user_obj);
+                                        }
+
+                                        user_purse_obj.increment("expense", trade_money);
+
+                                        user_purse_obj.save().then(
+                                            function(user_purse_obj) {
+                                                console.log("expense save");
+                                            },
+                                            function(error) {
+                                                _kongcv_insert_trade_log(bill_id, request, "user_purse_save" + error);
+                                            }
+                                        );
+                                    },
+                                    error : function(error) {
+                                        _kongcv_insert_trade_log(bill_id, request, "user_purse_query" + error);
+                                    }
+                                });
                             }
                         },
                         function(error) {
@@ -392,7 +431,7 @@ exports.kongcv_trade_jpush_message_p2p = function(mobile, device_token, device_t
         console.log("kongcv_trade_jpush_push_message_p2p:",ERROR_MSG.ERR_INFO_FORMAT);
         return {"result":"error_msg","msg":ERROR_MSG.ERR_INFO_FORMAT}
     }
-
+ 
     JPush_client.push().setPlatform(device_type)
     .setAudience(JPush.registration_id(device_token))
     .setNotification('Hi, Kongcv', device_notify)

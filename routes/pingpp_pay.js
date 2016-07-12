@@ -1,4 +1,5 @@
 'use strict';
+var url_parser = require('url');
 var router = require('express').Router();
 //Kongcv@online_pay&2016
 var kongcv_key = "80b5b4e822f60d0254d885a7c20f7a87";
@@ -9,6 +10,10 @@ var kongcv_key = "80b5b4e822f60d0254d885a7c20f7a87";
 //release key id 
 var PINGPP_API_KEY = "sk_live_vDSGyD8aPGWL1mn9eLGSyj5K";
 var PINGPP_APP_ID = "app_jTC8uTG8yj14b5GO";
+
+var WX_PUB_APP_ID = "wx6455d57243343aa4";
+var WX_PUB_APP_SECRET = "e5d7c81fcdc2f4c39c19612234544e6b";
+
 var pingpp = require('../lib_pingpp/pingpp')(PINGPP_API_KEY);
 var pay_charge = require('../pay_trade');
 var crypto = require("crypto");
@@ -67,6 +72,7 @@ var createPayment = function(order_no, channel, amount, client_ip, open_id, subj
 };
 
 router.post('/', function(req, resp, next) {
+    console.log("receive pingpp_pay");
     var check_kongcv_key = req.headers['x-kongcv-key-signatures'];
     if (kongcv_key != check_kongcv_key) {
         return resp.status(400).send('error:key signatures error');
@@ -136,6 +142,7 @@ router.post('/', function(req, resp, next) {
 });
 
 router.post('/notify', function(req, resp, next) {
+    console.log("receive ping_pay notify");
     // 异步通知
     var notify = req.body;
     
@@ -229,7 +236,7 @@ router.post('/notify', function(req, resp, next) {
 
             pay_charge.kongcv_put_trade_billdata(param);
             
-            if ((device_token != undefined && device_token.length > 0) && (device_type != undefined && device_type.length > 0)) {
+            if (device_token != undefined && device_type != undefined) {
                 pay_charge.kongcv_trade_jpush_message_p2p(mobile, device_token, device_type, money, mode);
             }
  
@@ -242,6 +249,38 @@ router.post('/notify', function(req, resp, next) {
             return resp.status(400).send("don't know notify type");
             break;
     }
+});
+
+router.get('/oauth', function(req, resp, next) {
+    console.log("kongcv oauth");
+
+    var oauth_url = pingpp.wxPubOauth.createOauthUrlForCode(WX_PUB_APP_ID, 'http://www.kongcv.com/pingpp_pay/getopenid/');
+    console.log("oauth_url:", oauth_url);
+
+    resp.writeHead(302, {"Location":oauth_url});
+    resp.end('');
+});
+
+router.get('/getopenid', function(req, resp, next) {
+    console.log("kongcv getopenid");
+    console.log("req url:", req.url);                                            
+    
+    var url_parts = url_parser.parse(req.url, true);                                 
+    
+    pingpp.wxPubOauth.getOpenid(WX_PUB_APP_ID, WX_PUB_APP_SECRET, url_parts.query.code, function(err, openid) {
+        console.log("open_id", openid);
+    });
+});
+
+router.post('/signature', function(req, resp, next) {
+    console.log("kongcv signature");
+    
+    /*pingpp.wxPubOauth.getJsapiTicket(WX_PUB_APP_ID, WX_PUB_APP_SECRET, function(err, response){
+        var charge = {};
+        var signature = pingpp.wxPubOauth.getSignature(charge, response['ticket'],'PAY_PAGE_URL');
+        resp.writeHead(200);
+        resp.end(signature);
+    });*/
 });
 
 module.exports = router;

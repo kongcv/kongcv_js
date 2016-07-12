@@ -8,9 +8,9 @@
 .moon{ float:left; width:100%; height:155px; /*border-bottom:1px solid #e2e2e2; */ /*border-top:1px solid #e2e2e2;*/margin-top:0px; border:none;}
 .moon .moon_bar{ width:100%; height:155px; margin:0 auto; border:none; background:#f7f7f7;}
 
-.ulqus{ width:100%; height:155px;}
+.ulqus{ width:100%; height:203px;}
 
-.ulqus li{ float:left; width:24.7%; height:76px;  border:none; margin-left:1px; margin-top:1px;} 
+.ulqus li{ float:left; width:24.7%; height:100px;  border:none; margin-left:1px; margin-top:1px;} 
 
 .ulqus li .title{ float:left; width:100%; height:76px; border:none;}
 .ulqus li .title .bor_boom{ float:left; width:100%; height:100%; display:block; border:none;}
@@ -53,10 +53,10 @@
 /*.swiper-slide .title img{ height:100%; width:100%;}*/
 /*.swiper-slide .title .bor_boom:active{ position:absolute; width:13.5%; height:36px; display:block; background:#F3F; border-bottom:3px solid #ff9c00;}*/
 
-.xzapp{position:absolute; width:100%;height:50px;}
-.xzapp .xzappbar{ width:100%; height:50px;}
-.xzapp .xzappbar .appleft{ float:left; width:100%; height:50px; /*background:url(../images/ios_xiazai.png) no-repeat; background-size:cover;*/}
-.xzapp .xzappbar .appleft .appimg1{ float:left; width:100%; height:50px;}
+.xzapp{position:absolute; width:100%;height:100px;}
+.xzapp .xzappbar{ width:100%; height:100px;}
+.xzapp .xzappbar .appleft{ float:left; width:100%; height:100px; /*background:url(../images/ios_xiazai.png) no-repeat; background-size:cover;*/}
+.xzapp .xzappbar .appleft .appimg1{ float:left; width:100%; height:100px;}
 .sheie{ position:absolute;  display:block; width:20px; height:20px; background:url(../images/newios2.png) no-repeat right; background-size:cover; margin-left:87%; margin-top:16px;}
 
 
@@ -84,7 +84,7 @@
 .sq_div .con_bar a{ float:left; width:50%; height:46px; display:block; }
 .sq_div .con_bar a img{ float:left; width:100%; height:46px;}
 .moon{ float:left; width:100%; height:203px; /*border-bottom:1px solid #e2e2e2; */ /*border-top:1px solid #e2e2e2;*/margin-top:0px; border:none;}
-.moon .moon_bar{ width:100%; height:203px; margin:0 auto; border:none; background:#ffffff;}
+.moon .moon_bar{ width:100%; height:203px; margin:0 auto; border:none; background:#f7f7f7;}
 
 .ulqus{ width:100%; height:203px;}
 
@@ -235,6 +235,87 @@
 }
 @media screen and (max-device-width: 370px) {
 .in_div{ width:100%; height:auto; float:left; margin: 0; padding: 0; background:#f8f8f8;}
+.sy_bar{ width:100%; height:46px; line-height:46px; font-size:22px; text-align:center;color:#fffefe;background:#ff9c00;}
+.lbdiv{ float:left; width:100%; height:auto; }
+.sq_div{width:100%; float:left; height:44px;  margin-top:0px;}
+.sq_div .con_bar{ width:100%; height:44px; margin:0 auto;}
+.sq_div .con_bar a{ float:left; width:50%; height:44px; display:block; }
+.sq_div .con_bar a img{ float:left; width:100%; height:44px;}
+.moon{ float:left; width:100%; height:190px; /*border-bottom:1px solid #e2e2e2;*/ background:#ffffff; /*border-top:1px solid #e2e2e2;*/margin-top:0px; border:none;}
+.moon .moon_bar{ width:100%; height:190px; margin:0 auto; border:none; background:#f7f7f7;}
+
+.ulqus{ width:100%; height:190px;}
+
+.ulqus li{ float:left; width:24.6%; height:90px;  border:none; margin-left:1px; margin-top:1px;} 
+
+.ulqus li .title{ float:left; width:100%; height:90px; border:none;}
+.ulqus li .title .bor_boom{ float:left; width:100%; height:100%; display:block; border:none;}
+.ulqus li .title .bor_boom img{ float:left; width:100%; height:100%; border-bottom:1px solid #f7f7f7; border-right:1px solid #f7f7f7;}
+
+
+
+#slider	ol{ position:absolute; top:190px;left:30%; z-index:10;}
+#slider ol li{ width:10px; height:10px; background:#c4c4c4; border-radius:50%; float:left; margin-left:10px;}
+#slider ol li.y{ background:#fff;}
+#slider{ width:100%; height:226px; position:relative; overflow:hidden;} 
+#slider ul{ position:absolute;}
+#slider ul li{ list-style:none; float:left;}
+#slider ul img{ width:100%; }
+
+
+
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background: #222;
+  margin-right: 5px;
+  opacity: 0.8;
+  /*border: 1px solid #fff;*/
+  cursor: pointer;
+}
+.swiper-visible-switch {
+  background: #aaa;
+  border:none;
+}
+.swiper-active-switch {
+  background: #fff;
+}
+.swiper-slide .title {
+  margin-top: 0px;
+  margin-bottom: 0; height:80px; 
+   width:100%; border:none;
+}
+/*.swiper-slide .title img{ height:100%; width:100%;}*/
+/*.swiper-slide .title .bor_boom:active{ position:absolute; width:13.5%; height:36px; display:block; background:#F3F; border-bottom:3px solid #ff9c00;}*/
+
+.xzapp{position:absolute; width:100%; height:46px;}
+.xzapp .xzappbar{ width:100%; height:46px;}
+.xzapp .xzappbar .appleft{ float:left; width:100%; height:46px; /*background:url(../images/ios_xiazai.png) no-repeat; background-size:cover;*/}
+.xzapp .xzappbar .appleft .appimg1{ float:left; width:100%; height:100%;}
+.xzapp .xzappbar .sheie{ position:relative;  display:block; width:18px; height:18px; background:url(../images/newios2.png) no-repeat right; background-size:cover; margin-left:87%; margin-top:0px; top:13px;}
+
+
+
+
+
+.footbar{ position:absolute;width:100%; height:62px; background:#e4e4e4; margin-top:0px;}
+.footcc{ float:left; width:20%; height:62px;}
+.footcont{ float:left; width:60%; height:62px;}
+.back1{ background:url(../images/ccw.png) no-repeat; display:block; width:34px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back2{ background:url(../images/ccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:11px;}
+.back3{ background:url(../images/ccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:11px;}
+/*点击显示背景*/
+.a_backimg1{background:url(../images/ysccw.png) no-repeat;display:block; width:34px; margin:0 auto; height:42px;background-size:cover; margin-top:13px;}
+.a_backimg2{ background:url(../images/ysccw1.png) no-repeat; display:block; width:22px; height:42px; margin:0 auto;background-size:cover; margin-top:13px;}
+.a_backimg3{ background:url(../images/ysccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:13px;}
+.amap-copyright{ display:none;}
+.amap-logo{ display:none;}	
+	
+}
+@media screen and (max-device-width: 320px) {
+	.in_div{ width:100%; height:auto; float:left; margin: 0; padding: 0; background:#f8f8f8;}
 .sy_bar{ width:100%; height:36px; line-height:36px; font-size:22px; text-align:center;color:#fffefe; background:#ff9c00;}
 .lbdiv{ float:left; width:100%; height:auto; }
 .sq_div{width:100%; float:left; height:44px;  margin-top:0px;}
@@ -242,7 +323,7 @@
 .sq_div .con_bar a{ float:left; width:50%; height:44px; display:block; }
 .sq_div .con_bar a img{ float:left; width:100%; height:44px;}
 .moon{ float:left; width:100%; height:162px; /*border-bottom:1px solid #e2e2e2;*/ background:#ffffff; /*border-top:1px solid #e2e2e2;*/margin-top:0px; border:none;}
-.moon .moon_bar{ width:100%; height:148px; margin:0 auto; border:none; background:#ffffff;}
+.moon .moon_bar{ width:100%; height:148px; margin:0 auto; border:none; background:#f7f7f7;}
 
 .ulqus{ width:100%; height:148px;}
 
@@ -312,9 +393,7 @@
 .a_backimg3{ background:url(../images/ysccw2.png) no-repeat; display:block; width:24px; height:42px;margin:0 auto;background-size:cover; margin-top:13px;}
 .amap-copyright{ display:none;}
 .amap-logo{ display:none;}	
-	
 }
-
 
 @media screen and (min-device-width: 1360px) {
 .amap-copyright{ display:none;}
@@ -384,7 +463,7 @@
 .swiper-slide .title img{ height:100%; width:155px; margin-top:0px;
 }
 /*.swiper-slide .title .bor_boom:active{ position:absolute; width:155px; height:40px; display:block; border-bottom:3px solid #ff9c00;}*/
-.xzapp{position:absolute; width:33.6%; height:55px; background:red;}
+.xzapp{position:absolute; width:33.6%; height:55px;}
 .xzapp .xzappbar{ width:100%; height:55px; background:#0FF;}
 .xzapp .xzappbar .appleft{ float:left; width:100%; height:55px; background:#3F0;}
 .xzapp .xzappbar .appleft .appimg1{ float:left; width:100%; height:100%;}

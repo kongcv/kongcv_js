@@ -24,7 +24,8 @@ window.onload=function(){
 		 keyboardEnable: false
     });
 	var hire_type=localStorage.getItem("hire_type");
-	
+	console.log( {"address":address,"location_info":{"latitude":latitude,"longitude":longitude},	
+				})
 	
 	if(hire_type==2){
 		
