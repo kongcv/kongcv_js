@@ -197,7 +197,7 @@ request:
 特别说明:
    now_day - 服务器当前时间,根据end_date（过期时间）与now_day比较来判断是否过期
    use_type - curb(商业车位专用),community(社区车位专用)或为空值
-   hire_method - 出租方式，有此项数据限定为此出租方式使用
+   hire_method - 车位出租方式id,通过hire_method_id在trade交易单对象中判断出租方式,有此项则限定了优惠卷的使用方式
 参数说明:
    user_id - 用户objectId
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
@@ -1938,8 +1938,12 @@ request:
     type - coupon_discount下:
         number - 折扣数
         limit_number - 限制金额(及满xx元打折)
+    type - coupon_discount_max下:
+        number - 折扣数
+        limit_number - 最多减金额数，打完折扣不超过最多金额就按实际扣，超过就按最大金额扣(如100元打5折，最多减20元，超过实际只扣20元，而不是50元)
     use_days - 限制使用天数
     use_type - curb(商业车位专用),community(社区车位专用)或为空值没有限制
+    hire_method_id - 车位出租方式id,通过hire_method_id在trade交易单对象中判断出租方式,有此项则限定了优惠卷的使用方式
 response:
 参数说明:
    result - 返回结果
