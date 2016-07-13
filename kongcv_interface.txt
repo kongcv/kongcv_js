@@ -1926,7 +1926,7 @@ response:
 kongcv_manage_create_coupon:创建优惠卷
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_create_coupon
 request:
-    {"description" : "xxxx", "number":5, "limit_number":5,"name":"xxxx", "use_days":5,"type":"coupon_money"}
+    {"description" : "xxxx", "number":5, "limit_number":5,"name":"xxxx", "use_days":5,"type":"coupon_money", "use_type":"curb", "hire_method_id":"xxxx"}
 参数说明:
     description - 优惠卷描述
     type - coupon_money下:
