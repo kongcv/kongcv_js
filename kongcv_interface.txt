@@ -2038,3 +2038,24 @@ response:
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
+kongcv_manage_get_hire_method:得到停车类型的出租方法
+url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_hire_method
+request:
+请求格式:
+   {}
+参数说明:
+response:
+参数说明:
+   result - 返回结果
+   state - 状态
+   code - 消息编号
+   msg - 描述消息
+   error - 错误描述
+回应格式:
+   返回数据中method是出租方式
+   RET_OK - 返回结果集                 
+        {recordset json array}
+   error:
+        {code:1,"error":"xxxxxxxxxxxxxx"}
+
+
