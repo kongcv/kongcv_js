@@ -197,6 +197,7 @@ request:
 特别说明:
    now_day - 服务器当前时间,根据end_date（过期时间）与now_day比较来判断是否过期
    use_type - curb(商业车位专用),community(社区车位专用)或为空值
+   hire_method - 出租方式，有此项数据限定为此出租方式使用
 参数说明:
    user_id - 用户objectId
    use_token - 1(启用sessionToken验证),不启用可以不传值或没有这个参数
@@ -259,9 +260,9 @@ url:https://api.leancloud.cn/1.1/functions/kongcv_insert_user_coupon
 request:
 参数说明:
    user_id - 用户objectId
-   coupon_id - 优惠卷objectId
+   coupon_id - 优惠卷objectId,数组格式
 请求格式:
-    {"user_id" : "555c28b8e4b0b7e69366b482", "coupon_id":"xxxx"}
+    {"user_id" : "555c28b8e4b0b7e69366b482", "coupon_id":["xxxx"]}
 response:
 参数说明:
    result - 返回结果
@@ -270,7 +271,7 @@ response:
    msg - 描述消息
    error - 错误描述
 回应格式:      
-   RET_OK - success, {\"state\":\"ok\",\"code\":1,\"msg\":\"成功\"}                 
+   RET_OK - success, 无返回结果    
    error:
         {code:1,"error":"xxxxxxxxxxxxxx"}
 
@@ -1606,6 +1607,10 @@ limit_number - 限制天数(及满xx天减yy天)
 type - coupon_discount下:
 number - 折扣数
 limit_number - 限制金额(及满xx元打折)
+type - coupon_discount_max下:
+number - 折扣数
+limit_number - 最多减金额数，打完折扣不超过最多金额就按实际扣，超过就按最大金额扣(如100元打5折，最多减20元，超过实际只扣20元，而不是50元)
+
 
 如果优惠卷金额(20元)>=实际支付金额(12元)
 1：实际支付0.01元
