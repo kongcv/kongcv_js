@@ -2118,13 +2118,14 @@ response:
 kongcv_manage_put_share_coupon:更新分享优惠卷
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_put_share_coupon
 request:
-    {"share_coupon_id":"xxxx","title:"xxxxx","context":"xxx","url":"xxxx","coupon_id":["xxxx"]}
+    {"share_coupon_id":"xxxx","title:"xxxxx","context":"xxx","url":"xxxx","coupon_id":["xxxx"],"timeout":160}
 参数说明:
    share_coupon_id - 分享优惠卷objectid
    title -  分享标题
    context - 分享内容
    url - 分享url
    coupon_id - 优惠卷objectId
+   timeout - 时间差
 response:
 参数说明:
    result - 返回结果
