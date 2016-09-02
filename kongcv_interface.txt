@@ -2142,8 +2142,10 @@ response:
 kongcv_manage_get_park_autopush:得到推送车位记录
 url:https://api.leancloud.cn/1.1/functions/kongcv_manage_get_park_autopush
 request:
+   skip - 跳过记录数
+   limit - 限定返回记录数
 请求格式:
-   {}
+   {"skip":0,"limit":10}
 response:
 参数说明:
    result - 返回结果
